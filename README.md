@@ -13,4 +13,4 @@ link to this repo : https://github.com/RoiIam/MastersHDRP/
 ## Masters, LateX
 https://www.overleaf.com/project/63e62a884908c105d77fe95a (invite only for now)
 
-Other documents sucha as notes are in folder docs/
+Other documents such as notes are in folder docs/

@@ -191,17 +191,4 @@ QualitySettings:
     customRenderPipeline: {fileID: 11400000, guid: fc05a36b8f7a5bf4ea1f5fc9c0acdf11,
       type: 2}
     excludedTargetPlatforms: []
-  m_PerPlatformDefaultQuality:
-    Android: 0
-    CloudRendering: 0
-    Lumin: 0
-    Nintendo Switch: 0
-    PS4: 0
-    Server: 3
-    Stadia: 0
-    Standalone: 3
-    WebGL: 0
-    Windows Store Apps: 0
-    XboxOne: 0
-    iPhone: 0
-    tvOS: 0
+  m_PerPlatformDefaultQuality: {}

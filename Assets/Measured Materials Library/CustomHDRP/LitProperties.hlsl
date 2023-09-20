@@ -154,6 +154,8 @@ SAMPLER(sampler_testDict);
 
 float4 _BaseColor;
 float4 _MyColor; //RCC
+float _glintsMethod;//RCC
+float _MaterialID;//RCC
 float4 _BaseColorMap_ST;
 float4 _BaseColorMap_TexelSize;
 float4 _BaseColorMap_MipInfo;
@@ -207,6 +209,8 @@ float _LinkDetailsWithBase;
 // Set of users variables
 PROP_DECL(float4, _BaseColor);
 PROP_DECL(float4, _MyColor);//RCC
+PROP_DECL(float, _glintsMethod);//RCC
+PROP_DECL(float, _MaterialID);//RCC
 float4 _BaseColorMap0_ST;
 float4 _BaseColorMap1_ST;
 float4 _BaseColorMap2_ST;

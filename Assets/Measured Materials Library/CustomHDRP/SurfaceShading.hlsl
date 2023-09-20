@@ -618,14 +618,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
     normalWS = normalize(normalWS);
     float3 binormal = cross(normalWS, tangentWS);
     float3 bitangentWS = normalize(binormal);
-    
-    /*
-    //nope
-    float3x3 toLocal = float3x3(
-        tangentWS.x, bitangentWS.x,normalWS.x,
-        tangentWS.y, bitangentWS.y,normalWS.y,
-        tangentWS.z, bitangentWS.z,normalWS.z);
-        */
+
     
     float3x3 toLocal = float3x3(
             tangentWS.x,tangentWS.y ,tangentWS.z,
@@ -658,7 +651,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
         float4 lightColor = EvaluateLight_Punctual(lightLoopContext, posInput, light, L, distances);
         lightColor.rgb *= lightColor.a; // Composite
 
-#ifdef MATERIAL_INCLUDE_TRANSMISSION
+        #ifdef MATERIAL_INCLUDE_TRANSMISSION
         if (ShouldEvaluateThickObjectTransmission(V, L, preLightData, bsdfData, light.shadowIndex))
         {
             // Replace the 'baked' value using 'thickness from shadow'.
@@ -666,18 +659,18 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                                                     bsdfData, light, L, distances);
         }
         else
-#endif
+            #endif
         {
             PositionInputs shadowPositionInputs = posInput;
 
-#ifdef LIGHT_EVALUATION_SPLINE_SHADOW_BIAS
+            #ifdef LIGHT_EVALUATION_SPLINE_SHADOW_BIAS
             shadowPositionInputs.positionWS += L * GetSplineOffsetForShadowBias(bsdfData);
-#endif
+            #endif
             // This code works for both surface reflection and thin object transmission.
             SHADOW_TYPE shadow = EvaluateShadow_Punctual(lightLoopContext, shadowPositionInputs, light, builtinData, GetNormalForShadowBias(bsdfData), L, distances);
             lightColor.rgb *= ComputeShadowColor(shadow, light.shadowTint, light.penumbraTint);
 
-#ifdef LIGHT_EVALUATION_SPLINE_SHADOW_VISIBILITY_SAMPLE
+            #ifdef LIGHT_EVALUATION_SPLINE_SHADOW_VISIBILITY_SAMPLE
             if ((light.shadowIndex >= 0) && (light.shadowDimmer > 0))
             {
                 // Evaluate the shadow map a second time (this time unbiased for the spline).
@@ -687,14 +680,14 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
             {
                 bsdfData.splineVisibility = -1;
             }
-#endif
+            #endif
 
-#ifdef DEBUG_DISPLAY
+            #ifdef DEBUG_DISPLAY
             // The step with the attenuation is required to avoid seeing the screen tiles at the end of lights because the attenuation always falls to 0 before the tile ends.
             // Note: g_DebugShadowAttenuation have been setup in EvaluateShadow_Punctual
             if (_DebugShadowMapMode == SHADOWMAPDEBUGMODE_SINGLE_SHADOW && light.shadowIndex == _DebugSingleShadowIndex)
                 g_DebugShadowAttenuation *= step(FLT_EPS, lightColor.a);
-#endif
+            #endif
         }
 
         // Simulate a sphere/disk light with this hack.
@@ -702,14 +695,33 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
         // (means if we disable the optimization it will not have the
         // same result) but we don't care as it is a hack anyway.
         ClampRoughness(preLightData, bsdfData, light.minRoughness);
+        //if(_materialID)
+        
+        //tu bude zmena, nova funkcia
+        //glints = HasFlag(surfaceData.materialFeatures, MATERIALFEATUREFLAGS_LIT_GLINTS);
+        //bool glints = (int)surfaceData.glintsMethod == 1;
+        //_glintsMethod = 0;
+        if((int)_glintsMethod==0 || _MaterialID !=6)
+        {
+            //render normally
+            lighting = ShadeSurface_Infinitesimal(preLightData, bsdfData, V, L, lightColor.rgb,light.diffuseDimmer, light.specularDimmer);
+        }
+        else if((int)_glintsMethod==1)//we chose chermain20
+         {
+             lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer);
+             lighting.specular= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
 
-        //RCC tu bude zmena, nova funkcia
-        lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer);
-        //povodne:
-        //lighting = ShadeSurface_Infinitesimal(preLightData, bsdfData, V, L, lightColor.rgb,light.diffuseDimmer, light.specularDimmer);
+         }
+        else if((int)_glintsMethod==2)//we chose DB23 //TODO
+            {
+            lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer);
+            lighting.specular= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+
+            }
+        
     }
-    // add glints light
-    lighting.specular= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+    // add glints light moved to upper if
+    //lighting.specular= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
     //lighting.diffuse= float3(0,0,0);//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
 
     return lighting;

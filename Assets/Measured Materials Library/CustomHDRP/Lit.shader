@@ -9,6 +9,10 @@ Shader "HDRP/CustomLit"
         [MainColor] _BaseColor("BaseColor", Color) = (1,1,1,1)
         _MyColor("MyColor", Color) = (1,0,0,1)//RCC
         _testDict("testDict", 2DArray) = "" {} //RCC unity nepodporuje 1D arrays/ 2D by nemal byt problem
+        [Enum(None, 0, Chermain20, 1, DeliotBelcour23, 2)] _glintsMethod("_glintsMethod", float) = 1//RCC glintsMethod Sets glints rendering method mode
+        //RCC must be the same name...
+
+
         [MainTexture] _BaseColorMap("BaseColorMap", 2D) = "white" {}
         [HideInInspector] _BaseColorMap_MipInfo("_BaseColorMap_MipInfo", Vector) = (0, 0, 0, 0)
 
@@ -162,7 +166,8 @@ Shader "HDRP/CustomLit"
         // Following enum should be material feature flags (i.e bitfield), however due to Gbuffer encoding constrain many combination exclude each other
         // so we use this enum as "material ID" which can be interpreted as preset of bitfield of material feature
         // The only material feature flag that can be added in all cases is clear coat
-        [Enum(Subsurface Scattering, 0, Standard, 1, Anisotropy, 2, Iridescence, 3, Specular Color, 4, Translucent, 5)] _MaterialID("MaterialId", Int) = 1 // MaterialId.Standard
+        //RCC add glints material id variant
+        [Enum(Subsurface Scattering, 0, Standard, 1, Anisotropy, 2, Iridescence, 3, Specular Color, 4, Translucent, 5, Glints, 6)] _MaterialID("MaterialId", Int) = 1 // MaterialId.Standard
         [ToggleUI] _TransmissionEnable("_TransmissionEnable", Float) = 1.0
 
         _DisplacementMode("DisplacementMode", Int) = 0

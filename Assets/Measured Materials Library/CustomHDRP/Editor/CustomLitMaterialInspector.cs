@@ -12,6 +12,6 @@ public class CustomLitMaterialInspector : LightingShaderGraphGUI
         
         //uiBlocks.Insert(1,new  TextDictUIBlock("myColor", "test zmeny baseColor v LitDataindividualLayer.hlsl"));//RCC gui text
         uiBlocks.Insert(1, new TextDictUIBlock());//RCC gui text
-
+        uiBlocks.Insert(2, new GlintsMethodUIBlock());
     }
 }

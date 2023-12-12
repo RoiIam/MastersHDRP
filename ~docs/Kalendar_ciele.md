@@ -25,6 +25,36 @@ Priamo vkladať individuálne trblietky, do scény, tak že máme nejaký zaseed
 
 vždy je postup (od predchádzajúceho stretnutia) spísaný v deň prezentácie priebežnej práce na YACGS 
 
+
+## WS 23
+
+### 19.9.2023 
+Zmena stránky.
+Objavenie a začatie čítania Deliot. Belcour. Real-Time Rendering of Glinty Appearances using Distributed Binomial Laws on Anisotropic Grids.
+### 3.10.2023 
+
+Prezentácia článku Deliot. Belcour. Real-Time Rendering of Glinty Appearances using Distributed Binomial Laws on Anisotropic Grids.
+
+### 17.10.2023 
+Implementácia metódy od Deliot a Belcour.
+Prečítanie metódy Wang, Bowles. 
+### 31.10.2023 
+Implementácia metódy od Zirr et al.
+Začiatok písania kapitoly úvod.
+### 21.11.2023
+
+Návrh vlastnej metódy ako vylepšenie Zirr pomocou návrhov Deliot.
+Písanie kapitol úvod, súčasný stav.
+### 5.12.2023 
+Dokončenie kapitoly úvod.
+Úprava zadania, tak aby lepšie reflektovalo náš cieľ.
+### 12.12.2023
+Prezentácia pokroku.
+
+
+
+
+## SS23
 ### 28.02.2023
 - prečítaná polovica článku recent advances in glinty appareance rendering 2022,
 - študovanie problému- aj cez prednášky ACG1,2 lepšie pochopenie problému, BRDF- laloky a pod
@@ -53,6 +83,7 @@ vždy je postup (od predchádzajúceho stretnutia) spísaný v deň prezentácie
 - prerobené usporiadanie projektu, je to prehľadnejšie, bez zbytočných assetov, 
 - návrat k CustomLit.shader(teda nemeníme už všetko v HDRP lokálne iba to čo potrebujeme v CustomLit.shader) 
 - zjednotenie poznámok
+
 
 ## Zostávajúce, plánované úlohy:
 

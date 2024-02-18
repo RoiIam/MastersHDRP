@@ -80,7 +80,7 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
 
     if (Max3(lightColor.r, lightColor.g, lightColor.b) > 0)
     {
-        CBSDF cbsdf; 
+        CBSDF cbsdf;
         //RCC tiez zmenene
         if((int)_glintsMethod==0)//no glints
         {
@@ -90,7 +90,7 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
         {
             //cbsdf = EvaluateBSDF_Glints(V, L, preLightData, bsdfData,wo,wi,cameraPos,vertPos,lightPos,fragInputs);//spat do Lit.hlsl
             //this has no effect
-            cbsdf = EvaluateBSDF(V, L, preLightData, bsdfData);//spat do Lit.hlsl
+            cbsdf = EvaluateBSDF_GlintsCher20(V, L, preLightData, bsdfData,wo,wi,cameraPos,vertPos,lightPos,fragInputs);//spat do Lit.hlsl
         }
         else if((int)_glintsMethod==2)//else we do DB23 
         {
@@ -349,6 +349,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                  wo,wi, cameraPos,vertPos,lightPos);
             radiance_specular = f_P(wo, wi, cameraPos, vertPos,lightPos,normalWS,input);
              lighting.specular= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+            lighting.diffuse= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
 
          }
         else if((int)_glintsMethod==2)//we chose DB23 //TODO

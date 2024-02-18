@@ -156,6 +156,8 @@ float4 _BaseColor;
 float4 _MyColor; //RCC
 float _glintsMethod;//RCC
 float _MaterialID;//RCC
+float _maxNDF;//RCC
+float _targetNDF;//RCC
 float4 _BaseColorMap_ST;
 float4 _BaseColorMap_TexelSize;
 float4 _BaseColorMap_MipInfo;
@@ -211,6 +213,8 @@ PROP_DECL(float4, _BaseColor);
 PROP_DECL(float4, _MyColor);//RCC
 PROP_DECL(float, _glintsMethod);//RCC
 PROP_DECL(float, _MaterialID);//RCC
+PROP_DECL(float, _maxNDF);//RCC
+PROP_DECL(float, _targetNDF);//RCC
 float4 _BaseColorMap0_ST;
 float4 _BaseColorMap1_ST;
 float4 _BaseColorMap2_ST;

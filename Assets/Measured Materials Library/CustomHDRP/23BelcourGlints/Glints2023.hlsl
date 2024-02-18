@@ -1,16 +1,19 @@
-﻿#define m_pi 3.141592
+﻿#ifndef __GLINTS__
+#define __GLINTS__
+
+
+#define m_pi 3.141592
 #define m_i_pi 0.318309
 #define m_i_sqrt_2 0.707106
-static const float DEG2RAD = 0.01745329251;
+static const float DEG2RAD = 0.01745329251; //redef
 static const float RAD2DEG = 57.2957795131;
 
 Texture2D<float4> _Glint2023NoiseMap;
-int _Glint2023NoiseMapSize;
-float _ScreenSpaceScale;
-float _LogMicrofacetDensity;
-float _MicrofacetRoughness;
-float _DensityRandomization;
-
+static const int1 _Glint2023NoiseMapSize =512;
+static const float1 _ScreenSpaceScale = 1.5;
+static const float1 _LogMicrofacetDensity = 16;
+static const float1 _MicrofacetRoughness =0.005; //0.005-0.250
+static const float1 _DensityRandomization = 2;
 //=======================================================================================
 // TOOLS
 //=======================================================================================
@@ -414,8 +417,14 @@ void GetAnisoCorrectingGridTetrahedron(bool centerSpecialCase, inout float theta
 	return;
 }
 
-float4 SampleGlints2023NDF(float3 localHalfVector, float targetNDF, float maxNDF, float2 uv, float2 duvdx, float2 duvdy)
+float1 SampleGlints2023NDF(float3 localHalfVector, float targetNDF, float maxNDF, float2 uv, float2 duvdx, float2 duvdy)
 {
+	//return 0.2f;
+	//vyzera to ze vysledok je cca hlboko pod nulou
+	//return -1000.0;
+	// vyzera ze hore definovane premenne su NAN, preto to dava ciernu,
+	//skusime to dat ako static const ci to pojde
+	// aj s tou texturou bude problem
 	// ACCURATE PIXEL FOOTPRINT ELLIPSE
 	float2 ellipseMajor, ellipseMinor;
 	GetGradientEllipse(duvdx, duvdy, ellipseMajor, ellipseMinor);
@@ -490,5 +499,6 @@ float4 SampleGlints2023NDF(float3 localHalfVector, float targetNDF, float maxNDF
 	float sampleB = SampleGlintGridSimplex(uvRotB / divLods[tetraB.z] / float2(1.0, ratios[tetraB.y]), gridSeedB, slope, ratios[tetraB.y] * footprintAreas[tetraB.z], rescaledTargetNDF, tetraBarycentricWeights.y);
 	float sampleC = SampleGlintGridSimplex(uvRotC / divLods[tetraC.z] / float2(1.0, ratios[tetraC.y]), gridSeedC, slope, ratios[tetraC.y] * footprintAreas[tetraC.z], rescaledTargetNDF, tetraBarycentricWeights.z);
 	float sampleD = SampleGlintGridSimplex(uvRotD / divLods[tetraD.z] / float2(1.0, ratios[tetraD.y]), gridSeedD, slope, ratios[tetraD.y] * footprintAreas[tetraD.z], rescaledTargetNDF, tetraBarycentricWeights.w);
-	return (sampleA + sampleB + sampleC + sampleD) * (1.0 / _MicrofacetRoughness) * maxNDF;
+	return (sampleA + sampleB + sampleC + sampleD) * (1.0 / _MicrofacetRoughness) * maxNDF; 
 }
+#endif

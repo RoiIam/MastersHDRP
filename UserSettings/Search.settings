@@ -1,6 +1,6 @@
 trackSelection = true
 fetchPreview = true
-wantsMore = false
+defaultFlags = 0
 keepOpen = false
 queryFolder = "Assets"
 onBoardingDoNotAskAgain = true
@@ -10,6 +10,9 @@ scopes = {
 	"last_search.D541639A" = ".asmdef"
 	"OpenInspectorPreview.D541639A" = "0"
 	"currentGroup.D541639A" = "_group_provider_Files"
+	"last_search.7788661B" = ""
+	"OpenInspectorPreview.7788661B" = "0"
+	"currentGroup.7788661B" = "asset"
 }
 providers = {
 	adb = {
@@ -58,7 +61,11 @@ providers = {
 		defaultAction = null
 	}
 }
+objectSelectors = {
+}
 recentSearches = [
+	"m"
+	"t:Material"
 	".asmdef"
 ]
 searchItemFavorites = [

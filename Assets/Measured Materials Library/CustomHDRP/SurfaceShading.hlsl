@@ -348,8 +348,8 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
              lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData,input, V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer, toLocal,
                  wo,wi, cameraPos,vertPos,lightPos);
             radiance_specular = f_P(wo, wi, cameraPos, vertPos,lightPos,normalWS,input);
-             lighting.specular= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-            lighting.diffuse= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+             lighting.specular+= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+            lighting.diffuse+= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
 
          }
         else if((int)_glintsMethod==2)//we chose DB23 //TODO
@@ -377,7 +377,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                 toLocal,    normalize(vertPos-light.positionRWS),  normalWS,  normalize(vertPos-cameraPos),
                 roughness,  microRoughness,
                 searchConeAngle,  variation,  dynamicRange,density);
-            lighting.specular= radiance_specular2;
+            lighting.specular+= radiance_specular2;
             }
         
     }

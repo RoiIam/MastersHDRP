@@ -153,6 +153,8 @@ SAMPLER(sampler_testDict);
 //src https://forum.unity.com/threads/how-to-declare-sample-texture-2d-array-in-hdrp.830757/
 
 float4 _BaseColor;
+
+int _UseGlints;//RCC
 float4 _MyColor; //RCC
 float _glintsMethod;//RCC
 float _MaterialID;//RCC
@@ -212,6 +214,7 @@ float _LinkDetailsWithBase;
 PROP_DECL(float4, _BaseColor);
 PROP_DECL(float4, _MyColor);//RCC
 PROP_DECL(float, _glintsMethod);//RCC
+PROP_DECL(int, _UseGlints);//RCC
 PROP_DECL(float, _MaterialID);//RCC
 PROP_DECL(float, _maxNDF);//RCC
 PROP_DECL(float, _targetNDF);//RCC

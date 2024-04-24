@@ -241,7 +241,7 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 6
+    - _MaterialID: 1
     - _Metallic: 0.157
     - _MetallicRemapMax: 0
     - _MetallicRemapMin: 0
@@ -298,6 +298,7 @@ Material:
     - _UVDetail: 0
     - _UVEmissive: 0
     - _UseEmissiveIntensity: 0
+    - _UseGlints: 1
     - _UseShadowThreshold: 0
     - _WorkflowMode: 1
     - _ZTestDepthEqualForOpaque: 3

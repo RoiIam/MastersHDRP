@@ -167,8 +167,10 @@ Shader "HDRP/CustomLit"
         // Following enum should be material feature flags (i.e bitfield), however due to Gbuffer encoding constrain many combination exclude each other
         // so we use this enum as "material ID" which can be interpreted as preset of bitfield of material feature
         // The only material feature flag that can be added in all cases is clear coat
-        //RCC add glints material id variant
-        [Enum(Subsurface Scattering, 0, Standard, 1, Anisotropy, 2, Iridescence, 3, Specular Color, 4, Translucent, 5, Glints, 6)] _MaterialID("MaterialId", Int) = 1 // MaterialId.Standard
+        //RCC add glints material ch[ToggleUI] 
+        [ToggleUI]_UseGlints("UseGlints", Int) = 1
+
+        [Enum(Subsurface Scattering, 0, Standard, 1, Anisotropy, 2, Iridescence, 3, Specular Color, 4, Translucent, 5)] _MaterialID("MaterialId", Int) = 1 // MaterialId.Standard
         [ToggleUI] _TransmissionEnable("_TransmissionEnable", Float) = 1.0
 
         _DisplacementMode("DisplacementMode", Int) = 0

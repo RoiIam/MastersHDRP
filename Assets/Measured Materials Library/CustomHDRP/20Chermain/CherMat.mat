@@ -202,8 +202,8 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 6
-    - _Metallic: 0.107
+    - _MaterialID: 1
+    - _Metallic: 0.156
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _NormalMapSpace: 0
@@ -252,18 +252,19 @@ Material:
     - _UVDetail: 0
     - _UVEmissive: 0
     - _UseEmissiveIntensity: 0
+    - _UseGlints: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
     - _glintsMethod: 1
-    - _maxNDF: 0.5
+    - _maxNDF: 0.326
     - _targetNDF: 0.5
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.3066038, b: 0.7830189, a: 1}
+    - _BaseColor: {r: 0, g: 0.39000034, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0, g: 0.30660376, b: 0.7830188, a: 1}
+    - _Color: {r: 0, g: 0.3900003, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

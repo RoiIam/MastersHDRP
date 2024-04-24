@@ -10,6 +10,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     private MaterialProperty dictBlock;
     private MaterialProperty glintsMethod;
+    private MaterialProperty useGlints;
     private MaterialProperty matID;
 
 
@@ -26,6 +27,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     {
         matID = FindProperty("_MaterialID"); //big D...
         glintsMethod = FindProperty("_glintsMethod");
+        useGlints = FindProperty("_UseGlints");
 
         dictBlock = FindProperty("_testDict");
 
@@ -60,7 +62,9 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     //TODO remove magic numbers
     public override void OnGUI()
     {
-        if ((int)matID.floatValue == 6)
+        materialEditor.ShaderProperty(useGlints, "Use Glints");
+
+        if (useGlints.floatValue == 1.0)
 
 
             using (var header = new MaterialHeaderScope("Glints Options", (uint)foldoutBit, materialEditor))

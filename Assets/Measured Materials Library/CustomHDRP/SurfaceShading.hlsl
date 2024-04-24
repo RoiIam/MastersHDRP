@@ -329,7 +329,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
         // same result) but we don't care as it is a hack anyway.
         ClampRoughness(preLightData, bsdfData, light.minRoughness);
     
-        if((int)_glintsMethod==0 || _MaterialID !=6)
+        if((int)_glintsMethod==0 || !_UseGlints)
         {
             //render normally
             lighting = ShadeSurface_Infinitesimal(preLightData, bsdfData, V, L, lightColor.rgb,light.diffuseDimmer, light.specularDimmer);

@@ -14,6 +14,7 @@ static const float1 _ScreenSpaceScale = 1.5;
 static const float1 _LogMicrofacetDensity = 16;
 static const float1 _MicrofacetRoughness =0.005; //0.005-0.250
 static const float1 _DensityRandomization = 2;
+//#pragma dynamic_branch 
 //=======================================================================================
 // TOOLS
 //=======================================================================================
@@ -322,7 +323,7 @@ float SampleGlintGridSimplex(float2 uv, uint gridSeed, float2 slope, float footp
 
 void GetAnisoCorrectingGridTetrahedron(bool centerSpecialCase, inout float thetaBinLerp, float ratioLerp, float lodLerp, out float3 p0, out float3 p1, out float3 p2, out float3 p3)
 {
-	[branch] if (centerSpecialCase == true) // SPECIAL CASE (no anisotropy, center of blending pattern, different triangulation)
+	 if (centerSpecialCase == true) // SPECIAL CASE (no anisotropy, center of blending pattern, different triangulation)
 	{
 		float3 a = float3(0, 1, 0);
 		float3 b = float3(0, 0, 0);
@@ -330,9 +331,9 @@ void GetAnisoCorrectingGridTetrahedron(bool centerSpecialCase, inout float theta
 		float3 d = float3(0, 1, 1);
 		float3 e = float3(0, 0, 1);
 		float3 f = float3(1, 1, 1);
-		[branch] if (lodLerp > 1.0 - ratioLerp) // Upper pyramid
+		 if (lodLerp > 1.0 - ratioLerp) // Upper pyramid
 		{
-			[branch] if (RemapTo01(lodLerp, 1.0 - ratioLerp, 1.0) > thetaBinLerp) // Left-up tetrahedron (a, e, d, f)
+			 if (RemapTo01(lodLerp, 1.0 - ratioLerp, 1.0) > thetaBinLerp) // Left-up tetrahedron (a, e, d, f)
 			{
 				p0 = a; p1 = e; p2 = d; p3 = f;
 			}
@@ -358,11 +359,11 @@ void GetAnisoCorrectingGridTetrahedron(bool centerSpecialCase, inout float theta
 		float3 h = float3(0.5, 1, 1);
 		float3 i = float3(1, 0, 1);
 		float3 j = float3(1, 1, 1);
-		[branch] if (thetaBinLerp < 0.5 && thetaBinLerp * 2.0 < ratioLerp) // Prism A
+		 if (thetaBinLerp < 0.5 && thetaBinLerp * 2.0 < ratioLerp) // Prism A
 		{
-			[branch] if (lodLerp > 1.0 - ratioLerp) // Upper pyramid
+			 if (lodLerp > 1.0 - ratioLerp) // Upper pyramid
 			{
-				[branch] if (RemapTo01(lodLerp, 1.0 - ratioLerp, 1.0) > RemapTo01(thetaBinLerp * 2.0, 0.0, ratioLerp)) // Left-up tetrahedron (a, f, h, g)
+				 if (RemapTo01(lodLerp, 1.0 - ratioLerp, 1.0) > RemapTo01(thetaBinLerp * 2.0, 0.0, ratioLerp)) // Left-up tetrahedron (a, f, h, g)
 				{
 					p0 = a; p1 = f; p2 = h; p3 = g;
 				}
@@ -378,9 +379,9 @@ void GetAnisoCorrectingGridTetrahedron(bool centerSpecialCase, inout float theta
 		}
 		else if (1.0 - ((thetaBinLerp - 0.5) * 2.0) > ratioLerp) // Prism B
 		{
-			[branch] if (lodLerp < 1.0 - ratioLerp) // Lower pyramid
+			 if (lodLerp < 1.0 - ratioLerp) // Lower pyramid
 			{
-				[branch] if (RemapTo01(lodLerp, 0.0, 1.0 - ratioLerp) > RemapTo01(thetaBinLerp, 0.5 - (1.0 - ratioLerp) * 0.5, 0.5 + (1.0 - ratioLerp) * 0.5)) // Left-up tetrahedron (b, g, i, c)
+				 if (RemapTo01(lodLerp, 0.0, 1.0 - ratioLerp) > RemapTo01(thetaBinLerp, 0.5 - (1.0 - ratioLerp) * 0.5, 0.5 + (1.0 - ratioLerp) * 0.5)) // Left-up tetrahedron (b, g, i, c)
 				{
 					p0 = b; p1 = g; p2 = i; p3 = c;
 				}
@@ -396,9 +397,9 @@ void GetAnisoCorrectingGridTetrahedron(bool centerSpecialCase, inout float theta
 		}
 		else // Prism C
 		{
-			[branch] if (lodLerp > 1.0 - ratioLerp) // Upper pyramid
+			 if (lodLerp > 1.0 - ratioLerp) // Upper pyramid
 			{
-				[branch] if (RemapTo01(lodLerp, 1.0 - ratioLerp, 1.0) > RemapTo01((thetaBinLerp - 0.5) * 2.0, 1.0 - ratioLerp, 1.0)) // Left-up tetrahedron (c, j, h, i)
+				 if (RemapTo01(lodLerp, 1.0 - ratioLerp, 1.0) > RemapTo01((thetaBinLerp - 0.5) * 2.0, 1.0 - ratioLerp, 1.0)) // Left-up tetrahedron (c, j, h, i)
 				{
 					p0 = c; p1 = j; p2 = h; p3 = i;
 				}

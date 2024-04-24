@@ -1314,8 +1314,10 @@ bool IsNonZeroBSDF(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfD
 
     return HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_TRANSMISSION) || (NdotL > 0.0);
 }
-
-CBSDF EvaluateBSDF(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData)
+//RCC refactor to avoid duplicities
+//too many parameters, should make a struct
+CBSDF EvaluateBSDFCore(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData,
+        out float invLenLV, out float NdotH, out float clampedNdotV, out float NdotL, out float LdotH, out float LdotV, out float clampedNdotL, out float flippedNdotL,out float3 F)
 {
     CBSDF cbsdf;
     ZERO_INITIALIZE(CBSDF, cbsdf);
@@ -1323,15 +1325,15 @@ CBSDF EvaluateBSDF(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfD
     float3 N = bsdfData.normalWS;
 
     float NdotV = preLightData.NdotV;
-    float NdotL = dot(N, L);
-    float clampedNdotV = ClampNdotV(NdotV);
-    float clampedNdotL = saturate(NdotL);
-    float flippedNdotL = ComputeWrappedDiffuseLighting(-NdotL, TRANSMISSION_WRAP_LIGHT);
+    NdotL = dot(N, L);
+    clampedNdotV = ClampNdotV(NdotV);
+    clampedNdotL = saturate(NdotL);
+    flippedNdotL = ComputeWrappedDiffuseLighting(-NdotL, TRANSMISSION_WRAP_LIGHT);
 
-    float LdotV, NdotH, LdotH, invLenLV;
+    
     GetBSDFAngle(V, L, NdotL, NdotV, LdotV, NdotH, LdotH, invLenLV);
 
-    float3 F = F_Schlick(bsdfData.fresnel0, LdotH);
+    F = F_Schlick(bsdfData.fresnel0, LdotH);
     // Remark: Fresnel must be use with LdotH angle. But Fresnel for iridescence is expensive to compute at each light.
     // Instead we use the incorrect angle NdotV as an approximation for LdotH for Fresnel evaluation.
     // The Fresnel with iridescence and NDotV angle is precomputed ahead and here we jsut reuse the result.
@@ -1340,7 +1342,79 @@ CBSDF EvaluateBSDF(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfD
     {
         F = lerp(F, bsdfData.fresnel0, bsdfData.iridescenceMask);
     }
+    return cbsdf;
+}
+CBSDF EvaluateBSDFRest(CBSDF cbsdf,float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData,
+        float invLenLV, float NdotH, float clampedNdotV, float NdotL, float LdotV, float LdotH, float clampedNdotL, float flippedNdotL, float specTerm)
+{
+#ifdef USE_DIFFUSE_LAMBERT_BRDF
+    float diffTerm = Lambert();
+#else
+    // A note on subsurface scattering: [SSS-NOTE-TRSM]
+    // The correct way to handle SSS is to transmit light inside the surface, perform SSS,
+    // and then transmit it outside towards the viewer.
+    // Transmit(X) = F_Transm_Schlick(F0, F90, NdotX), where F0 = 0, F90 = 1.
+    // Therefore, the diffuse BSDF should be decomposed as follows:
+    // f_d = A / Pi * F_Transm_Schlick(0, 1, NdotL) * F_Transm_Schlick(0, 1, NdotV) + f_d_reflection,
+    // with F_Transm_Schlick(0, 1, NdotV) applied after the SSS pass.
+    // The alternative (artistic) formulation of Disney is to set F90 = 0.5:
+    // f_d = A / Pi * F_Transm_Schlick(0, 0.5, NdotL) * F_Transm_Schlick(0, 0.5, NdotV) + f_retro_reflection.
+    // That way, darkening at grading angles is reduced to 0.5.
+    // In practice, applying F_Transm_Schlick(F0, F90, NdotV) after the SSS pass is expensive,
+    // as it forces us to read the normal buffer at the end of the SSS pass.
+    // Separating f_retro_reflection also has a small cost (mostly due to energy compensation
+    // for multi-bounce GGX), and the visual difference is negligible.
+    // Therefore, we choose not to separate diffuse lighting into reflected and transmitted.
 
+    // Use abs NdotL to evaluate diffuse term also for transmission
+    // TODO: See with Evgenii about the clampedNdotV here. This is what we use before the refactor
+    // but now maybe we want to revisit it for transmission
+    float diffTerm = DisneyDiffuse(clampedNdotV, abs(NdotL), LdotV, bsdfData.perceptualRoughness);
+#endif
+
+    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_CLEAR_COAT))
+    {
+        // Apply isotropic GGX for clear coat
+        // Note: coat F is scalar as it is a dieletric
+        float coatF = F_Schlick(CLEAR_COAT_F0, LdotH) * bsdfData.coatMask;
+        // Scale base specular
+        specTerm *= Sq(1.0 - coatF);
+
+        // Add top specular
+        // TODO: Should we call just D_GGX here ?
+        // We use abs(NdotL) to handle the none case of double sided
+        float DV = DV_SmithJointGGX(NdotH, abs(NdotL), clampedNdotV, bsdfData.coatRoughness, preLightData.coatPartLambdaV);
+        specTerm += coatF * DV;
+
+        // Note: The modification of the base roughness and fresnel0 by the clear coat is already handled in FillMaterialClearCoatData
+
+        // Very coarse attempt at doing energy conservation for the diffuse layer based on NdotL. No science.
+        diffTerm *= lerp(1, 1.0 - coatF, bsdfData.coatMask);
+    }
+
+    // The compiler should optimize these. Can revisit later if necessary.
+    cbsdf.diffR = diffTerm * clampedNdotL;
+    cbsdf.diffT = diffTerm * flippedNdotL;
+
+    // Probably worth branching here for perf reasons.
+    // This branch will be optimized away if there's no transmission.
+    if (NdotL > 0)
+    {
+        cbsdf.specR = specTerm * clampedNdotL;
+    }
+
+    // We don't multiply by 'bsdfData.diffuseColor' here. It's done only once in PostEvaluateBSDF().
+    return cbsdf;
+}
+
+CBSDF EvaluateBSDF(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData)
+{
+    float invLenLV, NdotH,clampedNdotV,NdotL, LdotV, clampedNdotL,flippedNdotL,LdotH;
+    float3 F;
+    
+    
+    CBSDF cbsdf = EvaluateBSDFCore(V, L, preLightData, bsdfData,
+        invLenLV, NdotH, clampedNdotV, NdotL,LdotH, LdotV, clampedNdotL, flippedNdotL, F);
     float DV;
     if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_ANISOTROPY))
     {
@@ -1364,364 +1438,43 @@ CBSDF EvaluateBSDF(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfD
     }
 
     float3 specTerm = F * DV;
-
-#ifdef USE_DIFFUSE_LAMBERT_BRDF
-    float diffTerm = Lambert();
-#else
-    // A note on subsurface scattering: [SSS-NOTE-TRSM]
-    // The correct way to handle SSS is to transmit light inside the surface, perform SSS,
-    // and then transmit it outside towards the viewer.
-    // Transmit(X) = F_Transm_Schlick(F0, F90, NdotX), where F0 = 0, F90 = 1.
-    // Therefore, the diffuse BSDF should be decomposed as follows:
-    // f_d = A / Pi * F_Transm_Schlick(0, 1, NdotL) * F_Transm_Schlick(0, 1, NdotV) + f_d_reflection,
-    // with F_Transm_Schlick(0, 1, NdotV) applied after the SSS pass.
-    // The alternative (artistic) formulation of Disney is to set F90 = 0.5:
-    // f_d = A / Pi * F_Transm_Schlick(0, 0.5, NdotL) * F_Transm_Schlick(0, 0.5, NdotV) + f_retro_reflection.
-    // That way, darkening at grading angles is reduced to 0.5.
-    // In practice, applying F_Transm_Schlick(F0, F90, NdotV) after the SSS pass is expensive,
-    // as it forces us to read the normal buffer at the end of the SSS pass.
-    // Separating f_retro_reflection also has a small cost (mostly due to energy compensation
-    // for multi-bounce GGX), and the visual difference is negligible.
-    // Therefore, we choose not to separate diffuse lighting into reflected and transmitted.
-
-    // Use abs NdotL to evaluate diffuse term also for transmission
-    // TODO: See with Evgenii about the clampedNdotV here. This is what we use before the refactor
-    // but now maybe we want to revisit it for transmission
-    float diffTerm = DisneyDiffuse(clampedNdotV, abs(NdotL), LdotV, bsdfData.perceptualRoughness);
-#endif
-
-    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_CLEAR_COAT))
-    {
-        // Apply isotropic GGX for clear coat
-        // Note: coat F is scalar as it is a dieletric
-        float coatF = F_Schlick(CLEAR_COAT_F0, LdotH) * bsdfData.coatMask;
-        // Scale base specular
-        specTerm *= Sq(1.0 - coatF);
-
-        // Add top specular
-        // TODO: Should we call just D_GGX here ?
-        // We use abs(NdotL) to handle the none case of double sided
-        float DV = DV_SmithJointGGX(NdotH, abs(NdotL), clampedNdotV, bsdfData.coatRoughness, preLightData.coatPartLambdaV);
-        specTerm += coatF * DV;
-
-        // Note: The modification of the base roughness and fresnel0 by the clear coat is already handled in FillMaterialClearCoatData
-
-        // Very coarse attempt at doing energy conservation for the diffuse layer based on NdotL. No science.
-        diffTerm *= lerp(1, 1.0 - coatF, bsdfData.coatMask);
-    }
-
-    // The compiler should optimize these. Can revisit later if necessary.
-    cbsdf.diffR = diffTerm * clampedNdotL;
-    cbsdf.diffT = diffTerm * flippedNdotL;
-
-    // Probably worth branching here for perf reasons.
-    // This branch will be optimized away if there's no transmission.
-    if (NdotL > 0)
-    {
-        cbsdf.specR = specTerm * clampedNdotL;
-    }
-
-    // We don't multiply by 'bsdfData.diffuseColor' here. It's done only once in PostEvaluateBSDF().
-    return cbsdf;
-}
-//RCC EvaluateBSDF_Glints
-#include "20Chermain/20ChermainGlints.hlsl"
-
-CBSDF  EvaluateBSDF_GlintsCher20(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData,
-float3 wo,float3 wi,float3 camPos,float3 vertPos,float3 lightPos, FragInputs fragInputs)
-{
-    CBSDF cbsdf;
-    ZERO_INITIALIZE(CBSDF, cbsdf);
-
-    float3 N = bsdfData.normalWS;
-
-    float NdotV = preLightData.NdotV;
-    float NdotL = dot(N, L);
-    float clampedNdotV = ClampNdotV(NdotV);
-    float clampedNdotL = saturate(NdotL);
-    float flippedNdotL = ComputeWrappedDiffuseLighting(-NdotL, TRANSMISSION_WRAP_LIGHT);
-
-    float LdotV, NdotH, LdotH, invLenLV;
-    GetBSDFAngle(V, L, NdotL, NdotV, LdotV, NdotH, LdotH, invLenLV);
-
-    float3 F = F_Schlick(bsdfData.fresnel0, LdotH);
-    // Remark: Fresnel must be use with LdotH angle. But Fresnel for iridescence is expensive to compute at each light.
-    // Instead we use the incorrect angle NdotV as an approximation for LdotH for Fresnel evaluation.
-    // The Fresnel with iridescence and NDotV angle is precomputed ahead and here we jsut reuse the result.
-    // Thus why we shouldn't apply a second time Fresnel on the value if iridescence is enabled.
-    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_IRIDESCENCE))
-    {
-        F = lerp(F, bsdfData.fresnel0, bsdfData.iridescenceMask);
-    }
-
-    //doesnt work like that
-    float DV = f_D(wo, wi, camPos, vertPos,lightPos,fragInputs);
-    float3 specTerm = F * DV;
-
-#ifdef USE_DIFFUSE_LAMBERT_BRDF
-    float diffTerm = Lambert();
-#else
-    // A note on subsurface scattering: [SSS-NOTE-TRSM]
-    // The correct way to handle SSS is to transmit light inside the surface, perform SSS,
-    // and then transmit it outside towards the viewer.
-    // Transmit(X) = F_Transm_Schlick(F0, F90, NdotX), where F0 = 0, F90 = 1.
-    // Therefore, the diffuse BSDF should be decomposed as follows:
-    // f_d = A / Pi * F_Transm_Schlick(0, 1, NdotL) * F_Transm_Schlick(0, 1, NdotV) + f_d_reflection,
-    // with F_Transm_Schlick(0, 1, NdotV) applied after the SSS pass.
-    // The alternative (artistic) formulation of Disney is to set F90 = 0.5:
-    // f_d = A / Pi * F_Transm_Schlick(0, 0.5, NdotL) * F_Transm_Schlick(0, 0.5, NdotV) + f_retro_reflection.
-    // That way, darkening at grading angles is reduced to 0.5.
-    // In practice, applying F_Transm_Schlick(F0, F90, NdotV) after the SSS pass is expensive,
-    // as it forces us to read the normal buffer at the end of the SSS pass.
-    // Separating f_retro_reflection also has a small cost (mostly due to energy compensation
-    // for multi-bounce GGX), and the visual difference is negligible.
-    // Therefore, we choose not to separate diffuse lighting into reflected and transmitted.
-
-    // Use abs NdotL to evaluate diffuse term also for transmission
-    // TODO: See with Evgenii about the clampedNdotV here. This is what we use before the refactor
-    // but now maybe we want to revisit it for transmission
-    float diffTerm = DisneyDiffuse(clampedNdotV, abs(NdotL), LdotV, bsdfData.perceptualRoughness);
-#endif
-
-    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_CLEAR_COAT))
-    {
-        // Apply isotropic GGX for clear coat
-        // Note: coat F is scalar as it is a dieletric
-        float coatF = F_Schlick(CLEAR_COAT_F0, LdotH) * bsdfData.coatMask;
-        // Scale base specular
-        specTerm *= Sq(1.0 - coatF);
-
-        // Add top specular
-        // TODO: Should we call just D_GGX here ?
-        // We use abs(NdotL) to handle the none case of double sided
-        float DV = DV_SmithJointGGX(NdotH, abs(NdotL), clampedNdotV, bsdfData.coatRoughness, preLightData.coatPartLambdaV);
-        specTerm += coatF * DV;
-
-        // Note: The modification of the base roughness and fresnel0 by the clear coat is already handled in FillMaterialClearCoatData
-
-        // Very coarse attempt at doing energy conservation for the diffuse layer based on NdotL. No science.
-        diffTerm *= lerp(1, 1.0 - coatF, bsdfData.coatMask);
-    }
-
-    // The compiler should optimize these. Can revisit later if necessary.
-    cbsdf.diffR = diffTerm * clampedNdotL;
-    cbsdf.diffT = diffTerm * flippedNdotL;
-
-    // Probably worth branching here for perf reasons.
-    // This branch will be optimized away if there's no transmission.
-    if (NdotL > 0)
-    {
-        cbsdf.specR = specTerm * clampedNdotL;
-    }
-
-    // We don't multiply by 'bsdfData.diffuseColor' here. It's done only once in PostEvaluateBSDF().
-    return cbsdf;
+    return EvaluateBSDFRest(cbsdf, V,  L, preLightData, bsdfData,
+        invLenLV, NdotH, clampedNdotV, NdotL, LdotV,LdotH, clampedNdotL, flippedNdotL,specTerm);
 }
 
-
-
-
-CBSDF EvaluateBSDF_Glints(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData,
-float3 wo,float3 wi,float3 camPos,float3 vertPos,float3 lightPos, FragInputs fragInputs)
+float getDV_Glints(float3 H, float2 texCoord)
 {
-    CBSDF cbsdf;
-    ZERO_INITIALIZE(CBSDF, cbsdf);
-
-    float3 N = bsdfData.normalWS;
-
-    float NdotV = preLightData.NdotV;
-    float NdotL = dot(N, L);
-    float clampedNdotV = ClampNdotV(NdotV);
-    float clampedNdotL = saturate(NdotL);
-    float flippedNdotL = ComputeWrappedDiffuseLighting(-NdotL, TRANSMISSION_WRAP_LIGHT);
-
-    float LdotV, NdotH, LdotH, invLenLV;
-    GetBSDFAngle(V, L, NdotL, NdotV, LdotV, NdotH, LdotH, invLenLV);
-
-    float3 F = F_Schlick(bsdfData.fresnel0, LdotH);
-    // Remark: Fresnel must be use with LdotH angle. But Fresnel for iridescence is expensive to compute at each light.
-    // Instead we use the incorrect angle NdotV as an approximation for LdotH for Fresnel evaluation.
-    // The Fresnel with iridescence and NDotV angle is precomputed ahead and here we jsut reuse the result.
-    // Thus why we shouldn't apply a second time Fresnel on the value if iridescence is enabled.
-    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_IRIDESCENCE))
-    {
-        F = lerp(F, bsdfData.fresnel0, bsdfData.iridescenceMask);
-    }
-
-    //doesnt work like that
-    float DV = f_D(wo, wi, camPos, vertPos,lightPos,fragInputs);
-    float3 specTerm = F * DV;
-
-#ifdef USE_DIFFUSE_LAMBERT_BRDF
-    float diffTerm = Lambert();
-#else
-    // A note on subsurface scattering: [SSS-NOTE-TRSM]
-    // The correct way to handle SSS is to transmit light inside the surface, perform SSS,
-    // and then transmit it outside towards the viewer.
-    // Transmit(X) = F_Transm_Schlick(F0, F90, NdotX), where F0 = 0, F90 = 1.
-    // Therefore, the diffuse BSDF should be decomposed as follows:
-    // f_d = A / Pi * F_Transm_Schlick(0, 1, NdotL) * F_Transm_Schlick(0, 1, NdotV) + f_d_reflection,
-    // with F_Transm_Schlick(0, 1, NdotV) applied after the SSS pass.
-    // The alternative (artistic) formulation of Disney is to set F90 = 0.5:
-    // f_d = A / Pi * F_Transm_Schlick(0, 0.5, NdotL) * F_Transm_Schlick(0, 0.5, NdotV) + f_retro_reflection.
-    // That way, darkening at grading angles is reduced to 0.5.
-    // In practice, applying F_Transm_Schlick(F0, F90, NdotV) after the SSS pass is expensive,
-    // as it forces us to read the normal buffer at the end of the SSS pass.
-    // Separating f_retro_reflection also has a small cost (mostly due to energy compensation
-    // for multi-bounce GGX), and the visual difference is negligible.
-    // Therefore, we choose not to separate diffuse lighting into reflected and transmitted.
-
-    // Use abs NdotL to evaluate diffuse term also for transmission
-    // TODO: See with Evgenii about the clampedNdotV here. This is what we use before the refactor
-    // but now maybe we want to revisit it for transmission
-    float diffTerm = DisneyDiffuse(clampedNdotV, abs(NdotL), LdotV, bsdfData.perceptualRoughness);
-#endif
-
-    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_CLEAR_COAT))
-    {
-        // Apply isotropic GGX for clear coat
-        // Note: coat F is scalar as it is a dieletric
-        float coatF = F_Schlick(CLEAR_COAT_F0, LdotH) * bsdfData.coatMask;
-        // Scale base specular
-        specTerm *= Sq(1.0 - coatF);
-
-        // Add top specular
-        // TODO: Should we call just D_GGX here ?
-        // We use abs(NdotL) to handle the none case of double sided
-        float DV = DV_SmithJointGGX(NdotH, abs(NdotL), clampedNdotV, bsdfData.coatRoughness, preLightData.coatPartLambdaV);
-        specTerm += coatF * DV;
-
-        // Note: The modification of the base roughness and fresnel0 by the clear coat is already handled in FillMaterialClearCoatData
-
-        // Very coarse attempt at doing energy conservation for the diffuse layer based on NdotL. No science.
-        diffTerm *= lerp(1, 1.0 - coatF, bsdfData.coatMask);
-    }
-
-    // The compiler should optimize these. Can revisit later if necessary.
-    cbsdf.diffR = diffTerm * clampedNdotL;
-    cbsdf.diffT = diffTerm * flippedNdotL;
-
-    // Probably worth branching here for perf reasons.
-    // This branch will be optimized away if there's no transmission.
-    if (NdotL > 0)
-    {
-        cbsdf.specR = specTerm * clampedNdotL;
-    }
-
-    // We don't multiply by 'bsdfData.diffuseColor' here. It's done only once in PostEvaluateBSDF().
-    return cbsdf;
-}
-
-//RCC EvaluateBSDF_GlintsDB23
-CBSDF EvaluateBSDF_GlintsDB23(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData, FragInputs fragInputs,float3x3 toLocal, float3 Pos)
-{
-    CBSDF cbsdf;
-    ZERO_INITIALIZE(CBSDF, cbsdf);
-
-    float3 N = bsdfData.normalWS;
-
-    float NdotV = preLightData.NdotV;
-    float NdotL = dot(N, L);
-    float clampedNdotV = ClampNdotV(NdotV);
-    float clampedNdotL = saturate(NdotL);
-    float flippedNdotL = ComputeWrappedDiffuseLighting(-NdotL, TRANSMISSION_WRAP_LIGHT);
-
-    float LdotV, NdotH, LdotH, invLenLV;
-    GetBSDFAngle(V, L, NdotL, NdotV, LdotV, NdotH, LdotH, invLenLV);
-
-    float3 F = F_Schlick(bsdfData.fresnel0, LdotH);
-    // Remark: Fresnel must be use with LdotH angle. But Fresnel for iridescence is expensive to compute at each light.
-    // Instead we use the incorrect angle NdotV as an approximation for LdotH for Fresnel evaluation.
-    // The Fresnel with iridescence and NDotV angle is precomputed ahead and here we jsut reuse the result.
-    // Thus why we shouldn't apply a second time Fresnel on the value if iridescence is enabled.
-    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_IRIDESCENCE))
-    {
-        F = lerp(F, bsdfData.fresnel0, bsdfData.iridescenceMask);
-    }
-
-    float DV;
-    
-    
+    //float DV;
     //float4 SampleGlints2023NDF(float3 localHalfVector, float targetNDF, float maxNDF, float2 uv, float2 duvdx, float2 duvdy)
     //- localHalfVector: the half vector in tangent space
     //- targetNDF: the target NDF energy D(h)
     //- maxNDF: the maximym possible NDF energy D(0) (when the local half vector's slope is null)
     //- uv: the UV texture coordinates
     //- duvdx, duvdy: the screen-space derivatives of UV
-
-    float3 H = (L + V) * invLenLV;
-
-    //float3 H = normalize((Pos-L) + Pos);
-    float2 texCoord = float2(fragInputs.texCoord0.x,fragInputs.texCoord0.y);
+    
     float2 dstx = ddx(texCoord); 
-    float2 dsty = ddy(texCoord); 
-    DV=SampleGlints2023NDF(H,_targetNDF,_maxNDF,texCoord,dstx,dsty);
+    float2 dsty = ddy(texCoord);
+    return SampleGlints2023NDF(H,_targetNDF,_maxNDF,texCoord,dstx,dsty);
     
-    float3 specTerm = F * DV;
-    
-
-
-#ifdef USE_DIFFUSE_LAMBERT_BRDF
-    float diffTerm = Lambert();
-#else
-    // A note on subsurface scattering: [SSS-NOTE-TRSM]
-    // The correct way to handle SSS is to transmit light inside the surface, perform SSS,
-    // and then transmit it outside towards the viewer.
-    // Transmit(X) = F_Transm_Schlick(F0, F90, NdotX), where F0 = 0, F90 = 1.
-    // Therefore, the diffuse BSDF should be decomposed as follows:
-    // f_d = A / Pi * F_Transm_Schlick(0, 1, NdotL) * F_Transm_Schlick(0, 1, NdotV) + f_d_reflection,
-    // with F_Transm_Schlick(0, 1, NdotV) applied after the SSS pass.
-    // The alternative (artistic) formulation of Disney is to set F90 = 0.5:
-    // f_d = A / Pi * F_Transm_Schlick(0, 0.5, NdotL) * F_Transm_Schlick(0, 0.5, NdotV) + f_retro_reflection.
-    // That way, darkening at grading angles is reduced to 0.5.
-    // In practice, applying F_Transm_Schlick(F0, F90, NdotV) after the SSS pass is expensive,
-    // as it forces us to read the normal buffer at the end of the SSS pass.
-    // Separating f_retro_reflection also has a small cost (mostly due to energy compensation
-    // for multi-bounce GGX), and the visual difference is negligible.
-    // Therefore, we choose not to separate diffuse lighting into reflected and transmitted.
-
-    // Use abs NdotL to evaluate diffuse term also for transmission
-    // TODO: See with Evgenii about the clampedNdotV here. This is what we use before the refactor
-    // but now maybe we want to revisit it for transmission
-    float diffTerm = DisneyDiffuse(clampedNdotV, abs(NdotL), LdotV, bsdfData.perceptualRoughness);
-#endif
-
-    if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_CLEAR_COAT))
-    {
-        // Apply isotropic GGX for clear coat
-        // Note: coat F is scalar as it is a dieletric
-        float coatF = F_Schlick(CLEAR_COAT_F0, LdotH) * bsdfData.coatMask;
-        // Scale base specular
-        specTerm *= Sq(1.0 - coatF);
-
-        // Add top specular
-        // TODO: Should we call just D_GGX here ?
-        // We use abs(NdotL) to handle the none case of double sided
-        //float DV = DV_SmithJointGGX(NdotH, abs(NdotL), clampedNdotV, bsdfData.coatRoughness, preLightData.coatPartLambdaV);
-        specTerm += coatF * DV;
-
-        // Note: The modification of the base roughness and fresnel0 by the clear coat is already handled in FillMaterialClearCoatData
-
-        // Very coarse attempt at doing energy conservation for the diffuse layer based on NdotL. No science.
-        diffTerm *= lerp(1, 1.0 - coatF, bsdfData.coatMask);
-    }
-
-    // The compiler should optimize these. Can revisit later if necessary.
-    cbsdf.diffR = diffTerm * clampedNdotL;
-    cbsdf.diffT = diffTerm * flippedNdotL;
-
-    // Probably worth branching here for perf reasons.
-    // This branch will be optimized away if there's no transmission.
-    if (NdotL > 0)
-    {
-        cbsdf.specR = specTerm * clampedNdotL;
-    }
-
-    // We don't multiply by 'bsdfData.diffuseColor' here. It's done only once in PostEvaluateBSDF().
-    return cbsdf;
 }
 
+//RCC EvaluateBSDF_GlintsDB23
+CBSDF EvaluateBSDF_GlintsDB23(float3 V, float3 L, PreLightData preLightData, BSDFData bsdfData, FragInputs fragInputs)
+{
+    float invLenLV, NdotH,clampedNdotV,NdotL,LdotH,LdotV,clampedNdotL,flippedNdotL;
+    float3 F;
+    CBSDF cbsdf = EvaluateBSDFCore(V, L, preLightData, bsdfData,
+        invLenLV, NdotH, clampedNdotV, NdotL,LdotH, LdotV, clampedNdotL, flippedNdotL, F);
+    
+    float3 H = (L + V) * invLenLV;
+    float2 texCoord = float2(fragInputs.texCoord0.x,fragInputs.texCoord0.y);
+ 
+    float3 specTerm = F * getDV_Glints(H, texCoord);
 
+    return EvaluateBSDFRest(cbsdf, V,  L, preLightData, bsdfData,
+        invLenLV, NdotH, clampedNdotV, NdotL, LdotV,LdotH, clampedNdotL, flippedNdotL,specTerm);
+
+}
 
 
 //-----------------------------------------------------------------------------

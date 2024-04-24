@@ -10,7 +10,7 @@
 
 #include "23BelcourGlints/Glints2023.hlsl" //so we have float erfinv(float x) just once // not working
 #include "16ZirrKaplanyan/16ZKGLints.hlsl"
-
+float3 glintsColor = float3(0.0, 0.0, 0.0);
 #ifndef OVERRIDE_SHOULD_EVALUATE_THICK_OBJECT_TRANSMISSION
 bool ShouldEvaluateThickObjectTransmission(float3 V, float3 L, PreLightData preLightData,
                                            BSDFData bsdfData, int shadowIndex)
@@ -82,23 +82,13 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
     {
         CBSDF cbsdf;
         //RCC tiez zmenene
-        if((int)_glintsMethod==0)//no glints
+        if((int)_glintsMethod==2)//else we do DB23 
+        {
+            cbsdf = EvaluateBSDF_GlintsDB23(V, L, preLightData, bsdfData,fragInputs);//spat do Lit.hlsl
+        }
+        else//the rest
         {
             cbsdf = EvaluateBSDF(V, L, preLightData, bsdfData);//spat do Lit.hlsl
-        }
-        else if((int)_glintsMethod==1)//Chermain20
-        {
-            //cbsdf = EvaluateBSDF_Glints(V, L, preLightData, bsdfData,wo,wi,cameraPos,vertPos,lightPos,fragInputs);//spat do Lit.hlsl
-            //this has no effect
-            cbsdf = EvaluateBSDF_GlintsCher20(V, L, preLightData, bsdfData,wo,wi,cameraPos,vertPos,lightPos,fragInputs);//spat do Lit.hlsl
-        }
-        else if((int)_glintsMethod==2)//else we do DB23 
-        {
-            cbsdf = EvaluateBSDF_GlintsDB23(V, L, preLightData, bsdfData,fragInputs, toLocal, vertPos);//spat do Lit.hlsl
-        }
-        else//ZK16 for now
-        {
-        cbsdf = EvaluateBSDF(V, L, preLightData, bsdfData);//spat do Lit.hlsl
         }
         
         
@@ -112,7 +102,13 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
         // However, this will take a lot more CPU time than doing the same thing using
         // the preprocessor.
         lighting.diffuse  = (cbsdf.diffR + cbsdf.diffT * transmittance) * lightColor * diffuseDimmer;
-        lighting.specular = (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+        //if((int)_glintsMethod==1)//Chermain20
+            //lighting.specular = (testCol + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+        //else
+        if((int)_glintsMethod==3 || (int)_glintsMethod==1)//ZK +CHE
+            lighting.specular = (glintsColor + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+        else
+            lighting.specular = (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
     }
 
     #ifdef DEBUG_DISPLAY
@@ -332,59 +328,40 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
         // (means if we disable the optimization it will not have the
         // same result) but we don't care as it is a hack anyway.
         ClampRoughness(preLightData, bsdfData, light.minRoughness);
-        //if(_materialID)
-        
-        //tu bude zmena, nova funkcia
-        //glints = HasFlag(surfaceData.materialFeatures, MATERIALFEATUREFLAGS_LIT_GLINTS);
-        //bool glints = (int)surfaceData.glintsMethod == 1;
-        //_glintsMethod = 0;
+    
         if((int)_glintsMethod==0 || _MaterialID !=6)
         {
             //render normally
             lighting = ShadeSurface_Infinitesimal(preLightData, bsdfData, V, L, lightColor.rgb,light.diffuseDimmer, light.specularDimmer);
         }
-        else if((int)_glintsMethod==1)//we chose chermain20
-         {
-             lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData,input, V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer, toLocal,
-                 wo,wi, cameraPos,vertPos,lightPos);
-            radiance_specular = f_P(wo, wi, cameraPos, vertPos,lightPos,normalWS,input);
-             lighting.specular+= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-            lighting.diffuse+= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-
-         }
-        else if((int)_glintsMethod==2)//we chose DB23 //TODO
+        else
+        {
+             
+            if((int)_glintsMethod==1)//we chose chermain20
+                glintsColor = f_P(wo, wi, cameraPos, vertPos,lightPos,normalWS,input);
+            
+            else if((int)_glintsMethod==3)//we chose ZK16 //TODO
             {
-            lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, input,V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer, toLocal,
-                wo,wi, cameraPos,vertPos,lightPos);
-            }
+            
 
-        else if((int)_glintsMethod==3)//we chose ZK16 //TODO
-            {
-            lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, input,V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer, toLocal,
-                wo,wi, cameraPos,vertPos,lightPos);
-            /*radiance_specular = glints( texCO,  duvdx, duvdy, ctf,
-                lig,  nor,  view, roughness,  microRoughness,
-                 searchConeAngle,  variation,  dynamicRange,
-                 density);*/
-            float2 texCoord = input.texCoord0; //float2(input.texCoord0.x,input.texCoord0.y);
-            float2 roughness = float2(0.6f,0.6f);
-            float2 microRoughness = roughness * 0.024;
-            float searchConeAngle = 0.01;
-            float variation = 100.0;
-            float dynamicRange = 50000.0;
-            float density = 5.e8;
-            float3 radiance_specular2 = glints( texCoord,  ddx(texCoord), ddy(texCoord),
-                toLocal,    normalize(vertPos-light.positionRWS),  normalWS,  normalize(vertPos-cameraPos),
-                roughness,  microRoughness,
-                searchConeAngle,  variation,  dynamicRange,density);
-            lighting.specular+= radiance_specular2;
+                float2 texCoord = input.texCoord0; //float2(input.texCoord0.x,input.texCoord0.y);
+                float2 roughness = float2(0.6f,0.6f);
+                float2 microRoughness = roughness * 0.024;
+                float searchConeAngle = 0.01;
+                float variation = 100.0;
+                float dynamicRange = 50000.0;
+                float density = 5.e8;
+                glintsColor = float3(1,1,1);
+                glintsColor = glints( texCoord,  ddx(texCoord), ddy(texCoord),
+                    toLocal,    normalize(vertPos-light.positionRWS),  normalWS,  normalize(vertPos-cameraPos),
+                    roughness,  microRoughness,
+                    searchConeAngle,  variation,  dynamicRange,density);
             }
-        
+            //apply final lighting
+            lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, input,V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer, toLocal,
+                        wo,wi, cameraPos,vertPos,lightPos);
+        }
     }
-    // add glints light moved to upper if
-    //lighting.specular= radiance_specular;//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-    //lighting.diffuse= float3(0,0,0);//*bsdfData.coatMask*10+ lighting.specular;//RCC toto zahodme? (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-
     return lighting;
 }
 

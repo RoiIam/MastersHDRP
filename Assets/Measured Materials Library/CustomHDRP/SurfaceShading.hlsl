@@ -105,7 +105,7 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
         //if((int)_glintsMethod==1)//Chermain20
             //lighting.specular = (testCol + cbsdf.specT * transmittance) * lightColor * specularDimmer;
         //else
-        if((int)_glintsMethod==3 || (int)_glintsMethod==1)//ZK +CHE
+        if((int)_glintsMethod==3 || (int)_glintsMethod==1 || (int)_glintsMethod==4)//ZK +CHE + WB
             lighting.specular = (glintsColor + cbsdf.specT * transmittance) * lightColor * specularDimmer;
         else
             lighting.specular = (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
@@ -220,7 +220,7 @@ float3 EvaluateTransmittance_Punctual(LightLoopContext lightLoopContext,
 
 
 #include "20Chermain/20ChermainGlints.hlsl"
-
+#include "15WangBowles/15WangGlints.hlsl"
 DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                     FragInputs input,SurfaceData surfaceData,
                                      PositionInputs posInput, BuiltinData builtinData,
@@ -357,6 +357,23 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                     roughness,  microRoughness,
                     searchConeAngle,  variation,  dynamicRange,density);
             }
+            else if((int)_glintsMethod==4)//we chose WB
+            {
+                float3 vViewVec = vertPos - cameraPos; // vo world space
+                float dotvn = dot(vViewVec, -normalWS);
+                float4 vlarge_dir = float4(vViewVec - dotvn * -normalWS, dotvn);
+
+                glintsColor = float3(1,1,1);
+                glintsColor =wangGlints(vertPos,normalWS,lightPos, vViewVec, vlarge_dir,
+true,
+ 0.001f,
+ 8.86f,
+ 1.0f,
+ 1.0f,
+ 5.8f
+ );
+            }
+            
             //apply final lighting
             lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, input,V, L, lightColor.rgb, light.diffuseDimmer, light.specularDimmer, toLocal,
                         wo,wi, cameraPos,vertPos,lightPos);

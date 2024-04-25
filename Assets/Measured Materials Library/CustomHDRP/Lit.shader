@@ -9,7 +9,7 @@ Shader "HDRP/CustomLit"
         [MainColor] _BaseColor("BaseColor", Color) = (1,1,1,1)
         _MyColor("MyColor", Color) = (1,0,0,1)//RCC
         _testDict("testDict", 2DArray) = "" {} //RCC unity nepodporuje 1D arrays/ 2D by nemal byt problem
-        [Enum(None, 0, Chermain20, 1, DeliotBelcour23, 2, ZirrKaplanyan16, 3)] _glintsMethod("_glintsMethod", float) = 1//RCC glintsMethod Sets glints rendering method mode
+        [Enum(None, 0, Chermain20, 1, DeliotBelcour23, 2, ZirrKaplanyan16, 3, WangBowles, 4)] _glintsMethod("_glintsMethod", float) = 1//RCC glintsMethod Sets glints rendering method mode
         //RCC must be the same name...
         _maxNDF("maxNDF", Range(0.0, 1.0)) = 0.5
         _targetNDF("targetNDF", Range(0.0, 1.0)) = 0.5

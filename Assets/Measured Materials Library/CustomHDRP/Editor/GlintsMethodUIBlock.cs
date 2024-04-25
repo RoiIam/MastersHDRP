@@ -66,6 +66,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
         if (useGlints.floatValue == 1.0)
 
+            materialEditor.ShaderProperty(glintsMethod, "Glints Method");
 
             using (var header = new MaterialHeaderScope("Glints Options", (uint)foldoutBit, materialEditor))
             {

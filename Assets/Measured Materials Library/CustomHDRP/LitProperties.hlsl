@@ -160,6 +160,9 @@ float _glintsMethod;//RCC
 float _MaterialID;//RCC
 float _maxNDF;//RCC
 float _targetNDF;//RCC
+
+
+
 float4 _BaseColorMap_ST;
 float4 _BaseColorMap_TexelSize;
 float4 _BaseColorMap_MipInfo;

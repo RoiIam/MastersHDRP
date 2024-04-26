@@ -245,6 +245,8 @@ Material:
     - _Metallic: 0.007
     - _MetallicRemapMax: 0
     - _MetallicRemapMin: 0
+    - _NoiseAmmount: 0
+    - _NoiseDensity: 0
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _OcclusionStrength: 1
@@ -265,6 +267,8 @@ Material:
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
     - _SmoothnessTextureChannel: 0
+    - _SparkleDensity: 5
+    - _SparkleSize: 0.015
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
     - _SpecularHighlights: 1
@@ -297,9 +301,11 @@ Material:
     - _UVBase: 0
     - _UVDetail: 0
     - _UVEmissive: 0
+    - _UseAnisotropy: 1
     - _UseEmissiveIntensity: 0
     - _UseGlints: 1
     - _UseShadowThreshold: 0
+    - _ViewAmmount: 8
     - _WorkflowMode: 1
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4

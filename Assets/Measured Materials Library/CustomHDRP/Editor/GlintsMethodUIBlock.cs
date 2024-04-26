@@ -17,6 +17,13 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     private MaterialProperty maxNDFBlock;
     private MaterialProperty targetNDFBlock;
 
+    MaterialProperty UseAnisotropy;
+    MaterialProperty SparkleSize; 
+    MaterialProperty SparkleDensity;
+    MaterialProperty NoiseDensity;
+    MaterialProperty NoiseAmmount;
+    MaterialProperty ViewAmmount;
+
 
     public GlintsMethodUIBlock(ExpandableBit expandableBit)
     {
@@ -30,9 +37,18 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         useGlints = FindProperty("_UseGlints");
 
         dictBlock = FindProperty("_testDict");
-
+        //Deliot23
         maxNDFBlock = FindProperty("_maxNDF");
         targetNDFBlock = FindProperty("_targetNDF");
+        //Wang15
+        UseAnisotropy = FindProperty("_UseAnisotropy");
+        SparkleSize = FindProperty("_SparkleSize");
+        SparkleDensity = FindProperty("_SparkleDensity");
+        NoiseDensity = FindProperty("_NoiseDensity");
+        NoiseAmmount = FindProperty("_NoiseAmmount");
+        ViewAmmount = FindProperty("_ViewAmmount");
+        
+        
         //Debug.Log(matID);
     }
 
@@ -53,10 +69,18 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowWangParams()
     {
+        ShowWangModParams();
     }
 
     public void ShowWangModParams()
     {
+        
+        materialEditor.ShaderProperty(UseAnisotropy, "UseAnisotropy");
+        materialEditor.ShaderProperty(SparkleSize, "SparkleSize");
+        materialEditor.ShaderProperty(SparkleDensity, "SparkleDensity");
+        materialEditor.ShaderProperty(NoiseDensity, "NoiseDensity");
+        materialEditor.ShaderProperty(NoiseAmmount, "NoiseAmmount");
+        materialEditor.ShaderProperty(ViewAmmount, "ViewAmmount");
     }
 
     //TODO remove magic numbers

@@ -161,6 +161,14 @@ float _MaterialID;//RCC
 float _maxNDF;//RCC
 float _targetNDF;//RCC
 
+//chermain20
+float _UseAnisotropy;
+float _SparkleSize;
+float _SparkleDensity;
+float _NoiseDensity;
+float _NoiseAmmount;
+float _ViewAmmount;
+
 
 
 float4 _BaseColorMap_ST;
@@ -221,6 +229,15 @@ PROP_DECL(int, _UseGlints);//RCC
 PROP_DECL(float, _MaterialID);//RCC
 PROP_DECL(float, _maxNDF);//RCC
 PROP_DECL(float, _targetNDF);//RCC
+
+//chermain20
+PROP_DECL(float, _UseAnisotropy);
+PROP_DECL(float, _SparkleDensity);
+PROP_DECL(float, _NoiseAmmount);
+PROP_DECL(float, _NoiseDensity);
+PROP_DECL(float, _NoiseAmmount);
+PROP_DECL(float, _ViewAmmount);
+
 float4 _BaseColorMap0_ST;
 float4 _BaseColorMap1_ST;
 float4 _BaseColorMap2_ST;

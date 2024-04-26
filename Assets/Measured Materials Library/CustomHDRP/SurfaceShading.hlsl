@@ -365,12 +365,12 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
 
                 glintsColor = float3(1,1,1);
                 glintsColor =wangGlints(vertPos,normalWS,lightPos, vViewVec, vlarge_dir,
-true,
- 0.001f,
- 8.86f,
- 1.0f,
- 1.0f,
- 5.8f
+_UseAnisotropy,
+ _SparkleSize,
+ _SparkleDensity,
+ _NoiseDensity,
+ _NoiseAmmount,
+ _ViewAmmount
  );
             }
             

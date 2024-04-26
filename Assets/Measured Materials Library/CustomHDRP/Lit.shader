@@ -11,8 +11,27 @@ Shader "HDRP/CustomLit"
         _testDict("testDict", 2DArray) = "" {} //RCC unity nepodporuje 1D arrays/ 2D by nemal byt problem
         [Enum(None, 0, Chermain20, 1, DeliotBelcour23, 2, ZirrKaplanyan16, 3, WangBowles, 4)] _glintsMethod("_glintsMethod", float) = 1//RCC glintsMethod Sets glints rendering method mode
         //RCC must be the same name...
+        
+        //RCC add glints material ch[ToggleUI] 
+        [ToggleUI]_UseGlints("UseGlints", Int) = 1
+        
+        
+        //RCC properties of chermian20
+        
+        //RCC properties of deliot23
         _maxNDF("maxNDF", Range(0.0, 1.0)) = 0.5
         _targetNDF("targetNDF", Range(0.0, 1.0)) = 0.5
+        
+        //RCC properties of zirr16
+
+
+        //RCC properties of wang15
+        [ToggleUI] _UseAnisotropy("Use Anisotropy", Float) = 1.0
+        _SparkleSize("Sparkle Size", Range(0.01, 1.0)) = 0.015
+        _SparkleDensity("Sparkle Density", Range(0.1, 10)) = 5
+        _NoiseDensity("Noise Density", Range(0.1, 1)) = 0
+        _NoiseAmmount("Noise Ammount", Range(0.1, 1)) = 0
+        _ViewAmmount("View Ammount", Range(0.1, 10)) = 8
         
         [MainTexture] _BaseColorMap("BaseColorMap", 2D) = "white" {}
         [HideInInspector] _BaseColorMap_MipInfo("_BaseColorMap_MipInfo", Vector) = (0, 0, 0, 0)
@@ -167,9 +186,7 @@ Shader "HDRP/CustomLit"
         // Following enum should be material feature flags (i.e bitfield), however due to Gbuffer encoding constrain many combination exclude each other
         // so we use this enum as "material ID" which can be interpreted as preset of bitfield of material feature
         // The only material feature flag that can be added in all cases is clear coat
-        //RCC add glints material ch[ToggleUI] 
-        [ToggleUI]_UseGlints("UseGlints", Int) = 1
-
+        
         [Enum(Subsurface Scattering, 0, Standard, 1, Anisotropy, 2, Iridescence, 3, Specular Color, 4, Translucent, 5)] _MaterialID("MaterialId", Int) = 1 // MaterialId.Standard
         [ToggleUI] _TransmissionEnable("_TransmissionEnable", Float) = 1.0
 

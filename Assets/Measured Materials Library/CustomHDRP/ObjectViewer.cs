@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,6 +41,8 @@ public class ObjectViewer : MonoBehaviour
     void Start()
     {
         CreateRightCopies();
+        leftCam.gameObject.GetComponent<CinemachineBrain>().enabled = true;
+        rightCam.gameObject.GetComponent<CinemachineBrain>().enabled = true;
     }
     
     public void CreateRightCopies()

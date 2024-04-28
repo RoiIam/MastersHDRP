@@ -181,32 +181,10 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     float1 texCoordX = abs_slope_h.x / alpha_dist_isqrt2_4;
     float1 texCoordY = abs_slope_h.y / alpha_dist_isqrt2_4;
 
-    //TODO vsetko zakomentovane mozme vymazat
-    //ref:
-    //float3 P_i = textureLod(DictionaryTex, vec2(texCoordX, l_dist * Dictionary.N / 3 + distIdxXOver3), 0).rgb;
-    //float3 P_j = textureLod(DictionaryTex, vec2(texCoordY, l_dist * Dictionary.N / 3 + distIdxYOver3), 0).rgb;
-    
-    //no lod
-    //float3 P_i = SAMPLE_TEXTURE2D_ARRAY(_testDict, sampler_testDict, float2(texCoordX,0),l_dist * Dictionary_N / 3 + distIdxXOver3).rgb;//RCC frag riadok 258
-    //float3 P_j = SAMPLE_TEXTURE2D_ARRAY(_testDict, sampler_testDict, float2(texCoordY,0),l_dist * Dictionary_N / 3 + distIdxYOver3).rgb;//RCC frag riadok 258
+    //RCC
+    float3 P_i = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordX,0),l_dist * Dictionary_N / 3 + distIdxYOver3,0).rgb;//RCC frag riadok 258
+    float3 P_j = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordY,0),l_dist * Dictionary_N / 3 + distIdxYOver3,0).rgb;//RCC frag riadok 258
 
-    //flip the sampling?
-    //float3 P_i = SAMPLE_TEXTURE2D_ARRAY(_testDict, sampler_testDict, float2(texCoordX,l_dist * Dictionary_N / 3 + distIdxXOver3),0).rgb;//RCC frag riadok 258
-    //float3 P_j = SAMPLE_TEXTURE2D_ARRAY(_testDict, sampler_testDict, float2(texCoordY,l_dist * Dictionary_N / 3 + distIdxYOver3),0).rgb;//RCC frag riadok 258
-
-    //new
-    float3 P_i = SAMPLE_TEXTURE2D_ARRAY_LOD(_testDict, sampler_testDict, float2(texCoordX,0),l_dist * Dictionary_N / 3 + distIdxYOver3,0).rgb;//RCC frag riadok 258
-    float3 P_j = SAMPLE_TEXTURE2D_ARRAY_LOD(_testDict, sampler_testDict, float2(texCoordY,0),l_dist * Dictionary_N / 3 + distIdxYOver3,0).rgb;//RCC frag riadok 258
-
-    //just a test
-    //float3 P_i= SAMPLE_TEXTURE2D(_BaseColorMap, sampler_BaseColorMap,float2(texCoordX,texCoordY)).rgb;
-    //float3 P_j= SAMPLE_TEXTURE2D(_BaseColorMap, sampler_BaseColorMap,float2(texCoordX,texCoordX)).rgb;
-
-    
-    //new flip change ?
-    //float3 P_i = SAMPLE_TEXTURE2D_ARRAY_LOD(_testDict, sampler_testDict, float2(texCoordX,l_dist * Dictionary_N / 3 + distIdxYOver3),0,0).rgb;//RCC frag riadok 258
-    //float3 P_j = SAMPLE_TEXTURE2D_ARRAY_LOD(_testDict, sampler_testDict, float2(texCoordY,l_dist * Dictionary_N / 3 + distIdxYOver3),0,0).rgb;//RCC frag riadok 258
-    
     
     // Alg. 3, line 19
     return P_i[uint(i% 3)] * P_j[uint(j% 3)] / (scaleFactor.x * scaleFactor.y);

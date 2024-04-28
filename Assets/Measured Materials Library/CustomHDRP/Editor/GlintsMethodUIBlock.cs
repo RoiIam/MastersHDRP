@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEditor.Rendering.HighDefinition;
+using UnityEngine;
 
 // Include material common properties names to acces MaterialId
 //using static UnityEngine.Rendering.HighDefinition.HDMaterialProperties; // cannot acces internal MaterialId.LitSSS anyways....
@@ -8,27 +9,37 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 {
     private readonly ExpandableBit foldoutBit;
 
-    private MaterialProperty dictBlock;
+    private MaterialProperty chSDFDictBlock;
     private MaterialProperty glintsMethod;
     private MaterialProperty useGlints;
     private MaterialProperty matID;
 
 
-    private MaterialProperty maxNDFBlock;
-    private MaterialProperty targetNDFBlock;
+    private MaterialProperty dbMaxNDFBlock;
+    private MaterialProperty dbTargetNDFBlock;
 
-    MaterialProperty UseAnisotropy;
-    MaterialProperty SparkleSize; 
-    MaterialProperty SparkleDensity;
-    MaterialProperty NoiseDensity;
-    MaterialProperty NoiseAmmount;
-    MaterialProperty ViewAmmount;
-
+    MaterialProperty wbUseAnisotropy;
+    MaterialProperty wbSparkleSize; 
+    MaterialProperty wbSparkleDensity;
+    MaterialProperty wbNoiseDensity;
+    MaterialProperty wbNoiseAmmount;
+    MaterialProperty wbViewAmmount;
+    
+    MaterialProperty zkRoughness;
+    public bool changezkRoughnessSimultaneously = true;
+    MaterialProperty zkMicroRoughness;
+    public bool changezkMicroRoughnessSimultaneously = true;
+    MaterialProperty zkSearchConeAngle;
+    MaterialProperty zkVariation;
+    MaterialProperty zkDynamicRange;
+    MaterialProperty zkDenisty;
+        
 
     public GlintsMethodUIBlock(ExpandableBit expandableBit)
     {
         foldoutBit = expandableBit;
     }
+    
 
     public override void LoadMaterialProperties()
     {
@@ -36,17 +47,26 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         glintsMethod = FindProperty("_glintsMethod");
         useGlints = FindProperty("_UseGlints");
 
-        dictBlock = FindProperty("_testDict");
+        //cher20
+        chSDFDictBlock = FindProperty("_chSDFDict");
         //Deliot23
-        maxNDFBlock = FindProperty("_maxNDF");
-        targetNDFBlock = FindProperty("_targetNDF");
+        dbMaxNDFBlock = FindProperty("_dbMaxNDF");
+        dbTargetNDFBlock = FindProperty("_dbTargetNDF");
+        //zirr16
+        zkRoughness = FindProperty("_zkRoughness");
+        zkMicroRoughness = FindProperty("_zkMicroRoughness");
+        zkSearchConeAngle = FindProperty("_zkSearchConeAngle");
+        zkVariation = FindProperty("_zkVariation");
+        zkDynamicRange = FindProperty("_zkDynamicRange");
+        zkDenisty = FindProperty("_zkDenisty");
+
         //Wang15
-        UseAnisotropy = FindProperty("_UseAnisotropy");
-        SparkleSize = FindProperty("_SparkleSize");
-        SparkleDensity = FindProperty("_SparkleDensity");
-        NoiseDensity = FindProperty("_NoiseDensity");
-        NoiseAmmount = FindProperty("_NoiseAmmount");
-        ViewAmmount = FindProperty("_ViewAmmount");
+        wbUseAnisotropy = FindProperty("_wbUseAnisotropy");
+        wbSparkleSize = FindProperty("_wbSparkleSize");
+        wbSparkleDensity = FindProperty("_wbSparkleDensity");
+        wbNoiseDensity = FindProperty("_wbNoiseDensity");
+        wbNoiseAmmount = FindProperty("_wbNoiseAmmount");
+        wbViewAmmount = FindProperty("_wbViewAmmount");
         
         
         //Debug.Log(matID);
@@ -54,17 +74,38 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowChermainParams()
     {
-        materialEditor.ShaderProperty(dictBlock, "Test Dict");
+        materialEditor.ShaderProperty(chSDFDictBlock, "SDF Dictionary");
     }
 
     public void ShowDeliotParams()
     {
-        materialEditor.ShaderProperty(maxNDFBlock, "max NDF");
-        materialEditor.ShaderProperty(targetNDFBlock, "target NDF");
+        materialEditor.ShaderProperty(dbMaxNDFBlock, "max NDF");
+        materialEditor.ShaderProperty(dbTargetNDFBlock, "target NDF");
     }
 
     public void ShowZirrParams()
     {
+        
+        //changezkRoughnessSimultaneously = EditorGUILayout.Toggle("Isometric Roughness based on X ", changezkRoughnessSimultaneously);
+        materialEditor.ShaderProperty(zkRoughness, "Global Roughness");
+        /*if (changezkRoughnessSimultaneously)
+        {
+            zkRoughness.vectorValue = new Vector4(zkRoughness.vectorValue.x,zkRoughness.vectorValue.x,0,0);//there is a better way, check in ShowAsVector2Drawer
+        }*/
+        
+        //changezkMicroRoughnessSimultaneously = EditorGUILayout.Toggle("Isometric Micro Roughness based on X", changezkMicroRoughnessSimultaneously);//there is a better way, check in ShowAsVector2Drawer
+        materialEditor.ShaderProperty(zkMicroRoughness, "Micro Roughness");
+        /*if (changezkMicroRoughnessSimultaneously)
+        {
+            zkMicroRoughness.vectorValue = new Vector4(zkMicroRoughness.vectorValue.x,zkMicroRoughness.vectorValue.x,0,0);
+        }*/
+        materialEditor.ShaderProperty(zkSearchConeAngle, "Search Cone Angle");
+        materialEditor.ShaderProperty(zkVariation, "Variation");
+        materialEditor.ShaderProperty(zkDynamicRange, "Dynamic Range");
+        materialEditor.ShaderProperty(zkDenisty, "Density");
+        
+        
+
     }
 
     public void ShowWangParams()
@@ -75,20 +116,22 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     public void ShowWangModParams()
     {
         
-        materialEditor.ShaderProperty(UseAnisotropy, "UseAnisotropy");
-        materialEditor.ShaderProperty(SparkleSize, "SparkleSize");
-        materialEditor.ShaderProperty(SparkleDensity, "SparkleDensity");
-        materialEditor.ShaderProperty(NoiseDensity, "NoiseDensity");
-        materialEditor.ShaderProperty(NoiseAmmount, "NoiseAmmount");
-        materialEditor.ShaderProperty(ViewAmmount, "ViewAmmount");
+        materialEditor.ShaderProperty(wbUseAnisotropy, "UseAnisotropy");
+        materialEditor.ShaderProperty(wbSparkleSize, "SparkleSize");
+        materialEditor.ShaderProperty(wbSparkleDensity, "SparkleDensity");
+        materialEditor.ShaderProperty(wbNoiseDensity, "NoiseDensity");
+        materialEditor.ShaderProperty(wbNoiseAmmount, "NoiseAmmount");
+        materialEditor.ShaderProperty(wbViewAmmount, "ViewAmmount");
     }
 
+    
     //TODO remove magic numbers
     public override void OnGUI()
     {
         materialEditor.ShaderProperty(useGlints, "Use Glints");
 
-        if (useGlints.floatValue == 1.0)
+        if (useGlints.floatValue != 1.0)
+            return;
 
             materialEditor.ShaderProperty(glintsMethod, "Glints Method");
 

@@ -8,7 +8,6 @@ Shader "HDRP/CustomLit"
         // Reminder. Color here are in linear but the UI (color picker) do the conversion sRGB to linear
         [MainColor] _BaseColor("BaseColor", Color) = (1,1,1,1)
         _MyColor("MyColor", Color) = (1,0,0,1)//RCC
-        _testDict("testDict", 2DArray) = "" {} //RCC unity nepodporuje 1D arrays/ 2D by nemal byt problem
         [Enum(None, 0, Chermain20, 1, DeliotBelcour23, 2, ZirrKaplanyan16, 3, WangBowles, 4)] _glintsMethod("_glintsMethod", float) = 1//RCC glintsMethod Sets glints rendering method mode
         //RCC must be the same name...
         
@@ -17,21 +16,32 @@ Shader "HDRP/CustomLit"
         
         
         //RCC properties of chermian20
+        [ShowAsVector2] _chRoughness("_chRoughness", Vector) = (0.5,0.5,0,0) //can we specify range?
+        _chLogMicrofacetDensity("_chLogMicrofacetDensity", Range(15,40)) = 21
+        _chMicrofacetRelativeArea("_chMicrofacetRelativeArea", Range(0.01,1)) = 0.5
+        _chSDFDict("chSDFDict", 2DArray) = "" {} //RCC unity nepodporuje 1D arrays/ 2D by nemal byt problem
+
         
         //RCC properties of deliot23
-        _maxNDF("maxNDF", Range(0.0, 1.0)) = 0.5
-        _targetNDF("targetNDF", Range(0.0, 1.0)) = 0.5
+        _dbMaxNDF("dbMaxNDF", Range(0.0, 1.0)) = 0.5
+        _dbTargetNDF("dbTargetNDF", Range(0.0, 1.0)) = 0.5
+        
         
         //RCC properties of zirr16
-
+        [ShowAsVector2] _zkRoughness("Roughness", Vector) = (0.5,0.5,0,0) //can we specify range?
+        [ShowAsVector2] _zkMicroRoughness("Micro Roughness", Vector) = (0.5,0.5,0,0) //can we specify range?
+        _zkSearchConeAngle("Search Cone Angle", Range(0.001,0.1)) = 0.5
+        _zkVariation("Variation", Range(20000,100000)) = 35000
+        _zkDynamicRange("DynamicRange", Range(20000,100000)) = 35000
+        _zkDenisty("Denisty", Range(10000,200000)) = 100000
 
         //RCC properties of wang15
-        [ToggleUI] _UseAnisotropy("Use Anisotropy", Float) = 1.0
-        _SparkleSize("Sparkle Size", Range(0.01, 1.0)) = 0.015
-        _SparkleDensity("Sparkle Density", Range(0.1, 10)) = 5
-        _NoiseDensity("Noise Density", Range(0.1, 1)) = 0
-        _NoiseAmmount("Noise Ammount", Range(0.1, 1)) = 0
-        _ViewAmmount("View Ammount", Range(0.1, 10)) = 8
+        [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 1.0
+        _wbSparkleSize("Sparkle Size", Range(0.01, 1.0)) = 0.015
+        _wbSparkleDensity("Sparkle Density", Range(0.1, 10)) = 5
+        _wbNoiseDensity("Noise Density", Range(0.1, 1)) = 0
+        _wbNoiseAmmount("Noise Ammount", Range(0.1, 1)) = 0
+        _wbViewAmmount("View Ammount", Range(0.1, 10)) = 8
         
         [MainTexture] _BaseColorMap("BaseColorMap", 2D) = "white" {}
         [HideInInspector] _BaseColorMap_MipInfo("_BaseColorMap_MipInfo", Vector) = (0, 0, 0, 0)

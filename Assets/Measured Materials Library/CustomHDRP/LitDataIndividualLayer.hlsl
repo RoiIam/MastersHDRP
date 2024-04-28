@@ -211,7 +211,7 @@ float ADD_IDX(GetSurfaceData)(FragInputs input, LayerTexCoord layerTexCoord, out
     //pozri d3d11.hlsl keby nahodou
     //float1 x = 0.5;
     //float1 y = 0.5;
-    float4 _sampledDict = SAMPLE_TEXTURE2D_ARRAY(_testDict, sampler_testDict, float2(0.5,0),0.5);//RCC podme sample dictionary tu bude frag riadok 258, musime to dat priamo do svetla
+    float4 _sampledDict = SAMPLE_TEXTURE2D_ARRAY(_chSDFDict, sampler_chSDFDict, float2(0.5,0),0.5);//RCC podme sample dictionary tu bude frag riadok 258, musime to dat priamo do svetla
     //surfaceData.sampledDict = _sampledDict.rgb; //nemozme samplovat uz tu, nemame svetlo ani jeho pos
     //surfaceData.baseColor = color.rgb;
     float alpha = color.a;

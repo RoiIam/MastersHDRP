@@ -145,29 +145,42 @@ float _RayTracing;
 #ifndef LAYERED_LIT_SHADER
 
 // Set of users variables
-//RCC
-// unexpected? Texture1DArray<float1>(_testDict); //je to 16b float
-TEXTURE2D_ARRAY(_testDict);
-SAMPLER(sampler_testDict);
-//float4 _SampleTexture2DArray_RGBA = SAMPLE_TEXTURE2D_ARRAY(Texture, Sampler, UV, Index);
-//src https://forum.unity.com/threads/how-to-declare-sample-texture-2d-array-in-hdrp.830757/
-
 float4 _BaseColor;
 
 int _UseGlints;//RCC
 float4 _MyColor; //RCC
 float _glintsMethod;//RCC
 float _MaterialID;//RCC
-float _maxNDF;//RCC
-float _targetNDF;//RCC
 
-//chermain20
-float _UseAnisotropy;
-float _SparkleSize;
-float _SparkleDensity;
-float _NoiseDensity;
-float _NoiseAmmount;
-float _ViewAmmount;
+//chermain15
+float2 _chRoughness;
+float _chLogMicrofacetDensity;
+float _chMicrofacetRelativeArea;
+TEXTURE2D_ARRAY(_chSDFDict);
+SAMPLER(sampler_chSDFDict);
+//float4 _SampleTexture2DArray_RGBA = SAMPLE_TEXTURE2D_ARRAY(Texture, Sampler, UV, Index);
+//src https://forum.unity.com/threads/how-to-declare-sample-texture-2d-array-in-hdrp.830757/
+
+//deliot23
+float _dbMaxNDF;//RCC
+float _dbTargetNDF;//RCC
+
+//zirr16
+float2 _zkRoughness;
+float2 _zkMicroRoughness;
+float _zkSearchConeAngle;
+float _zkVariation;
+float _zkDynamicRange;
+float _zkDenisty;
+
+
+//wang15
+float _wbUseAnisotropy;
+float _wbSparkleSize;
+float _wbSparkleDensity;
+float _wbNoiseDensity;
+float _wbNoiseAmmount;
+float _wbViewAmmount;
 
 
 
@@ -227,16 +240,32 @@ PROP_DECL(float4, _MyColor);//RCC
 PROP_DECL(float, _glintsMethod);//RCC
 PROP_DECL(int, _UseGlints);//RCC
 PROP_DECL(float, _MaterialID);//RCC
-PROP_DECL(float, _maxNDF);//RCC
-PROP_DECL(float, _targetNDF);//RCC
 
 //chermain20
-PROP_DECL(float, _UseAnisotropy);
-PROP_DECL(float, _SparkleDensity);
-PROP_DECL(float, _NoiseAmmount);
-PROP_DECL(float, _NoiseDensity);
-PROP_DECL(float, _NoiseAmmount);
-PROP_DECL(float, _ViewAmmount);
+
+PROP_DECL(float2, _chRoughness);
+PROP_DECL(float, _chLogMicrofacetDensity);
+PROP_DECL(float, _chMicrofacetRelativeArea);
+
+//deliot23
+PROP_DECL(float, _dbMaxNDF);//RCC
+PROP_DECL(float, _dbTargetNDF);//RCC
+
+//zirr16
+PROP_DECL(float2, _zkRoughness);
+PROP_DECL(float2, _zkMicroRoughness);
+PROP_DECL(float, _zkSearchConeAngle);
+PROP_DECL(float, _zkVariation);
+PROP_DECL(float, _zkDynamicRange);
+PROP_DECL(float, _zkDenisty);
+
+//wang15
+PROP_DECL(float, _wbUseAnisotropy);
+PROP_DECL(float, _wbSparkleDensity);
+PROP_DECL(float, _wbNoiseAmmount);
+PROP_DECL(float, _wbNoiseDensity);
+PROP_DECL(float, _wbNoiseAmmount);
+PROP_DECL(float, _wbViewAmmount);
 
 float4 _BaseColorMap0_ST;
 float4 _BaseColorMap1_ST;

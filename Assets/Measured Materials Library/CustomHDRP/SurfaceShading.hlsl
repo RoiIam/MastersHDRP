@@ -354,8 +354,8 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                 glintsColor = float3(1,1,1);
                 glintsColor = glints( texCoord,  ddx(texCoord), ddy(texCoord),
                     toLocal,    normalize(vertPos-light.positionRWS),  normalWS,  normalize(vertPos-cameraPos),
-                    roughness,  microRoughness,
-                    searchConeAngle,  variation,  dynamicRange,density);
+                    _zkRoughness,  _zkMicroRoughness,
+                    _zkSearchConeAngle,  _zkVariation,  _zkDynamicRange,_zkDenisty);
             }
             else if((int)_glintsMethod==4)//we chose WB
             {
@@ -365,12 +365,12 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
 
                 glintsColor = float3(1,1,1);
                 glintsColor =wangGlints(vertPos,normalWS,lightPos, vViewVec, vlarge_dir,
-_UseAnisotropy,
- _SparkleSize,
- _SparkleDensity,
- _NoiseDensity,
- _NoiseAmmount,
- _ViewAmmount
+_wbUseAnisotropy,
+ _wbSparkleSize,
+ _wbSparkleDensity,
+ _wbNoiseDensity,
+ _wbNoiseAmmount,
+ _wbViewAmmount 
  );
             }
             

@@ -1454,7 +1454,7 @@ float getDV_Glints(float3 H, float2 texCoord)
     
     float2 dstx = ddx(texCoord); 
     float2 dsty = ddy(texCoord);
-    return SampleGlints2023NDF(H,_targetNDF,_maxNDF,texCoord,dstx,dsty);
+    return SampleGlints2023NDF(H,_dbTargetNDF,_dbMaxNDF,texCoord,dstx,dsty);
     
 }
 

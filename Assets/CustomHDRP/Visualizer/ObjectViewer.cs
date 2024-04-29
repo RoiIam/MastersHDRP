@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,10 @@ public class ObjectViewer : MonoBehaviour
     public enum ViewType
     {
       Single =0, VerticalSplit = 1  
+    }
+    public enum GlintMethod
+    {
+        Chermain20 =0, Deliot23 = 1, Zirr16 = 2, WangBowles = 3, WangBowlesCustom = 4
     }
     
     [SerializeField]
@@ -23,28 +28,69 @@ public class ObjectViewer : MonoBehaviour
     private Toggle splitToggle;
     [SerializeField]
     private GameObject splitterLine;
+
+    [SerializeField]
+    private GameObject leftObj;
+    [SerializeField]
+    private GameObject rightObj;
     
+    private MeshFilter leftObjMeshFilter;
+    private MeshFilter rightObjMeshFilter;
+
+
+    private Material leftMat;
+    private Material rightMat;
     
     [SerializeField]
     private GameObject objectToBeRendered;
     private GameObject objectToBeRenderedClone;
+    
+    [SerializeField]
+    private MeshListContainer meshListContainer;
+    private int meshListContainerIndex=0;
+
     
     private Light light;
     private Vector3 lightColor;
     private Vector3 lightPosition;//not for directional
     private Vector3 lightDirection;
     private float lightIntensity;
+    private static readonly int GlintsMethod = Shader.PropertyToID("_glintsMethod");
 
-    
+    public void ChangeLeft(int glintGlintMethod)
+    {
+        leftMat.SetFloat(GlintsMethod,(float)glintGlintMethod+1);
+    }
     
     // Start is called before the first frame update
     void Start()
     {
         CreateRightCopies();
+        
+        leftMat = leftObj.GetComponent<Renderer>().material;
+        rightMat = rightObj.GetComponent<Renderer>().material;
+        leftObjMeshFilter = leftObj.GetComponent<MeshFilter>();
+        rightObjMeshFilter = rightObj.GetComponent<MeshFilter>();
+        
+        StartCoroutine(WaitForFrame());
+    }
+
+    IEnumerator WaitForFrame()
+    {
+        yield return 0;
         leftCam.gameObject.GetComponent<CinemachineBrain>().enabled = true;
         rightCam.gameObject.GetComponent<CinemachineBrain>().enabled = true;
     }
-    
+
+    public void CycleMeshes()
+    {
+        //meshListContainerIndex += 1;
+        meshListContainerIndex = ++meshListContainerIndex % meshListContainer.GetMeshes().Count;
+        
+        leftObjMeshFilter.mesh = meshListContainer.GetMeshes()[meshListContainerIndex];
+        rightObjMeshFilter.mesh = meshListContainer.GetMeshes()[meshListContainerIndex];
+    }
+
     public void CreateRightCopies()
     {
         //create copies of objects and lights in scene

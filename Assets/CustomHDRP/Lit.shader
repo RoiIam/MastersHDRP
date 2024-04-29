@@ -29,11 +29,11 @@ Shader "HDRP/CustomLit"
         
         //RCC properties of zirr16
         [ShowAsVector2] _zkRoughness("Roughness", Vector) = (0.5,0.5,0,0) //can we specify range?
-        [ShowAsVector2] _zkMicroRoughness("Micro Roughness", Vector) = (0.5,0.5,0,0) //can we specify range?
+        [ShowAsVector2] _zkMicroRoughness("Micro Roughness", Vector) = (0.05,0.005,0,0) //can we specify range?
         _zkSearchConeAngle("Search Cone Angle", Range(0.001,0.1)) = 0.5
         _zkVariation("Variation", Range(20000,100000)) = 35000
         _zkDynamicRange("DynamicRange", Range(20000,100000)) = 35000
-        _zkDenisty("Denisty", Range(10000,200000)) = 100000
+        _zkDenisty("Denisty", Range(1000,200000)) = 100000
 
         //RCC properties of wang15
         [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 1.0

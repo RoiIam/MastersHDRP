@@ -20,6 +20,7 @@ float1 hashIQ(uint1 n)
     n = n * (n * n * 15731U + 789221U) + 1376312589U;
     return float1(n & 0x7fffffffU) / float1(0x7fffffffU);
 }
+
 /*
 float1 erfinv(float1 x)
 {
@@ -87,14 +88,13 @@ float1 ndf_beckmann_anisotropic(float3 omega_h, float1 alpha_x, float1 alpha_y)
 
 float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
 {
-
     float1 MicrofacetRelativeArea = 1.0;
     float1 LogMicrofacetDensity = 27.0;
     int1 Dictionary_NLevels = 16;
-    float1 Dictionary_Alpha=0.5;
+    float1 Dictionary_Alpha = 0.5;
     int1 Dictionary_N = 192;
-    float1 Material_Alpha_x =0.5f;
-    float1 Material_Alpha_y =0.5f;
+    float1 Material_Alpha_x = 0.5f;
+    float1 Material_Alpha_y = 0.5f;
     // Coherent index
     // Eq. 8, Alg. 3, line 1
     int1 twoToTheL = int1(pow(2.0, float1(l)));
@@ -119,7 +119,7 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
 
     // Corresponding continuous distribution LOD
     // Alg. 3, line 6
-    float1 l_dist = log(n) / 1.38629;// 2.0 * log(2) = 1.38629
+    float1 l_dist = log(n) / 1.38629; // 2.0 * log(2) = 1.38629
 
     // Alg. 3, line 7
     float1 uDensityRandomisation = hashIQ(rngSeed * 2171U);
@@ -151,12 +151,12 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     float1 sinTheta = sin(theta);
 
     float2 scaleFactor = float2(Material_Alpha_x / Dictionary_Alpha,
-    Material_Alpha_y / Dictionary_Alpha);
+                                Material_Alpha_y / Dictionary_Alpha);
 
     // Rotate and scale slope
     // Alg. 3, line 16
     slope_h = float2(slope_h.x * cosTheta / scaleFactor.x + slope_h.y * sinTheta / scaleFactor.y,
-    -slope_h.x * sinTheta / scaleFactor.x + slope_h.y * cosTheta / scaleFactor.y);
+                     -slope_h.x * sinTheta / scaleFactor.x + slope_h.y * cosTheta / scaleFactor.y);
 
     float2 abs_slope_h = float2(abs(slope_h.x), abs(slope_h.y));
 
@@ -182,12 +182,14 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     float1 texCoordY = abs_slope_h.y / alpha_dist_isqrt2_4;
 
     //RCC
-    float3 P_i = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordX,0),l_dist * Dictionary_N / 3 + distIdxYOver3,0).rgb;//RCC frag riadok 258
-    float3 P_j = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordY,0),l_dist * Dictionary_N / 3 + distIdxYOver3,0).rgb;//RCC frag riadok 258
+    float3 P_i = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordX,0),
+                                            l_dist * Dictionary_N / 3 + distIdxYOver3, 0).rgb; //RCC frag riadok 258
+    float3 P_j = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordY,0),
+                                            l_dist * Dictionary_N / 3 + distIdxYOver3, 0).rgb; //RCC frag riadok 258
 
-    
+
     // Alg. 3, line 19
-    return P_i[uint(i% 3)] * P_j[uint(j% 3)] / (scaleFactor.x * scaleFactor.y);
+    return P_i[uint(i % 3)] * P_j[uint(j % 3)] / (scaleFactor.x * scaleFactor.y);
     //fmod sa sprava inac ked su zaporne? ej to tu mozne? a co s %
     //https://stackoverflow.com/questions/7610631/glsl-mod-vs-hlsl-fmod 
 }
@@ -225,7 +227,7 @@ float1 P22__P_(int1 l, float2 slope_h, float2 st, float2 dst0, float2 dst1)
     float1 sum = 0.0f;
     float1 sumWts = 0;
     uint1 nbrOfIter = 0;
-    
+
     UNITY_LOOP for (uint1 it = t0; it <= t1; ++it)
     {
         float1 tt = it - st[1];
@@ -245,45 +247,45 @@ float1 P22__P_(int1 l, float2 slope_h, float2 st, float2 dst0, float2 dst1)
             }
             nbrOfIter++;
             // Guardrail (Extremely rare case.)
-            if (nbrOfIter > 100)//bolo 100
+            if (nbrOfIter > 100) //bolo 100
                 break;
         }
         // Guardrail (Extremely rare case.)
-        if (nbrOfIter > 100)//bolo 100
+        if (nbrOfIter > 100) //bolo 100
             break;
     }
     return sum / sumWts;
 }
 
-float1 f_D(float3 wo, float3 wi,float3 camPos, float3 vertPos,float3 lightPos, FragInputs input)
+float1 f_D(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos, FragInputs input)
 {
-        //later user defined
-    float1 Material_Alpha_x =0.5f;
-    float1 Material_Alpha_y =0.5f;
-    
+    //later user defined
+    float1 Material_Alpha_x = 0.5f;
+    float1 Material_Alpha_y = 0.5f;
+
     if (wo.z <= 0.0)
-        return float3(0,0,0); //to je na zatienenej strane 
-        //return float3(1,0,0); //test
+        return float3(0, 0, 0); //to je na zatienenej strane 
+    //return float3(1,0,0); //test
     if (wi.z <= 0.0)
-        return float3(0,0,0); // to je na pravej diagonale-cudne
-        //return float3(0,1,0); // test
+        return float3(0, 0, 0); // to je na pravej diagonale-cudne
+    //return float3(0,1,0); // test
 
     // Alg. 1, line 1
     float3 wh = normalize(wo + wi);
     if (wh.z <= 0.0)
-        return float3(0.0, 0.0, 0.0);//totosa nenaslo 
+        return float3(0.0, 0.0, 0.0); //totosa nenaslo 
 
     // Local masking shadowing
     if (dot(wo, wh) <= 0.0 || dot(wi, wh) <= 0.0)
-        return float3(0,0,0);
-        //return float3(0,0,1); //test
+        return float3(0, 0, 0);
+    //return float3(0,0,1); //test
 
     // Eq. 1, Alg. 1, line 2
     float2 slope_h = float2(-wh.x / wh.z, -wh.y / wh.z);
 
     //float2 texCoord = float2(0.5,0.5);//RCC TexCoord nevyrieseny, temp
     //float2 texCoord = float2(0.5*slope_h.x,0.5*slope_h.y);//RCC TexCoord nevyrieseny, temp
-    float2 texCoord = float2(input.texCoord0.x,input.texCoord0.y);
+    float2 texCoord = float2(input.texCoord0.x, input.texCoord0.y);
     //rozne params
     float1 Dictionary_NLevels = 16;
     float1 MaxAnisotropy = 8;
@@ -295,12 +297,12 @@ float1 f_D(float3 wo, float3 wi,float3 camPos, float3 vertPos,float3 lightPos, F
     float1 P22_P = 0.0;
 
     // Alg. 1, line 3
-    float2 dst0 = ddx(texCoord);  //zistit toto ako pocitat -ddx hlsl a glsl dFdx
+    float2 dst0 = ddx(texCoord); //zistit toto ako pocitat -ddx hlsl a glsl dFdx
     float2 dst1 = ddy(texCoord); //ddy  hlsl a glsl dFdy
     // Compute ellipse minor and major axes 
-    float1 dst0LengthSquared = dst0.x*dst0.x + dst0.y*dst0.y;
-    float1 dst1LengthSquared = dst1.x*dst1.x + dst1.y*dst1.y;
-    
+    float1 dst0LengthSquared = dst0.x * dst0.x + dst0.y * dst0.y;
+    float1 dst1LengthSquared = dst1.x * dst1.x + dst1.y * dst1.y;
+
     if (dst0LengthSquared < dst1LengthSquared)
     {
         // Swap dst0 and dst1
@@ -327,29 +329,29 @@ float1 f_D(float3 wo, float3 wi,float3 camPos, float3 vertPos,float3 lightPos, F
     // ------------------------------------------------------------------------------------------------------
 
     // Without footprint, we evaluate the Cook Torrance BRDF
-        if (minorLength == 0)
-        {
-            D_P = ndf_beckmann_anisotropic(wh, Material_Alpha_x, Material_Alpha_y);//Material.Alpha_x, Material.Alpha_y
-        }
-        else
-        {
-            // Choose LOD
-            // Alg. 1, line 6
-            float1 l = max(0.0, Dictionary_NLevels - 1.0 + log2(minorLength)); //Dictionary.NLevels
-            int1 il = int1(floor(l));
+    if (minorLength == 0)
+    {
+        D_P = ndf_beckmann_anisotropic(wh, Material_Alpha_x, Material_Alpha_y); //Material.Alpha_x, Material.Alpha_y
+    }
+    else
+    {
+        // Choose LOD
+        // Alg. 1, line 6
+        float1 l = max(0.0, Dictionary_NLevels - 1.0 + log2(minorLength)); //Dictionary.NLevels
+        int1 il = int1(floor(l));
 
-            // Alg. 1, line 7
-            float1 w = l - float1(il);
+        // Alg. 1, line 7
+        float1 w = l - float1(il);
 
-            // Alg. 1, line 8, lerp namiesto mix
-            P22_P = lerp(P22__P_(il, slope_h, texCoord, dst0, dst1),
-            P22__P_(il + 1, slope_h, texCoord, dst0, dst1),
-            w);
+        // Alg. 1, line 8, lerp namiesto mix
+        P22_P = lerp(P22__P_(il, slope_h, texCoord, dst0, dst1),
+                     P22__P_(il + 1, slope_h, texCoord, dst0, dst1),
+                     w);
 
-            // Eq. 6, Alg. 1, line 10
-            D_P = P22_P / (wh.z * wh.z * wh.z * wh.z);
-        }
-    
+        // Eq. 6, Alg. 1, line 10
+        D_P = P22_P / (wh.z * wh.z * wh.z * wh.z);
+    }
+
     return D_P;
 }
 
@@ -361,18 +363,17 @@ double FresnelSchlick(float angle, float reflectance)
     double fresnel = reflectance + (1.0 - reflectance) * pow(float(1.0 - angle), 5.0);
     return fresnel;
 }
-float3 FresnelSchlick( float3 SpecularColor, float3 ViewDir, float3 LightDir,float3 halfD )
+
+float3 FresnelSchlick(float3 SpecularColor, float3 ViewDir, float3 LightDir, float3 halfD)
 {
-    float HdotV = clamp( dot( halfD, ViewDir  ), 0, 1 );
-    return SpecularColor + ( 1 - SpecularColor ) * pow( ( 1 - HdotV ), 5 );   
+    float HdotV = clamp(dot(halfD, ViewDir), 0, 1);
+    return SpecularColor + (1 - SpecularColor) * pow((1 - HdotV), 5);
 }
 
-float3 f_P(float3 wo, float3 wi,float3 camPos, float3 vertPos,float3 lightPos,float3 norm, FragInputs input)
+float3 f_P(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos, float3 norm, FragInputs input)
 {
-    
-   
-    float D_P=f_D( wo, wi, camPos,  vertPos, lightPos,  input);
-    
+    float D_P = f_D(wo, wi, camPos, vertPos, lightPos, input);
+
     float3 wh = normalize(wo + wi);
 
     // V-cavity masking shadowing
@@ -384,9 +385,9 @@ float3 f_P(float3 wo, float3 wi,float3 camPos, float3 vertPos,float3 lightPos,fl
     // Fresnel is set to one for simplicity here
     // but feel free to use "real" Fresnel term
     float3 F = float3(1.0, 1.0, 1.0);
-    
+
     //angle is nDotH
-    float3 halfV = normalize((vertPos-lightPos) + (vertPos-camPos));
+    float3 halfV = normalize((vertPos - lightPos) + (vertPos - camPos));
     //my own impl. based on CG2
     //zatial pockaj F = float3(FresnelSchlick(dot(VertexNorm,halfV),0.2));
     //float ff = FresnelSchlick(dot(norm,halfV),0.2);
@@ -398,7 +399,7 @@ float3 f_P(float3 wo, float3 wi,float3 camPos, float3 vertPos,float3 lightPos,fl
     // the cosine weight in the rendering equation
     //return (F * G * D_P) / (4.0 * wo.z);
 
-    return(float3(D_P,D_P,D_P));
+    return (float3(D_P, D_P, D_P));
 
 
     //return float3(0,0,1);//test

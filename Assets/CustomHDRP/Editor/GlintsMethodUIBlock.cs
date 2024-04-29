@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEditor.Rendering.HighDefinition;
-using UnityEngine;
 
 // Include material common properties names to acces MaterialId
 //using static UnityEngine.Rendering.HighDefinition.HDMaterialProperties; // cannot acces internal MaterialId.LitSSS anyways....
@@ -9,37 +8,37 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 {
     private readonly ExpandableBit foldoutBit;
 
-    private MaterialProperty chSDFDictBlock;
-    private MaterialProperty glintsMethod;
-    private MaterialProperty useGlints;
-    private MaterialProperty matID;
-
 
     private MaterialProperty dbMaxNDFBlock;
     private MaterialProperty dbTargetNDFBlock;
-
-    MaterialProperty wbUseAnisotropy;
-    MaterialProperty wbSparkleSize; 
-    MaterialProperty wbSparkleDensity;
-    MaterialProperty wbNoiseDensity;
-    MaterialProperty wbNoiseAmmount;
-    MaterialProperty wbViewAmmount;
-    
-    MaterialProperty zkRoughness;
-    public bool changezkRoughnessSimultaneously = true;
-    MaterialProperty zkMicroRoughness;
+    private MaterialProperty glintsMethod;
     public bool changezkMicroRoughnessSimultaneously = true;
-    MaterialProperty zkSearchConeAngle;
-    MaterialProperty zkVariation;
-    MaterialProperty zkDynamicRange;
-    MaterialProperty zkDenisty;
-        
+    public bool changezkRoughnessSimultaneously = true;
+
+    private MaterialProperty chSDFDictBlock;
+    private MaterialProperty matID;
+    private MaterialProperty useGlints;
+    private MaterialProperty wbNoiseAmmount;
+    private MaterialProperty wbNoiseDensity;
+    private MaterialProperty wbSparkleDensity;
+    private MaterialProperty wbSparkleSize;
+
+    private MaterialProperty wbUseAnisotropy;
+    private MaterialProperty wbViewAmmount;
+    private MaterialProperty zkDenisty;
+    private MaterialProperty zkDynamicRange;
+    private MaterialProperty zkMicroRoughness;
+
+    private MaterialProperty zkRoughness;
+    private MaterialProperty zkSearchConeAngle;
+    private MaterialProperty zkVariation;
+
 
     public GlintsMethodUIBlock(ExpandableBit expandableBit)
     {
         foldoutBit = expandableBit;
     }
-    
+
 
     public override void LoadMaterialProperties()
     {
@@ -67,8 +66,8 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         wbNoiseDensity = FindProperty("_wbNoiseDensity");
         wbNoiseAmmount = FindProperty("_wbNoiseAmmount");
         wbViewAmmount = FindProperty("_wbViewAmmount");
-        
-        
+
+
         //Debug.Log(matID);
     }
 
@@ -85,14 +84,13 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowZirrParams()
     {
-        
         //changezkRoughnessSimultaneously = EditorGUILayout.Toggle("Isometric Roughness based on X ", changezkRoughnessSimultaneously);
         materialEditor.ShaderProperty(zkRoughness, "Global Roughness");
         /*if (changezkRoughnessSimultaneously)
         {
             zkRoughness.vectorValue = new Vector4(zkRoughness.vectorValue.x,zkRoughness.vectorValue.x,0,0);//there is a better way, check in ShowAsVector2Drawer
         }*/
-        
+
         //changezkMicroRoughnessSimultaneously = EditorGUILayout.Toggle("Isometric Micro Roughness based on X", changezkMicroRoughnessSimultaneously);//there is a better way, check in ShowAsVector2Drawer
         materialEditor.ShaderProperty(zkMicroRoughness, "Micro Roughness");
         /*if (changezkMicroRoughnessSimultaneously)
@@ -103,9 +101,6 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         materialEditor.ShaderProperty(zkVariation, "Variation");
         materialEditor.ShaderProperty(zkDynamicRange, "Dynamic Range");
         materialEditor.ShaderProperty(zkDenisty, "Density");
-        
-        
-
     }
 
     public void ShowWangParams()
@@ -115,7 +110,6 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowWangModParams()
     {
-        
         materialEditor.ShaderProperty(wbUseAnisotropy, "UseAnisotropy");
         materialEditor.ShaderProperty(wbSparkleSize, "SparkleSize");
         materialEditor.ShaderProperty(wbSparkleDensity, "SparkleDensity");
@@ -124,7 +118,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         materialEditor.ShaderProperty(wbViewAmmount, "ViewAmmount");
     }
 
-    
+
     //TODO remove magic numbers
     public override void OnGUI()
     {
@@ -133,33 +127,33 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         if (useGlints.floatValue != 1.0)
             return;
 
-            materialEditor.ShaderProperty(glintsMethod, "Glints Method");
+        materialEditor.ShaderProperty(glintsMethod, "Glints Method");
 
-            using (var header = new MaterialHeaderScope("Glints Options", (uint)foldoutBit, materialEditor))
-            {
-                //doesnt work for now...
-                //we should check here if its the DB23 method
-                //Debug.Log((int)matID.floatValue);
+        using (var header = new MaterialHeaderScope("Glints Options", (uint)foldoutBit, materialEditor))
+        {
+            //doesnt work for now...
+            //we should check here if its the DB23 method
+            //Debug.Log((int)matID.floatValue);
 
-                if (header.expanded)
-                    switch ((int)glintsMethod.floatValue)
-                    {
-                        case 1:
-                            ShowChermainParams();
-                            break;
-                        case 2:
-                            ShowDeliotParams();
-                            break;
-                        case 3:
-                            ShowZirrParams();
-                            break;
-                        case 4:
-                            ShowWangParams();
-                            break;
-                        case 5:
-                            ShowWangModParams();
-                            break;
-                    }
-            }
+            if (header.expanded)
+                switch ((int)glintsMethod.floatValue)
+                {
+                    case 1:
+                        ShowChermainParams();
+                        break;
+                    case 2:
+                        ShowDeliotParams();
+                        break;
+                    case 3:
+                        ShowZirrParams();
+                        break;
+                    case 4:
+                        ShowWangParams();
+                        break;
+                    case 5:
+                        ShowWangModParams();
+                        break;
+                }
+        }
     }
 }

@@ -30,10 +30,10 @@ uniform float i_view_amount;
 
 float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense, float adjust_sparkle_size,
                  float inoise, float floorLogPlus,
-                 float3 vObjPos,float3 vNormal,float3 vViewVec,
-bool with_anisotropy,
- float i_noise_amount,
- float i_view_amount)
+                 float3 vObjPos, float3 vNormal, float3 vViewVec,
+                 bool with_anisotropy,
+                 float i_noise_amount,
+                 float i_view_amount)
 {
     // Expanding the distance range, Logarithm Distribution
     float zBuf = length(vViewVec);
@@ -63,7 +63,7 @@ bool with_anisotropy,
     // Jitter the grid center
     float jitter_noisy = i_noise_amount * cnoise(noise_dense * grid_center);
 
-    float3 jitter_grid = float3(jitter_noisy,jitter_noisy,jitter_noisy);
+    float3 jitter_grid = float3(jitter_noisy, jitter_noisy, jitter_noisy);
     jitter_grid = 0.5f * frac(jitter_grid + 0.5f) - float3(0.75f, 0.75f, 0.75f);
     float3 new_offset = grid_offset + jitter_grid;
 
@@ -87,12 +87,12 @@ bool with_anisotropy,
         glittering = 20.0f * lend;
     }
 
-    return float3(glittering,glittering, 1.0f);
+    return float3(glittering, glittering, 1.0f);
 }
 
 float3 calcGrid(float newSparkle_size, float newSparkle_density, float inoise,
-    float3 vViewVec,float i_noise_density,
-    float3 vObjPos,float3 vNormal,bool with_anisotropy,float i_noise_amount,float i_view_amount)
+                float3 vViewVec, float i_noise_density,
+                float3 vObjPos, float3 vNormal, bool with_anisotropy, float i_noise_amount, float i_view_amount)
 {
     float3 n_view_dir = normalize(vViewVec);
 
@@ -106,48 +106,47 @@ float3 calcGrid(float newSparkle_size, float newSparkle_density, float inoise,
     float level0 = -1.0f;
     float level2 = 1.0f;
 
-/*
-    float3 n_view_dir, float noise_dense, float grid_sparkle_dense, float adjust_sparkle_size,
-                     float inoise, float floorLogPlus,
-                     float3 vObjPos,float3 vNormal,float3 vViewVec,
-    bool with_anisotropy,
-     float i_noise_amount,
-     float i_view_amount
-*/
-    
+    /*
+        float3 n_view_dir, float noise_dense, float grid_sparkle_dense, float adjust_sparkle_size,
+                         float inoise, float floorLogPlus,
+                         float3 vObjPos,float3 vNormal,float3 vViewVec,
+        bool with_anisotropy,
+         float i_noise_amount,
+         float i_view_amount
+    */
+
     float3 resultC = glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level0,
-    vObjPos, vNormal, vViewVec,with_anisotropy,i_noise_amount,i_view_amount) +
-                     glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level1,
-                          vObjPos, vNormal, vViewVec,with_anisotropy,i_noise_amount,i_view_amount) +
-                     glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level2,
-                          vObjPos, vNormal, vViewVec,with_anisotropy,i_noise_amount,i_view_amount);
-                     
+                               vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount) +
+        glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level1,
+                  vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount) +
+        glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level2,
+                  vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount);
+
     return resultC / 3.0f;
 }
 
 
-
-float3 wangGlints(float3 vObjPos,float3 vNormal,float3 lightPos,float3 vViewVec,float4 vlarge_dir,
-bool with_anisotropy,
- float i_sparkle_size,
- float i_sparkle_density,
- float i_noise_density,
- float i_noise_amount,
- float i_view_amount
- )
+float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewVec, float4 vlarge_dir,
+                  bool with_anisotropy,
+                  float i_sparkle_size,
+                  float i_sparkle_density,
+                  float i_noise_density,
+                  float i_noise_amount,
+                  float i_view_amount
+)
 {
     // Flip the z for OpenGL
     float3 ldir = normalize(lightPos.xyz - vObjPos);
     float3 n_view_dir = normalize(vViewVec);
 
-    
+
     float3 glittering = float3(0.0f, 0.0f, 1.0f);
 
     for (int i = 1; i < 3; i++)
     {
         glittering += calcGrid(i_sparkle_size, i_sparkle_density, i + i / 4.0f,
-         vViewVec, i_noise_density,
- vObjPos, vNormal, with_anisotropy, i_noise_amount, i_view_amount);
+                               vViewVec, i_noise_density,
+                               vObjPos, vNormal, with_anisotropy, i_noise_amount, i_view_amount);
     }
 
     //float3 reflectDir = reflect(ldir, vNormal);
@@ -157,7 +156,6 @@ bool with_anisotropy,
 
     return glittering;
 }
-
 
 
 #endif

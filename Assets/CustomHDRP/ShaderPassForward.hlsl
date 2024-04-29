@@ -37,7 +37,7 @@ PackedVaryingsType Vert(AttributesMesh inputMesh)
 {
     VaryingsType varyingsType;
 
-#if defined(HAVE_RECURSIVE_RENDERING)
+    #if defined(HAVE_RECURSIVE_RENDERING)
     // If we have a recursive raytrace object, we will not render it.
     // As we don't want to rely on renderqueue to exclude the object from the list,
     // we cull it by settings position to NaN value.
@@ -47,7 +47,7 @@ PackedVaryingsType Vert(AttributesMesh inputMesh)
         ZERO_INITIALIZE(VaryingsType, varyingsType); // Divide by 0 should produce a NaN and thus cull the primitive.
     }
     else
-#endif
+    #endif
     {
         varyingsType.vmesh = VertMesh(inputMesh);
     }
@@ -77,60 +77,63 @@ PackedVaryingsToPS VertTesselation(VaryingsToDS input)
 #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Debug/DebugDisplayMaterial.hlsl"
 
 #ifdef UNITY_VIRTUAL_TEXTURING
-    #ifdef OUTPUT_SPLIT_LIGHTING
+#ifdef OUTPUT_SPLIT_LIGHTING
     #define DIFFUSE_LIGHTING_TARGET SV_Target2
     #define SSS_BUFFER_TARGET SV_Target3
-    #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+#elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
     #define MOTION_VECTOR_TARGET SV_Target2
-    #endif
+#endif
 #else
-    #ifdef OUTPUT_SPLIT_LIGHTING
+#ifdef OUTPUT_SPLIT_LIGHTING
     #define DIFFUSE_LIGHTING_TARGET SV_Target1
     #define SSS_BUFFER_TARGET SV_Target2
-    #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+#elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
     #define MOTION_VECTOR_TARGET SV_Target1
-    #endif
+#endif
 #endif
 
 void Frag(PackedVaryingsToPS packedInput
-    , out float4 outColor : SV_Target0  // outSpecularLighting when outputting split lighting
-    #ifdef UNITY_VIRTUAL_TEXTURING
+          , out float4 outColor : SV_Target0 // outSpecularLighting when outputting split lighting
+          #ifdef UNITY_VIRTUAL_TEXTURING
         , out float4 outVTFeedback : SV_Target1
-    #endif
-    #ifdef OUTPUT_SPLIT_LIGHTING
+          #endif
+          #ifdef OUTPUT_SPLIT_LIGHTING
         , out float4 outDiffuseLighting : DIFFUSE_LIGHTING_TARGET
         , OUTPUT_SSSBUFFER(outSSSBuffer) : SSS_BUFFER_TARGET
-    #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
+          #elif defined(_WRITE_TRANSPARENT_MOTION_VECTOR)
           , out float4 outMotionVec : MOTION_VECTOR_TARGET
-    #endif
-    #ifdef _DEPTHOFFSET_ON
+          #endif
+          #ifdef _DEPTHOFFSET_ON
         , out float outputDepth : DEPTH_OFFSET_SEMANTIC
-    #endif
+          #endif
 )
 {
-#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
+    #ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
     // Init outMotionVector here to solve compiler warning (potentially unitialized variable)
     // It is init to the value of forceNoMotion (with 2.0)
     outMotionVec = float4(2.0, 0.0, 0.0, 0.0);
-#endif
+    #endif
 
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(packedInput);
     FragInputs input = UnpackVaryingsToFragInputs(packedInput);
 
     // We need to readapt the SS position as our screen space positions are for a low res buffer, but we try to access a full res buffer.
-    input.positionSS.xy = _OffScreenRendering > 0 ? (uint2)round(input.positionSS.xy * _OffScreenDownsampleFactor) : input.positionSS.xy;
+    input.positionSS.xy = _OffScreenRendering > 0
+                              ? (uint2)round(input.positionSS.xy * _OffScreenDownsampleFactor)
+                              : input.positionSS.xy;
 
     uint2 tileIndex = uint2(input.positionSS.xy) / GetTileSize();
 
     // input.positionSS is SV_Position
-    PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z, input.positionSS.w, input.positionRWS.xyz, tileIndex);
+    PositionInputs posInput = GetPositionInput(input.positionSS.xy, _ScreenSize.zw, input.positionSS.z,
+                                               input.positionSS.w, input.positionRWS.xyz, tileIndex);
 
-#ifdef VARYINGS_NEED_POSITION_WS
+    #ifdef VARYINGS_NEED_POSITION_WS
     float3 V = GetWorldSpaceNormalizeViewDir(input.positionRWS);
-#else
+    #else
     // Unused
     float3 V = float3(1.0, 1.0, 1.0); // Avoid the division by 0
-#endif
+    #endif
 
     SurfaceData surfaceData;
     BuiltinData builtinData;
@@ -144,12 +147,12 @@ void Frag(PackedVaryingsToPS packedInput
 
     // We need to skip lighting when doing debug pass because the debug pass is done before lighting so some buffers may not be properly initialized potentially causing crashes on PS4.
 
-#ifdef DEBUG_DISPLAY
+    #ifdef DEBUG_DISPLAY
     // Init in debug display mode to quiet warning
-#ifdef OUTPUT_SPLIT_LIGHTING
+    #ifdef OUTPUT_SPLIT_LIGHTING
     outDiffuseLighting = 0;
     ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
-#endif
+    #endif
 
     bool viewMaterial = GetMaterialDebugColor(outColor, input, builtinData, posInput, surfaceData, bsdfData);
 
@@ -169,24 +172,24 @@ void Frag(PackedVaryingsToPS packedInput
             outColor = result;
         }
         else
-#endif
-        {
-#ifdef _SURFACE_TYPE_TRANSPARENT
+    #endif
+    {
+        #ifdef _SURFACE_TYPE_TRANSPARENT
             uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_TRANSPARENT;
-#else
-            uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
-#endif
-            LightLoopOutput lightLoopOutput;
-            LightLoop(V, input,surfaceData,posInput, preLightData, bsdfData, builtinData, featureFlags, lightLoopOutput);
+        #else
+        uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
+        #endif
+        LightLoopOutput lightLoopOutput;
+        LightLoop(V, input, surfaceData, posInput, preLightData, bsdfData, builtinData, featureFlags, lightLoopOutput);
 
-            // Alias
-            float3 diffuseLighting = lightLoopOutput.diffuseLighting;
-            float3 specularLighting = lightLoopOutput.specularLighting;
+        // Alias
+        float3 diffuseLighting = lightLoopOutput.diffuseLighting;
+        float3 specularLighting = lightLoopOutput.specularLighting;
 
-            diffuseLighting *= GetCurrentExposureMultiplier();
-            specularLighting *= GetCurrentExposureMultiplier();
+        diffuseLighting *= GetCurrentExposureMultiplier();
+        specularLighting *= GetCurrentExposureMultiplier();
 
-#ifdef OUTPUT_SPLIT_LIGHTING
+        #ifdef OUTPUT_SPLIT_LIGHTING
             if (_EnableSubsurfaceScattering != 0 && ShouldOutputSplitLighting(bsdfData))
             {
                 outColor = float4(specularLighting, 1.0);
@@ -198,20 +201,20 @@ void Frag(PackedVaryingsToPS packedInput
                 outDiffuseLighting = 0;
             }
             ENCODE_INTO_SSSBUFFER(surfaceData, posInput.positionSS, outSSSBuffer);
-#else
-            outColor = ApplyBlendMode(diffuseLighting, specularLighting, builtinData.opacity);
-            outColor = EvaluateAtmosphericScattering(posInput, V, outColor);
-#endif
+        #else
+        outColor = ApplyBlendMode(diffuseLighting, specularLighting, builtinData.opacity);
+        outColor = EvaluateAtmosphericScattering(posInput, V, outColor);
+        #endif
 
-#ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
+        #ifdef _WRITE_TRANSPARENT_MOTION_VECTOR
             VaryingsPassToPS inputPass = UnpackVaryingsPassToPS(packedInput.vpass);
             bool forceNoMotion = any(unity_MotionVectorsParams.yw == 0.0);
             // outMotionVec is already initialize at the value of forceNoMotion (see above)
 
              //Motion vector is enabled in SG but not active in VFX
-#if defined(HAVE_VFX_MODIFICATION) && !VFX_FEATURE_MOTION_VECTORS
+        #if defined(HAVE_VFX_MODIFICATION) && !VFX_FEATURE_MOTION_VECTORS
             forceNoMotion = true;
-#endif
+        #endif
 
             if (!forceNoMotion)
             {
@@ -219,18 +222,18 @@ void Frag(PackedVaryingsToPS packedInput
                 EncodeMotionVector(motionVec * 0.5, outMotionVec);
                 outMotionVec.zw = 1.0;
             }
-#endif
-        }
-
-#ifdef DEBUG_DISPLAY
+        #endif
     }
-#endif
 
-#ifdef _DEPTHOFFSET_ON
+    #ifdef DEBUG_DISPLAY
+    }
+    #endif
+
+    #ifdef _DEPTHOFFSET_ON
     outputDepth = posInput.deviceDepth;
-#endif
+    #endif
 
-#ifdef UNITY_VIRTUAL_TEXTURING
+    #ifdef UNITY_VIRTUAL_TEXTURING
     outVTFeedback = builtinData.vtPackedFeedback;
-#endif
+    #endif
 }

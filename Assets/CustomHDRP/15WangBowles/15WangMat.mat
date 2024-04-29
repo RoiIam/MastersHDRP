@@ -154,6 +154,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _chSDFDict:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _testDict:
         m_Texture: {fileID: 18700000, guid: 54f8809523205c94b9a5fb9745e0fe6e, type: 2}
         m_Scale: {x: 1, y: 1}
@@ -311,9 +315,23 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
+    - _chLogMicrofacetDensity: 21
+    - _chMicrofacetRelativeArea: 0.5
+    - _dbMaxNDF: 0.5
+    - _dbTargetNDF: 0.5
     - _glintsMethod: 4
     - _maxNDF: 0.536
     - _targetNDF: 0.353
+    - _wbNoiseAmmount: 0.251
+    - _wbNoiseDensity: 0.41
+    - _wbSparkleDensity: 0.48
+    - _wbSparkleSize: 0.124
+    - _wbUseAnisotropy: 1
+    - _wbViewAmmount: 5.6
+    - _zkDenisty: 100000
+    - _zkDynamicRange: 35000
+    - _zkSearchConeAngle: 0.5
+    - _zkVariation: 35000
     m_Colors:
     - _BaseColor: {r: 0.95461273, g: 1, b: 0, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
@@ -333,6 +351,9 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+    - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _zkMicroRoughness: {r: 0.05, g: 0.005, b: 0, a: 0}
+    - _zkRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3176289947533206411
 MonoBehaviour:

@@ -20,8 +20,9 @@ float maxNrm(float2 v) { return compMax(abs(v)); }
 //tu moze byt problem s mod vs fmod
 //float hash( float n ) { return fract(sin(mod(n, 3.14))*753.5453123); }
 //vec2 hash2( float n ) { return vec2(hash(n), hash(1.1 + n)); }
-float hash( float n ) { return frac(sin(fmod(n, 3.14))*753.5453123); }
-float2 hash2( float n ) { return float2(hash(n), hash(1.1 + n)); }
+float hash(float n) { return frac(sin(fmod(n, 3.14)) * 753.5453123); }
+float2 hash2(float n) { return float2(hash(n), hash(1.1 + n)); }
+
 float2x2 inverse2(float2x2 m)
 {
     return float2x2(m[1][1], -m[0][1], -m[1][0], m[0][0]) / (m[0][0] * m[1][1] - m[0][1] * m[1][0]);
@@ -66,7 +67,7 @@ float binomial_interp(float u, float N, float p)
 {
     if (p >= 1.0)
         return N;
-    else if (p <= 1e-30)
+    if (p <= 1e-30)
         return 0.0;
 
     // convert to distribution on ints while retaining expected value
@@ -83,9 +84,9 @@ float binomial_interp(float u, float N, float p)
     float2 ps = float2(p1, p2);
 
     // compute the two corresponding binomials in parallel
-    float2 pm = pow(1.0 - ps, float2(N,N));
+    float2 pm = pow(1.0 - ps, float2(N, N));
     float2 cp = pm;
-    float2 r = float2(N,N);
+    float2 r = float2(N, N);
 
     float i = 0.0;
     // this should actually be < N, no dynamic loops in ShaderToy right now
@@ -127,21 +128,20 @@ float approx_binomial(float u, float N, float p)
         float e = N * p;
         float v = N * p * max(1.0 - p, 0.0);
         float std = sqrt(v);
-        float k = e + erfinv(lerp(-.999999, 0.999999, u)) * std;//was mix
+        float k = e + erfinv(lerp(-.999999, 0.999999, u)) * std; //was mix
         return min(max(k, 0.0), N);
     }
-    else
-        return binomial_interp(u, N, p);
+    return binomial_interp(u, N, p);
 }
 
 //----------------------------------------------------------------------
 
 float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
-    float3x3 ctf, float3 lig, float3 nor, float3 view,
-    float2 roughness, float2 microRoughness,
-    float searchConeAngle, float variation, float dynamicRange, float density)
+              float3x3 ctf, float3 lig, float3 nor, float3 view,
+              float2 roughness, float2 microRoughness,
+              float searchConeAngle, float variation, float dynamicRange, float density)
 {
-    float3 col = float3(0,0,0);
+    float3 col = float3(0, 0, 0);
 
     // Compute pixel footprint in texture space, step size w.r.t. anisotropy of the footprint
     float2x2 uvToPx = inverse2(float2x2(duvdx, duvdy));
@@ -149,7 +149,7 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
 
     // material
     float2 mesoRoughness = sqrt(max(roughness * roughness - microRoughness * microRoughness,
-        float2(1.e-12,1.e-12)));
+                                    float2(1.e-12, 1.e-12)));
     // optimizer fail, max 0 removed
 
     // Anisotropic compression of the grid
@@ -159,9 +159,9 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
     // Compute half vector (w.r.t. dir light)
     //normalize((vertPos-lightPos) + (vertPos-camPos))
     float3 hvW = normalize(lig + view);
-    
+
     //float3 hv = normalize(mul(hvW,ctf)); //was just *
-    float3 hv = normalize(mul(ctf,hvW)); 
+    float3 hv = normalize(mul(ctf, hvW));
     float2 h = hv.xy / hv.z;
     float2 h2 = 0.75 * hv.xy / (hv.z + 1.0);
     // Anisotropic compression of the slope-domain grid
@@ -182,7 +182,7 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
     pmf = min(pmf, 1.0);
 
     // noise coordinate (decorrelate interleaved grid)
-    texCO += float2(100.0,100.0);
+    texCO += float2(100.0, 100.0);
     // apply anisotropy _after_ footprint estimation
     texCO *= texAnisotropy;
 
@@ -198,11 +198,10 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
     // float2 skewCorr2 = -mul(uvToPx , uvLongAxis) / mul(uvToPx , uvShortAxis);
     // float skewCorr =( abs(mul(uvToPx,uvShortAxis).x) > abs(mul(uvToPx,uvShortAxis).y) )?
     //                       skewCorr2.x : skewCorr2.y;
-    
-    float2 skewCorr2 = -mul(uvLongAxis,uvToPx) / mul(uvShortAxis,uvToPx);
-    float skewCorr = abs(mul(uvShortAxis,uvToPx).x) > abs(mul(uvShortAxis,uvToPx).y) ?
-                         skewCorr2.x : skewCorr2.y;
-    
+
+    float2 skewCorr2 = -mul(uvLongAxis, uvToPx) / mul(uvShortAxis, uvToPx);
+    float skewCorr = abs(mul(uvShortAxis, uvToPx).x) > abs(mul(uvShortAxis, uvToPx).y) ? skewCorr2.x : skewCorr2.y;
+
     skewCorr *= dot(texAnisotropy, uvShortAxis) / dot(texAnisotropy, uvLongAxis);
 
     float isoUVPP = dot(uvPP, uvShortAxis);
@@ -235,16 +234,15 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
 
         // Resulting compositing values for a current layer
         float weight = 0.0;
-        float3 reflection = float3(0.0,0.0,0.0);
+        float3 reflection = float3(0.0, 0.0, 0.0);
 
         // March along the long axis
-        float2 uvo = float2(0.0,0.0), uv = uvbs, uvio = float2(0.0,0.0), uvi = uvbi;
+        float2 uvo = float2(0.0, 0.0), uv = uvbs, uvio = float2(0.0, 0.0), uvi = uvbi;
         for (int iter1 = 0; iter1 < 18; ++iter1) // horrible WebGL-compatible static for loop
         {
             // for cond:
             if (dot(uvo, uvLongAxis) < dot(uveo, uvLongAxis) && iter < iterThreshold)
             {
-                
             }
             else
                 break;
@@ -266,14 +264,13 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
                 // for cond:
                 if (dot(uv, uvShortAxis) < uvShortEnd && iter < iterThreshold)
                 {
-                    
                 }
                 else
                     break;
 
                 // Compute interleaved cell index
                 //ifloat2 cellIdx = ifloat2(uvi + float2(.5));
-                int2 cellIdx = int2(uvi + float2(0.5,0.5));
+                int2 cellIdx = int2(uvi + float2(0.5, 0.5));
                 cellIdx = multilevelGridIdx(cellIdx);
 
                 // Randomize a glint based on a texture-space id of current grid cell
@@ -287,7 +284,7 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
                 // Randomize glint sizes within this layer
                 float var_u = hash(float((cellIdx.x + cellIdx.y * 763 + coneIdx.x + coneIdx.y * 577)));
                 float mls = 1.0 + variation * erfinv(lerp(-0.999, 0.999, var_u)); //was lerp
-                if (mls <= 0.0) mls = frac(mls) / (1.0 - mls);//was fract
+                if (mls <= 0.0) mls = frac(mls) / (1.0 - mls); //was fract
                 mls = max(mls, 1.e-12);
 
                 // Bilinear interpolation using coverage made by areas of two rects
@@ -336,7 +333,7 @@ float3 glints(float2 texCO, float2 duvdx, float2 duvdy,
 
             // for incr:
             uvo += uvPC * uvLongAxis, uv = uvbs + uvo,
-            uvio += uvLongAxis, uvi = uvbi + uvio;
+                uvio += uvLongAxis, uvi = uvbi + uvio;
         }
 
         #ifdef DEBUG

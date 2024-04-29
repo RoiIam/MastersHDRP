@@ -272,7 +272,7 @@ Material:
     - _chMicrofacetRelativeArea: 0.5
     - _dbMaxNDF: 0.5
     - _dbTargetNDF: 0.5
-    - _glintsMethod: 3
+    - _glintsMethod: 1
     - _maxNDF: 0.326
     - _targetNDF: 0.5
     - _wbNoiseAmmount: 0

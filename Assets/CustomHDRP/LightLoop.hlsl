@@ -13,9 +13,10 @@
 // LightLoop
 // ----------------------------------------------------------------------------
 
-void ApplyDebugToLighting(LightLoopContext context, inout BuiltinData builtinData, inout AggregateLighting aggregateLighting)
+void ApplyDebugToLighting(LightLoopContext context, inout BuiltinData builtinData,
+                          inout AggregateLighting aggregateLighting)
 {
-#ifdef DEBUG_DISPLAY
+    #ifdef DEBUG_DISPLAY
     if (_DebugLightingMode >= DEBUGLIGHTINGMODE_DIFFUSE_LIGHTING && _DebugLightingMode <= DEBUGLIGHTINGMODE_EMISSIVE_LIGHTING)
     {
         if (_DebugLightingMode == DEBUGLIGHTINGMODE_SPECULAR_LIGHTING ||
@@ -60,9 +61,9 @@ void ApplyDebugToLighting(LightLoopContext context, inout BuiltinData builtinDat
             _DebugLightingMode == DEBUGLIGHTINGMODE_DIRECT_SPECULAR_LIGHTING ||
             _DebugLightingMode == DEBUGLIGHTINGMODE_REFLECTION_LIGHTING ||
             _DebugLightingMode == DEBUGLIGHTINGMODE_REFRACTION_LIGHTING
-#if (SHADERPASS != SHADERPASS_DEFERRED_LIGHTING)
+    #if (SHADERPASS != SHADERPASS_DEFERRED_LIGHTING)
             || _DebugLightingMode == DEBUGLIGHTINGMODE_EMISSIVE_LIGHTING // With deferred, Emissive is store in builtinData.bakeDiffuseLighting (See Lit.hlsl EncodeToGbuffer)
-#endif
+    #endif
             )
         {
             builtinData.bakeDiffuseLighting = real3(0.0, 0.0, 0.0);
@@ -82,7 +83,7 @@ void ApplyDebugToLighting(LightLoopContext context, inout BuiltinData builtinDat
         aggregateLighting.indirect.specularTransmitted = real3(0.0, 0.0, 0.0);
         builtinData.emissiveColor = real3(0.0, 0.0, 0.0);
     }
-#endif
+    #endif
 }
 
 bool UseScreenSpaceShadow(DirectionalLightData light, float3 normalWS)
@@ -91,14 +92,16 @@ bool UseScreenSpaceShadow(DirectionalLightData light, float3 normalWS)
     // - We have a ray trace shadow in which case we have no valid signal for a transmission and we need to fallback on the rasterized shadow
     // - We have a screen space shadow and it already contains the transmission shadow and we can use it straight away
     bool visibleLight = dot(normalWS, -light.forward) > 0.0;
-    bool validScreenSpaceShadow = (light.screenSpaceShadowIndex & SCREEN_SPACE_SHADOW_INDEX_MASK) != INVALID_SCREEN_SPACE_SHADOW;
+    bool validScreenSpaceShadow = (light.screenSpaceShadowIndex & SCREEN_SPACE_SHADOW_INDEX_MASK) !=
+        INVALID_SCREEN_SPACE_SHADOW;
     bool rayTracedShadow = (light.screenSpaceShadowIndex & RAY_TRACED_SCREEN_SPACE_SHADOW_FLAG) != 0;
     return (validScreenSpaceShadow && ((rayTracedShadow && visibleLight) || !rayTracedShadow));
 }
 
-void ApplyDebug(LightLoopContext context, PositionInputs posInput, BSDFData bsdfData, inout LightLoopOutput lightLoopOutput)
+void ApplyDebug(LightLoopContext context, PositionInputs posInput, BSDFData bsdfData,
+                inout LightLoopOutput lightLoopOutput)
 {
-#ifdef DEBUG_DISPLAY
+    #ifdef DEBUG_DISPLAY
     if (_DebugLightingMode == DEBUGLIGHTINGMODE_LUX_METER)
     {
         lightLoopOutput.specularLighting = float3(0.0, 0.0, 0.0); // Disable specular lighting
@@ -131,13 +134,13 @@ void ApplyDebug(LightLoopContext context, PositionInputs posInput, BSDFData bsdf
                 {
                     DirectionalLightData light = _DirectionalLightDatas[_DirectionalShadowIndex];
 
-#if defined(SCREEN_SPACE_SHADOWS_ON) && !defined(_SURFACE_TYPE_TRANSPARENT)
+    #if defined(SCREEN_SPACE_SHADOWS_ON) && !defined(_SURFACE_TYPE_TRANSPARENT)
                     if (UseScreenSpaceShadow(light, bsdfData.normalWS))
                     {
                         shadow = GetScreenSpaceColorShadow(posInput, light.screenSpaceShadowIndex).SHADOW_TYPE_SWIZZLE;
                     }
                     else
-#endif
+    #endif
                     {
                         float3 L = -light.forward;
                         shadow = GetDirectionalShadowAttenuation(context.shadowContext,
@@ -174,6 +177,7 @@ void ApplyDebug(LightLoopContext context, PositionInputs posInput, BSDFData bsdf
         lightLoopOutput.diffuseLighting = SAMPLE_TEXTURE2D_LOD(_DebugMatCapTexture, s_linear_repeat_sampler, UV, 0).rgb * (_MatcapMixAlbedo > 0  ? defaultColor.rgb * _MatcapViewScale : 1.0f);
 
     #ifdef OUTPUT_SPLIT_LIGHTING // Work as matcap view is only call in forward, OUTPUT_SPLIT_LIGHTING isn't define in deferred.compute
+
         if (_EnableSubsurfaceScattering != 0 && ShouldOutputSplitLighting(bsdfData))
         {
             lightLoopOutput.specularLighting = lightLoopOutput.diffuseLighting;
@@ -181,19 +185,20 @@ void ApplyDebug(LightLoopContext context, PositionInputs posInput, BSDFData bsdf
     #endif
 
     }
-#endif
+    #endif
 }
 
-void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInputs posInput, PreLightData preLightData, BSDFData bsdfData, BuiltinData builtinData, uint featureFlags,
-                out LightLoopOutput lightLoopOutput)
+void LightLoop(float3 V, FragInputs input, SurfaceData surfaceData, PositionInputs posInput, PreLightData preLightData,
+               BSDFData bsdfData, BuiltinData builtinData, uint featureFlags,
+               out LightLoopOutput lightLoopOutput)
 {
     // Init LightLoop output structure
     ZERO_INITIALIZE(LightLoopOutput, lightLoopOutput);
 
     LightLoopContext context;
 
-    context.shadowContext    = InitShadowContext();
-    context.shadowValue      = 1;
+    context.shadowContext = InitShadowContext();
+    context.shadowValue = 1;
     context.sampleReflection = 0;
     context.splineVisibility = -1;
 
@@ -212,37 +217,39 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         {
             DirectionalLightData light = _DirectionalLightDatas[_DirectionalShadowIndex];
 
-#if defined(SCREEN_SPACE_SHADOWS_ON) && !defined(_SURFACE_TYPE_TRANSPARENT)
+            #if defined(SCREEN_SPACE_SHADOWS_ON) && !defined(_SURFACE_TYPE_TRANSPARENT)
             if (UseScreenSpaceShadow(light, bsdfData.normalWS))
             {
                 context.shadowValue = GetScreenSpaceColorShadow(posInput, light.screenSpaceShadowIndex).SHADOW_TYPE_SWIZZLE;
             }
             else
-#endif
+            #endif
             {
                 // TODO: this will cause us to load from the normal buffer first. Does this cause a performance problem?
                 float3 L = -light.forward;
 
                 // Is it worth sampling the shadow map?
-                if ((light.lightDimmer > 0) && (light.shadowDimmer > 0) && // Note: Volumetric can have different dimmer, thus why we test it here
+                if ((light.lightDimmer > 0) && (light.shadowDimmer > 0) &&
+                    // Note: Volumetric can have different dimmer, thus why we test it here
                     IsNonZeroBSDF(V, L, preLightData, bsdfData) &&
                     !ShouldEvaluateThickObjectTransmission(V, L, preLightData, bsdfData, light.shadowIndex))
                 {
                     float3 positionWS = posInput.positionWS;
 
-#ifdef LIGHT_EVALUATION_SPLINE_SHADOW_BIAS
+                    #ifdef LIGHT_EVALUATION_SPLINE_SHADOW_BIAS
                     positionWS += L * GetSplineOffsetForShadowBias(bsdfData);
-#endif
+                    #endif
                     context.shadowValue = GetDirectionalShadowAttenuation(context.shadowContext,
-                                                                          posInput.positionSS, positionWS, GetNormalForShadowBias(bsdfData),
+                                                                          posInput.positionSS, positionWS,
+                                                                          GetNormalForShadowBias(bsdfData),
                                                                           light.shadowIndex, L);
 
-#ifdef LIGHT_EVALUATION_SPLINE_SHADOW_VISIBILITY_SAMPLE
+                    #ifdef LIGHT_EVALUATION_SPLINE_SHADOW_VISIBILITY_SAMPLE
                     // Tap the shadow a second time for strand visibility term.
                     context.splineVisibility = GetDirectionalShadowAttenuation(context.shadowContext,
                                                                                posInput.positionSS, posInput.positionWS, GetNormalForShadowBias(bsdfData),
                                                                                light.shadowIndex, L);
-#endif
+                    #endif
                 }
             }
         }
@@ -257,15 +264,15 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
     {
         uint lightCount, lightStart;
 
-#ifndef LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
+        #ifndef LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
         GetCountAndStart(posInput, LIGHTCATEGORY_PUNCTUAL, lightStart, lightCount);
-#else   // LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
+        #else   // LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
         lightCount = _PunctualLightCount;
         lightStart = 0;
-#endif
+        #endif
 
         bool fastPath = false;
-    #if SCALARIZE_LIGHT_LOOP
+        #if SCALARIZE_LIGHT_LOOP
         uint lightStartLane0;
         fastPath = IsFastPath(lightStart, lightStartLane0);
 
@@ -273,7 +280,7 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         {
             lightStart = lightStartLane0;
         }
-    #endif
+        #endif
 
         // Scalarized loop. All lights that are in a tile/cluster touched by any pixel in the wave are loaded (scalar load), only the one relevant to current thread/pixel are processed.
         // For clarity, the following code will follow the convention: variables starting with s_ are meant to be wave uniform (meant for scalar register),
@@ -285,11 +292,11 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         UNITY_LOOP while (v_lightListOffset < lightCount) //RCC unity_loop
         {
             v_lightIdx = FetchIndex(lightStart, v_lightListOffset);
-#if SCALARIZE_LIGHT_LOOP
+            #if SCALARIZE_LIGHT_LOOP
             uint s_lightIdx = ScalarizeElementIndex(v_lightIdx, fastPath);
-#else
+            #else
             uint s_lightIdx = v_lightIdx;
-#endif
+            #endif
             if (s_lightIdx == -1)
                 break;
 
@@ -303,7 +310,8 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
                 v_lightListOffset++;
                 if (IsMatchingLightLayer(s_lightData.lightLayers, builtinData.renderingLayers))
                 {
-                    DirectLighting lighting = EvaluateBSDF_Punctual(context,input,surfaceData, V, posInput, preLightData, s_lightData, bsdfData, builtinData);
+                    DirectLighting lighting = EvaluateBSDF_Punctual(context, input, surfaceData, V, posInput,
+                                                                    preLightData, s_lightData, bsdfData, builtinData);
                     AccumulateDirectLighting(lighting, aggregateLighting);
                 }
             }
@@ -313,15 +321,16 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
 
     // Define macro for a better understanding of the loop
     // TODO: this code is now much harder to understand...
-#define EVALUATE_BSDF_ENV_SKY(envLightData, TYPE, type) \
+    #define EVALUATE_BSDF_ENV_SKY(envLightData, TYPE, type) \
         IndirectLighting lighting = EvaluateBSDF_Env(context, V, posInput, preLightData, envLightData, bsdfData, envLightData.influenceShapeType, MERGE_NAME(GPUIMAGEBASEDLIGHTINGTYPE_, TYPE), MERGE_NAME(type, HierarchyWeight)); \
         AccumulateIndirectLighting(lighting, aggregateLighting);
 
-// Environment cubemap test lightlayers, sky don't test it
-#define EVALUATE_BSDF_ENV(envLightData, TYPE, type) if (IsMatchingLightLayer(envLightData.lightLayers, builtinData.renderingLayers)) { EVALUATE_BSDF_ENV_SKY(envLightData, TYPE, type) }
+    // Environment cubemap test lightlayers, sky don't test it
+    #define EVALUATE_BSDF_ENV(envLightData, TYPE, type) if (IsMatchingLightLayer(envLightData.lightLayers, builtinData.renderingLayers)) { EVALUATE_BSDF_ENV_SKY(envLightData, TYPE, type) }
 
     // First loop iteration
-    if (featureFlags & (LIGHTFEATUREFLAGS_ENV | LIGHTFEATUREFLAGS_SKY | LIGHTFEATUREFLAGS_SSREFRACTION | LIGHTFEATUREFLAGS_SSREFLECTION))
+    if (featureFlags & (LIGHTFEATUREFLAGS_ENV | LIGHTFEATUREFLAGS_SKY | LIGHTFEATUREFLAGS_SSREFRACTION |
+        LIGHTFEATUREFLAGS_SSREFLECTION))
     {
         float reflectionHierarchyWeight = 0.0; // Max: 1.0
         float refractionHierarchyWeight = _EnableSSRefraction ? 0.0 : 1.0; // Max: 1.0
@@ -329,18 +338,18 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         uint envLightStart, envLightCount;
 
         // Fetch first env light to provide the scene proxy for screen space computation
-#ifndef LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
+        #ifndef LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
         GetCountAndStart(posInput, LIGHTCATEGORY_ENV, envLightStart, envLightCount);
-#else   // LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
+        #else   // LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
         envLightCount = _EnvLightCount;
         envLightStart = 0;
-#endif
+        #endif
 
         bool fastPath = false;
-    #if SCALARIZE_LIGHT_LOOP
+        #if SCALARIZE_LIGHT_LOOP
         uint envStartFirstLane;
         fastPath = IsFastPath(envLightStart, envStartFirstLane);
-    #endif
+        #endif
 
         // Reflection / Refraction hierarchy is
         //  1. Screen Space Refraction / Reflection
@@ -348,15 +357,15 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         //  3. Sky Reflection / Refraction
 
         // Apply SSR.
-    #if (defined(_SURFACE_TYPE_TRANSPARENT) && !defined(_DISABLE_SSR_TRANSPARENT)) || (!defined(_SURFACE_TYPE_TRANSPARENT) && !defined(_DISABLE_SSR))
+        #if (defined(_SURFACE_TYPE_TRANSPARENT) && !defined(_DISABLE_SSR_TRANSPARENT)) || (!defined(_SURFACE_TYPE_TRANSPARENT) && !defined(_DISABLE_SSR))
         {
             IndirectLighting indirect = EvaluateBSDF_ScreenSpaceReflection(posInput, preLightData, bsdfData,
                                                                            reflectionHierarchyWeight);
             AccumulateIndirectLighting(indirect, aggregateLighting);
         }
-    #endif
+        #endif
 
-#if HAS_REFRACTION
+        #if HAS_REFRACTION
 
         // For refraction to be stable, we should reuse the same refraction probe for the whole object.
         // Otherwise as if the object span different tiles it could produce a different refraction probe picking and thus have visual artifacts.
@@ -395,7 +404,7 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
             IndirectLighting lighting = EvaluateBSDF_ScreenspaceRefraction(context, V, posInput, preLightData, bsdfData, envLightData, refractionHierarchyWeight);
             AccumulateIndirectLighting(lighting, aggregateLighting);
         }
-#endif
+        #endif
 
         //---------------------------------------
         // Sum up of operations on indirect diffuse lighting
@@ -438,33 +447,34 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         // If we use SSGI/RTGI/Mixed effect, we are fully replacing the value of builtinData.bakeDiffuseLighting which is 0 at this step.
         // If we are APV we only replace the non lightmaps part.
         bool replaceBakeDiffuseLighting = false;
-#if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
+        #if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
         float3 lightInReflDir = float3(-1, -1, -1); // This variable is used with APV for reflection probe normalization - see code for LIGHTFEATUREFLAGS_ENV
-#endif
+        #endif
 
-#if !defined(_SURFACE_TYPE_TRANSPARENT) // No SSGI/RTGI/Mixed effect on transparent
+        #if !defined(_SURFACE_TYPE_TRANSPARENT) // No SSGI/RTGI/Mixed effect on transparent
         if (_IndirectDiffuseMode != INDIRECTDIFFUSEMODE_OFF)
             replaceBakeDiffuseLighting = true;
-#endif
-#if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
+        #endif
+        #if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
         if (!builtinData.isLightmap)
             replaceBakeDiffuseLighting = true;
-#endif
+        #endif
 
         if (replaceBakeDiffuseLighting)
         {
             BuiltinData tempBuiltinData;
             ZERO_INITIALIZE(BuiltinData, tempBuiltinData);
 
-#if !defined(_SURFACE_TYPE_TRANSPARENT)
+            #if !defined(_SURFACE_TYPE_TRANSPARENT)
             if (_IndirectDiffuseMode != INDIRECTDIFFUSEMODE_OFF)
             {
-                tempBuiltinData.bakeDiffuseLighting = LOAD_TEXTURE2D_X(_IndirectDiffuseTexture, posInput.positionSS).xyz * GetInverseCurrentExposureMultiplier();
+                tempBuiltinData.bakeDiffuseLighting = LOAD_TEXTURE2D_X(_IndirectDiffuseTexture, posInput.positionSS).xyz
+                    * GetInverseCurrentExposureMultiplier();
             }
             else
-#endif
+            #endif
             {
-#if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
+                #if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
                 if (_EnableProbeVolumes)
                 {
                     // Reflect normal to get lighting for reflection probe tinting
@@ -485,32 +495,31 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
                     tempBuiltinData.bakeDiffuseLighting = EvaluateAmbientProbe(bsdfData.normalWS);
                     tempBuiltinData.backBakeDiffuseLighting = EvaluateAmbientProbe(-bsdfData.normalWS);
                 }
-#endif
+                #endif
             }
 
-#ifdef MODIFY_BAKED_DIFFUSE_LIGHTING
-#ifdef DEBUG_DISPLAY
+            #ifdef MODIFY_BAKED_DIFFUSE_LIGHTING
+            #ifdef DEBUG_DISPLAY
             // When the lux meter is enabled, we don't want the albedo of the material to modify the diffuse baked lighting
             if (_DebugLightingMode != DEBUGLIGHTINGMODE_LUX_METER)
-#endif
-                ModifyBakedDiffuseLighting(V, posInput, preLightData, bsdfData, tempBuiltinData);
-#endif
+            #endif
+            ModifyBakedDiffuseLighting(V, posInput, preLightData, bsdfData, tempBuiltinData);
+            #endif
             // This is applied only on bakeDiffuseLighting as ModifyBakedDiffuseLighting combine both bakeDiffuseLighting and backBakeDiffuseLighting
             tempBuiltinData.bakeDiffuseLighting *= GetIndirectDiffuseMultiplier(builtinData.renderingLayers);
 
             ApplyDebugToBuiltinData(tempBuiltinData); // This will not affect emissive as we don't use it
 
-#if defined(DEBUG_DISPLAY) && (SHADERPASS == SHADERPASS_DEFERRED_LIGHTING)
+            #if defined(DEBUG_DISPLAY) && (SHADERPASS == SHADERPASS_DEFERRED_LIGHTING)
             // We need to handle the specific case of deferred for debug lighting mode here
             if (_DebugLightingMode == DEBUGLIGHTINGMODE_EMISSIVE_LIGHTING)
             {
                 tempBuiltinData.bakeDiffuseLighting = real3(0.0, 0.0, 0.0);
             }
-#endif
+            #endif
 
             // Replace original data
             builtinData.bakeDiffuseLighting = tempBuiltinData.bakeDiffuseLighting;
-
         } // if (replaceBakeDiffuseLighting)
 
         // Reflection probes are sorted by volume (in the increasing order).
@@ -518,12 +527,12 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         {
             context.sampleReflection = SINGLE_PASS_CONTEXT_SAMPLE_REFLECTION_PROBES;
 
-        #if SCALARIZE_LIGHT_LOOP
+            #if SCALARIZE_LIGHT_LOOP
             if (fastPath)
             {
                 envLightStart = envStartFirstLane;
             }
-        #endif
+            #endif
 
             // Scalarized loop, same rationale of the punctual light version
             uint v_envLightListOffset = 0;
@@ -531,15 +540,15 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
             while (v_envLightListOffset < envLightCount)
             {
                 v_envLightIdx = FetchIndex(envLightStart, v_envLightListOffset);
-#if SCALARIZE_LIGHT_LOOP
+                #if SCALARIZE_LIGHT_LOOP
                 uint s_envLightIdx = ScalarizeElementIndex(v_envLightIdx, fastPath);
-#else
+                #else
                 uint s_envLightIdx = v_envLightIdx;
-#endif
+                #endif
                 if (s_envLightIdx == -1)
                     break;
 
-                EnvLightData s_envLightData = FetchEnvLight(s_envLightIdx);    // Scalar load.
+                EnvLightData s_envLightData = FetchEnvLight(s_envLightIdx); // Scalar load.
 
                 // If current scalar and vector light index match, we process the light. The v_envLightListOffset for current thread is increased.
                 // Note that the following should really be ==, however, since helper lanes are not considered by WaveActiveMin, such helper lanes could
@@ -551,15 +560,18 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
                     {
                         if (IsMatchingLightLayer(s_envLightData.lightLayers, builtinData.renderingLayers))
                         {
-                            IndirectLighting lighting = EvaluateBSDF_Env(context, V, posInput, preLightData, s_envLightData, bsdfData, s_envLightData.influenceShapeType, GPUIMAGEBASEDLIGHTINGTYPE_REFLECTION, reflectionHierarchyWeight);
-#if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
+                            IndirectLighting lighting = EvaluateBSDF_Env(
+                                context, V, posInput, preLightData, s_envLightData, bsdfData,
+                                s_envLightData.influenceShapeType, GPUIMAGEBASEDLIGHTINGTYPE_REFLECTION,
+                                reflectionHierarchyWeight);
+                            #if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
 
                             if (s_envLightData.normalizeWithAPV > 0 && all(lightInReflDir >= 0))
                             {
                                 float factor = GetReflectionProbeNormalizationFactor(lightInReflDir, bsdfData.normalWS, s_envLightData.L0L1, s_envLightData.L2_1, s_envLightData.L2_2);
                                 lighting.specularReflected *= factor;
                             }
-#endif
+                            #endif
 
                             AccumulateIndirectLighting(lighting, aggregateLighting);
                         }
@@ -574,7 +586,6 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
                         EVALUATE_BSDF_ENV(s_envLightData, REFRACTION, refraction);
                     }
                 }
-
             }
         }
 
@@ -599,8 +610,8 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
             }
         }
     }
-#undef EVALUATE_BSDF_ENV
-#undef EVALUATE_BSDF_ENV_SKY
+    #undef EVALUATE_BSDF_ENV
+    #undef EVALUATE_BSDF_ENV_SKY
 
     uint i = 0; // Declare once to avoid the D3D11 compiler warning.
     if (featureFlags & LIGHTFEATUREFLAGS_DIRECTIONAL)
@@ -609,23 +620,24 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         {
             if (IsMatchingLightLayer(_DirectionalLightDatas[i].lightLayers, builtinData.renderingLayers))
             {
-                DirectLighting lighting = EvaluateBSDF_Directional(context, V, posInput, preLightData, _DirectionalLightDatas[i], bsdfData, builtinData);
+                DirectLighting lighting = EvaluateBSDF_Directional(context, V, posInput, preLightData,
+                                                                   _DirectionalLightDatas[i], bsdfData, builtinData);
                 AccumulateDirectLighting(lighting, aggregateLighting);
             }
         }
     }
 
-#if SHADEROPTIONS_AREA_LIGHTS
+    #if SHADEROPTIONS_AREA_LIGHTS
     if (featureFlags & LIGHTFEATUREFLAGS_AREA)
     {
         uint lightCount, lightStart;
 
-    #ifndef LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
+        #ifndef LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
         GetCountAndStart(posInput, LIGHTCATEGORY_AREA, lightStart, lightCount);
-    #else
+        #else
         lightCount = _AreaLightCount;
         lightStart = _PunctualLightCount;
-    #endif
+        #endif
 
         // COMPILER BEHAVIOR WARNING!
         // If rectangle lights are before line lights, the compiler will duplicate light matrices in VGPR because they are used differently between the two types of lights.
@@ -636,17 +648,18 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
         {
             i = 0;
 
-            uint      last      = lightCount - 1;
+            uint last = lightCount - 1;
             LightData lightData = FetchLight(lightStart, i);
 
             while (i <= last && lightData.lightType == GPULIGHTTYPE_TUBE)
             {
                 lightData.lightType = GPULIGHTTYPE_TUBE; // Enforce constant propagation
-                lightData.cookieMode = COOKIEMODE_NONE;  // Enforce constant propagation
+                lightData.cookieMode = COOKIEMODE_NONE; // Enforce constant propagation
 
                 if (IsMatchingLightLayer(lightData.lightLayers, builtinData.renderingLayers))
                 {
-                    DirectLighting lighting = EvaluateBSDF_Area(context, V, posInput, preLightData, lightData, bsdfData, builtinData);
+                    DirectLighting lighting = EvaluateBSDF_Area(context, V, posInput, preLightData, lightData, bsdfData,
+                                                                builtinData);
                     AccumulateDirectLighting(lighting, aggregateLighting);
                 }
 
@@ -659,7 +672,8 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
 
                 if (IsMatchingLightLayer(lightData.lightLayers, builtinData.renderingLayers))
                 {
-                    DirectLighting lighting = EvaluateBSDF_Area(context, V, posInput, preLightData, lightData, bsdfData, builtinData);
+                    DirectLighting lighting = EvaluateBSDF_Area(context, V, posInput, preLightData, lightData, bsdfData,
+                                                                builtinData);
                     AccumulateDirectLighting(lighting, aggregateLighting);
                 }
 
@@ -667,7 +681,7 @@ void LightLoop( float3 V,FragInputs input, SurfaceData surfaceData, PositionInpu
             }
         }
     }
-#endif
+    #endif
 
     ApplyDebugToLighting(context, builtinData, aggregateLighting);
 

@@ -1,4 +1,5 @@
 using UnityEditor.Rendering.HighDefinition;
+
 //little hack is used, we inherit from LightingShaderGraphGUI even though it should be LitGUI but that
 //was really messy, didnt work as intended. instead we just recreate MaterialUIBlockList
 // https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@11.0/manual/hdrp-custom-material-inspector.html

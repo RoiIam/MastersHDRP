@@ -97,142 +97,140 @@ SAMPLER(sampler_LayerInfluenceMaskMap);
 #endif
 
 CBUFFER_START(UnityPerMaterial)
+    // shared constant between lit and layered lit
+    float _AlphaCutoff;
+    float _UseShadowThreshold;
+    float _AlphaCutoffShadow;
+    float _AlphaCutoffPrepass;
+    float _AlphaCutoffPostpass;
+    float4 _DoubleSidedConstants;
+    float _BlendMode;
+    float _EnableBlendModePreserveSpecularLighting;
 
-// shared constant between lit and layered lit
-float _AlphaCutoff;
-float _UseShadowThreshold;
-float _AlphaCutoffShadow;
-float _AlphaCutoffPrepass;
-float _AlphaCutoffPostpass;
-float4 _DoubleSidedConstants;
-float _BlendMode;
-float _EnableBlendModePreserveSpecularLighting;
+    float _PPDMaxSamples;
+    float _PPDMinSamples;
+    float _PPDLodThreshold;
 
-float _PPDMaxSamples;
-float _PPDMinSamples;
-float _PPDLodThreshold;
+    float3 _EmissiveColor;
+    float _AlbedoAffectEmissive;
+    float _EmissiveExposureWeight;
 
-float3 _EmissiveColor;
-float _AlbedoAffectEmissive;
-float _EmissiveExposureWeight;
+    int _SpecularOcclusionMode;
 
-int  _SpecularOcclusionMode;
+    // Transparency
+    float3 _TransmittanceColor;
+    float _Ior;
+    float _ATDistance;
 
-// Transparency
-float3 _TransmittanceColor;
-float _Ior;
-float _ATDistance;
+    // Caution: C# code in BaseLitUI.cs call LightmapEmissionFlagsProperty() which assume that there is an existing "_EmissionColor"
+    // value that exist to identify if the GI emission need to be enabled.
+    // In our case we don't use such a mechanism but need to keep the code quiet. We declare the value and always enable it.
+    // TODO: Fix the code in legacy unity so we can customize the beahvior for GI
+    float3 _EmissionColor;
+    float4 _EmissiveColorMap_ST;
+    float _TexWorldScaleEmissive;
+    float4 _UVMappingMaskEmissive;
 
-// Caution: C# code in BaseLitUI.cs call LightmapEmissionFlagsProperty() which assume that there is an existing "_EmissionColor"
-// value that exist to identify if the GI emission need to be enabled.
-// In our case we don't use such a mechanism but need to keep the code quiet. We declare the value and always enable it.
-// TODO: Fix the code in legacy unity so we can customize the beahvior for GI
-float3 _EmissionColor;
-float4 _EmissiveColorMap_ST;
-float _TexWorldScaleEmissive;
-float4 _UVMappingMaskEmissive;
+    float4 _InvPrimScale; // Only XY are used
 
-float4 _InvPrimScale; // Only XY are used
+    // Specular AA
+    float _EnableGeometricSpecularAA;
+    float _SpecularAAScreenSpaceVariance;
+    float _SpecularAAThreshold;
 
-// Specular AA
-float _EnableGeometricSpecularAA;
-float _SpecularAAScreenSpaceVariance;
-float _SpecularAAThreshold;
+    // Raytracing
+    float _RayTracing;
 
-// Raytracing
-float _RayTracing;
+    #ifndef LAYERED_LIT_SHADER
 
-#ifndef LAYERED_LIT_SHADER
+    // Set of users variables
+    float4 _BaseColor;
 
-// Set of users variables
-float4 _BaseColor;
+    int _UseGlints; //RCC
+    float4 _MyColor; //RCC
+    float _glintsMethod; //RCC
+    float _MaterialID; //RCC
 
-int _UseGlints;//RCC
-float4 _MyColor; //RCC
-float _glintsMethod;//RCC
-float _MaterialID;//RCC
+    //chermain15
+    float2 _chRoughness;
+    float _chLogMicrofacetDensity;
+    float _chMicrofacetRelativeArea;
+    TEXTURE2D_ARRAY(_chSDFDict);
+    SAMPLER(sampler_chSDFDict);
+    //float4 _SampleTexture2DArray_RGBA = SAMPLE_TEXTURE2D_ARRAY(Texture, Sampler, UV, Index);
+    //src https://forum.unity.com/threads/how-to-declare-sample-texture-2d-array-in-hdrp.830757/
 
-//chermain15
-float2 _chRoughness;
-float _chLogMicrofacetDensity;
-float _chMicrofacetRelativeArea;
-TEXTURE2D_ARRAY(_chSDFDict);
-SAMPLER(sampler_chSDFDict);
-//float4 _SampleTexture2DArray_RGBA = SAMPLE_TEXTURE2D_ARRAY(Texture, Sampler, UV, Index);
-//src https://forum.unity.com/threads/how-to-declare-sample-texture-2d-array-in-hdrp.830757/
+    //deliot23
+    float _dbMaxNDF; //RCC
+    float _dbTargetNDF; //RCC
 
-//deliot23
-float _dbMaxNDF;//RCC
-float _dbTargetNDF;//RCC
-
-//zirr16
-float2 _zkRoughness;
-float2 _zkMicroRoughness;
-float _zkSearchConeAngle;
-float _zkVariation;
-float _zkDynamicRange;
-float _zkDenisty;
-
-
-//wang15
-float _wbUseAnisotropy;
-float _wbSparkleSize;
-float _wbSparkleDensity;
-float _wbNoiseDensity;
-float _wbNoiseAmmount;
-float _wbViewAmmount;
+    //zirr16
+    float2 _zkRoughness;
+    float2 _zkMicroRoughness;
+    float _zkSearchConeAngle;
+    float _zkVariation;
+    float _zkDynamicRange;
+    float _zkDenisty;
 
 
-
-float4 _BaseColorMap_ST;
-float4 _BaseColorMap_TexelSize;
-float4 _BaseColorMap_MipInfo;
-
-float _Metallic;
-float _MetallicRemapMin;
-float _MetallicRemapMax;
-float _Smoothness;
-float _SmoothnessRemapMin;
-float _SmoothnessRemapMax;
-float _AORemapMin;
-float _AORemapMax;
-
-float _NormalScale;
-
-float4 _DetailMap_ST;
-float _DetailAlbedoScale;
-float _DetailNormalScale;
-float _DetailSmoothnessScale;
-
-float4 _HeightMap_TexelSize; // Unity facility. This will provide the size of the heightmap to the shader
-
-float _HeightAmplitude;
-float _HeightCenter;
-
-float _Anisotropy;
-
-float _DiffusionProfileHash;
-float _SubsurfaceMask;
-float _Thickness;
-float4 _ThicknessRemap;
+    //wang15
+    float _wbUseAnisotropy;
+    float _wbSparkleSize;
+    float _wbSparkleDensity;
+    float _wbNoiseDensity;
+    float _wbNoiseAmmount;
+    float _wbViewAmmount;
 
 
-float _IridescenceThickness;
-float4 _IridescenceThicknessRemap;
-float _IridescenceMask;
+    float4 _BaseColorMap_ST;
+    float4 _BaseColorMap_TexelSize;
+    float4 _BaseColorMap_MipInfo;
 
-float _CoatMask;
+    float _Metallic;
+    float _MetallicRemapMin;
+    float _MetallicRemapMax;
+    float _Smoothness;
+    float _SmoothnessRemapMin;
+    float _SmoothnessRemapMax;
+    float _AORemapMin;
+    float _AORemapMax;
 
-float4 _SpecularColor;
-float _EnergyConservingSpecularColor;
+    float _NormalScale;
 
-float _TexWorldScale;
-float _InvTilingScale;
-float4 _UVMappingMask;
-float4 _UVDetailsMappingMask;
-float _LinkDetailsWithBase;
+    float4 _DetailMap_ST;
+    float _DetailAlbedoScale;
+    float _DetailNormalScale;
+    float _DetailSmoothnessScale;
 
-#else // LAYERED_LIT_SHADER
+    float4 _HeightMap_TexelSize; // Unity facility. This will provide the size of the heightmap to the shader
+
+    float _HeightAmplitude;
+    float _HeightCenter;
+
+    float _Anisotropy;
+
+    float _DiffusionProfileHash;
+    float _SubsurfaceMask;
+    float _Thickness;
+    float4 _ThicknessRemap;
+
+
+    float _IridescenceThickness;
+    float4 _IridescenceThicknessRemap;
+    float _IridescenceMask;
+
+    float _CoatMask;
+
+    float4 _SpecularColor;
+    float _EnergyConservingSpecularColor;
+
+    float _TexWorldScale;
+    float _InvTilingScale;
+    float4 _UVMappingMask;
+    float4 _UVDetailsMappingMask;
+    float _LinkDetailsWithBase;
+
+    #else // LAYERED_LIT_SHADER
 
 // Set of users variables
 PROP_DECL(float4, _BaseColor);
@@ -331,11 +329,11 @@ PROP_DECL(float4, _UVMappingMask);
 PROP_DECL(float4, _UVDetailsMappingMask);
 PROP_DECL(float, _LinkDetailsWithBase);
 
-#endif // LAYERED_LIT_SHADER
+    #endif // LAYERED_LIT_SHADER
 
-// Tessellation specific
+    // Tessellation specific
 
-#ifdef TESSELLATION_ON
+    #ifdef TESSELLATION_ON
 float _TessellationFactor;
 float _TessellationFactorMinDistance;
 float _TessellationFactorMaxDistance;
@@ -344,7 +342,7 @@ float _TessellationShapeFactor;
 float _TessellationBackFaceCullEpsilon;
 float _TessellationObjectScale;
 float _TessellationTilingScale;
-#endif
+    #endif
 
 CBUFFER_END
 

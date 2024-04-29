@@ -23,6 +23,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     private MaterialProperty wbSparkleDensity;
     private MaterialProperty wbSparkleSize;
 
+    private MaterialProperty wbGlitterStrength;
     private MaterialProperty wbUseAnisotropy;
     private MaterialProperty wbViewAmmount;
     private MaterialProperty zkDenisty;
@@ -60,6 +61,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         zkDenisty = FindProperty("_zkDenisty");
 
         //Wang15
+        wbGlitterStrength = FindProperty("_wbGlitterStrength");
         wbUseAnisotropy = FindProperty("_wbUseAnisotropy");
         wbSparkleSize = FindProperty("_wbSparkleSize");
         wbSparkleDensity = FindProperty("_wbSparkleDensity");
@@ -110,6 +112,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowWangModParams()
     {
+        materialEditor.ShaderProperty(wbGlitterStrength, "Glitter Strength");
         materialEditor.ShaderProperty(wbUseAnisotropy, "UseAnisotropy");
         materialEditor.ShaderProperty(wbSparkleSize, "SparkleSize");
         materialEditor.ShaderProperty(wbSparkleDensity, "SparkleDensity");

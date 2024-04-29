@@ -87,7 +87,7 @@ float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense,
         glittering = 20.0f * lend;
     }
 
-    return float3(glittering, glittering, 1.0f);
+    return float3(glittering, glittering, glittering);
 }
 
 float3 calcGrid(float newSparkle_size, float newSparkle_density, float inoise,
@@ -140,7 +140,7 @@ float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewV
     float3 n_view_dir = normalize(vViewVec);
 
 
-    float3 glittering = float3(0.0f, 0.0f, 1.0f);
+    float3 glittering = float3(0.0f, 0.0f, 0.0f);
 
     for (int i = 1; i < 3; i++)
     {

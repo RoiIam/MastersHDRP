@@ -36,6 +36,7 @@ Shader "HDRP/CustomLit"
         _zkDenisty("Denisty", Range(1000,200000)) = 100000
 
         //RCC properties of wang15
+        _wbGlitterStrength("Glitter Strength", Range(1, 1000)) = 1000
         [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 1.0
         _wbSparkleSize("Sparkle Size", Range(0.01, 1.0)) = 0.015
         _wbSparkleDensity("Sparkle Density", Range(0.1, 10)) = 5

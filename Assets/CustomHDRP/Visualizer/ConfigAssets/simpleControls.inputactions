@@ -42,9 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Pitch",
+                    "type": "Value",
+                    "id": "cbb3f7ae-8977-45bb-bde0-d34e7512f7b3",
+                    "expectedControlType": "Analog",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Zoom",
                     "type": "PassThrough",
-                    "id": "cbb3f7ae-8977-45bb-bde0-d34e7512f7b3",
+                    "id": "fa6735ff-fef8-41e5-988d-d2e66e850d1b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -274,6 +283,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1fcce8c6-d362-4b0e-9c94-55a16d1a647a",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "LookRMB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c57f8ae3-c1e4-4274-82d3-148e459bf696",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
@@ -285,12 +305,12 @@
                 },
                 {
                     "name": "",
-                    "id": "1fcce8c6-d362-4b0e-9c94-55a16d1a647a",
-                    "path": "<Mouse>/rightButton",
+                    "id": "98c45595-e76c-4295-9dcd-eb23a7211cb7",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "LookRMB",
+                    "action": "Pitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

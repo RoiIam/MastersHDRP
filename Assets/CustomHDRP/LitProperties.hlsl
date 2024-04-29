@@ -151,7 +151,7 @@ CBUFFER_START(UnityPerMaterial)
     float _glintsMethod; //RCC
     float _MaterialID; //RCC
 
-    //chermain15
+    //chermain20
     float2 _chRoughness;
     float _chLogMicrofacetDensity;
     float _chMicrofacetRelativeArea;
@@ -174,6 +174,7 @@ CBUFFER_START(UnityPerMaterial)
 
 
     //wang15
+    float _wbGlitterStrength;
     float _wbUseAnisotropy;
     float _wbSparkleSize;
     float _wbSparkleDensity;
@@ -258,6 +259,7 @@ PROP_DECL(float, _zkDynamicRange);
 PROP_DECL(float, _zkDenisty);
 
 //wang15
+PROP_DECL(float, _wbGlitterStrength);
 PROP_DECL(float, _wbUseAnisotropy);
 PROP_DECL(float, _wbSparkleDensity);
 PROP_DECL(float, _wbNoiseAmmount);

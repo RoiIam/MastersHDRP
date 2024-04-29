@@ -268,13 +268,18 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
-    - _chLogMicrofacetDensity: 21
-    - _chMicrofacetRelativeArea: 0.5
+    - _chDictionary_Alpha: 0.5
+    - _chDictionary_N: 192
+    - _chDictionary_NLevels: 16
+    - _chLogMicrofacetDensity: 26.43
+    - _chMaxAnisotropy: 8
+    - _chMicrofacetRelativeArea: 0.105
     - _dbMaxNDF: 0.5
     - _dbTargetNDF: 0.5
     - _glintsMethod: 1
     - _maxNDF: 0.326
     - _targetNDF: 0.5
+    - _wbGlitterStrength: 1000
     - _wbNoiseAmmount: 0
     - _wbNoiseDensity: 0
     - _wbSparkleDensity: 5
@@ -308,6 +313,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+    - _chMaterial_Alpha: {r: 0.43, g: 0.43, b: 0, a: 0}
     - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _zkMicroRoughness: {r: 0.005, g: 0.005, b: 0, a: 0}
     - _zkRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}

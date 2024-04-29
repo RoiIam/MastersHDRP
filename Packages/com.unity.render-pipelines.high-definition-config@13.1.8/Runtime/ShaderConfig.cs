@@ -17,7 +17,7 @@ namespace UnityEngine.Rendering.HighDefinition
     /// </summary>
     /// <remarks>This enum will generate the proper shader defines.</remarks>
     /// <seealso cref="ShaderConfig" />
-    [GenerateHLSL()]
+    [GenerateHLSL]
     public enum ShaderOptions
     {
         /// <summary>Supports colored shadows in shaders.</summary>

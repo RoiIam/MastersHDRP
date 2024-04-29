@@ -178,6 +178,9 @@ void ApplyDebug(LightLoopContext context, PositionInputs posInput, BSDFData bsdf
 
     #ifdef OUTPUT_SPLIT_LIGHTING // Work as matcap view is only call in forward, OUTPUT_SPLIT_LIGHTING isn't define in deferred.compute
 
+
+
+
         if (_EnableSubsurfaceScattering != 0 && ShouldOutputSplitLighting(bsdfData))
         {
             lightLoopOutput.specularLighting = lightLoopOutput.diffuseLighting;

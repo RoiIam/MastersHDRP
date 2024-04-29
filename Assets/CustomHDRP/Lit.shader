@@ -17,9 +17,21 @@ Shader "HDRP/CustomLit"
         
         //RCC properties of chermian20
         [ShowAsVector2] _chRoughness("_chRoughness", Vector) = (0.5,0.5,0,0) //can we specify range?
-        _chLogMicrofacetDensity("_chLogMicrofacetDensity", Range(15,40)) = 21
+        _chLogMicrofacetDensity("_chLogMicrofacetDensity", Range(1,40)) = 21
         _chMicrofacetRelativeArea("_chMicrofacetRelativeArea", Range(0.01,1)) = 0.5
+        
+        
+        
         _chSDFDict("chSDFDict", 2DArray) = "" {} //RCC unity nepodporuje 1D arrays/ 2D by nemal byt problem
+        
+        [ShowAsVector2] _chMaterial_Alpha("ch Material Alpha", Vector) = (0.5,0.5,0,0)
+        _chLogMicrofacetDensity("_chLogMicrofacetDensity", Range(1,40)) = 27
+        _chDictionary_NLevels("Dictionary_NLevels", Int) = 16
+        _chMaxAnisotropy("MaxAnisotropy", Int) = 8
+        _chMicrofacetRelativeArea("MicrofacetRelativeArea", Float) = 1
+        _chDictionary_Alpha("Dictionary_Alpha", Float) = 0.5
+        _chDictionary_N("Dictionary_N", Int) = 192
+
 
         
         //RCC properties of deliot23
@@ -390,7 +402,10 @@ Shader "HDRP/CustomLit"
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/FragInputs.hlsl"
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+    //RCC
+    #include "GlintsStruct.hlsl"
 
+    
     //-------------------------------------------------------------------------------------
     // variable declaration
     //-------------------------------------------------------------------------------------

@@ -153,8 +153,14 @@ CBUFFER_START(UnityPerMaterial)
 
     //chermain20
     float2 _chRoughness;
-    float _chLogMicrofacetDensity;
-    float _chMicrofacetRelativeArea;
+    float1 _chLogMicrofacetDensity;
+    float1 _chMicrofacetRelativeArea;
+    float2 _chMaterial_Alpha;
+    float1 _chDictionary_NLevels;
+    float1 _chMaxAnisotropy;
+    float1 _chDictionary_Alpha;
+    int1 _chDictionary_N;
+
     TEXTURE2D_ARRAY(_chSDFDict);
     SAMPLER(sampler_chSDFDict);
     //float4 _SampleTexture2DArray_RGBA = SAMPLE_TEXTURE2D_ARRAY(Texture, Sampler, UV, Index);
@@ -243,8 +249,14 @@ PROP_DECL(float, _MaterialID);//RCC
 //chermain20
 
 PROP_DECL(float2, _chRoughness);
-PROP_DECL(float, _chLogMicrofacetDensity);
-PROP_DECL(float, _chMicrofacetRelativeArea);
+PROP_DECL(float1, _chLogMicrofacetDensity);
+PROP_DECL(float1, _chMicrofacetRelativeArea);
+PROP_DECL(float2, _chMaterial_Alpha);
+PROP_DECL(float1, _chDictionary_NLevels);
+PROP_DECL(float1, _chMaxAnisotropy);
+PROP_DECL(float1, _chDictionary_Alpha);
+PROP_DECL(int1, _chDictionary_N);
+
 
 //deliot23
 PROP_DECL(float, _dbMaxNDF);//RCC

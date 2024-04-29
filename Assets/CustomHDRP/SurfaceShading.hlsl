@@ -105,10 +105,11 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
         //if((int)_glintsMethod==1)//Chermain20
         //lighting.specular = (testCol + cbsdf.specT * transmittance) * lightColor * specularDimmer;
         //else
-        if ((int)_glintsMethod == 3 || (int)_glintsMethod == 1 ) //ZK +CHE
+        if ((int)_glintsMethod == 3 || (int)_glintsMethod == 1) //ZK +CHE
             lighting.specular = (glintsColor + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-        else if((int)_glintsMethod == 4)
-            lighting.specular = (_wbGlitterStrength*glintsColor*cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
+        else if ((int)_glintsMethod == 4)
+            lighting.specular = (_wbGlitterStrength * glintsColor * cbsdf.specR + cbsdf.specT * transmittance) *
+                lightColor * specularDimmer;
         else
             lighting.specular = (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
     }
@@ -229,7 +230,7 @@ float3 EvaluateTransmittance_Punctual(LightLoopContext lightLoopContext,
 
 #include "20Chermain/20ChermainGlints.hlsl"
 #include "15WangBowles/15WangGlints.hlsl"
-
+ 
 DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                      FragInputs input, SurfaceData surfaceData,
                                      PositionInputs posInput, BuiltinData builtinData,
@@ -348,8 +349,17 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
         else
         {
             if ((int)_glintsMethod == 1) //we chose chermain20
-                glintsColor = f_P(wo, wi, cameraPos, vertPos, lightPos, normalWS, input);
-
+            {
+                ChermainStruct chs;
+                chs.Material_Alpha = _chMaterial_Alpha;
+                chs.LogMicrofacetDensity = _chLogMicrofacetDensity;
+                chs.Dictionary_NLevels = _chDictionary_NLevels;
+                chs.MaxAnisotropy = _chMaxAnisotropy;
+                chs.MicrofacetRelativeArea = _chMicrofacetRelativeArea;
+                chs.Dictionary_Alpha = _chDictionary_Alpha;
+                chs.Dictionary_N = _chDictionary_N;
+                glintsColor = f_P(wo, wi, cameraPos, vertPos, lightPos, normalWS, input, chs);
+            }
             else if ((int)_glintsMethod == 3) //we chose ZK16 //TODO
             {
                 float2 texCoord = input.texCoord0; //float2(input.texCoord0.x,input.texCoord0.y);

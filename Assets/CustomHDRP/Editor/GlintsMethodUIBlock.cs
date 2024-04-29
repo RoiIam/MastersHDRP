@@ -11,21 +11,33 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     private MaterialProperty dbMaxNDFBlock;
     private MaterialProperty dbTargetNDFBlock;
+
+
     private MaterialProperty glintsMethod;
     public bool changezkMicroRoughnessSimultaneously = true;
     public bool changezkRoughnessSimultaneously = true;
+    private MaterialProperty chDictionary_Alpha;
+    private MaterialProperty chDictionary_N;
+    private MaterialProperty chDictionary_NLevels;
+    private MaterialProperty chLogMicrofacetDensity;
 
+    private MaterialProperty chMaterial_Alpha;
+    private MaterialProperty chMaxAnisotropy;
+    private MaterialProperty chMicrofacetRelativeArea;
     private MaterialProperty chSDFDictBlock;
+
     private MaterialProperty matID;
     private MaterialProperty useGlints;
+
+
+    private MaterialProperty wbGlitterStrength;
     private MaterialProperty wbNoiseAmmount;
     private MaterialProperty wbNoiseDensity;
     private MaterialProperty wbSparkleDensity;
     private MaterialProperty wbSparkleSize;
-
-    private MaterialProperty wbGlitterStrength;
     private MaterialProperty wbUseAnisotropy;
     private MaterialProperty wbViewAmmount;
+
     private MaterialProperty zkDenisty;
     private MaterialProperty zkDynamicRange;
     private MaterialProperty zkMicroRoughness;
@@ -48,7 +60,16 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         useGlints = FindProperty("_UseGlints");
 
         //cher20
+        chMaterial_Alpha = FindProperty("_chMaterial_Alpha");
+        chLogMicrofacetDensity = FindProperty("_chLogMicrofacetDensity");
+        chDictionary_NLevels = FindProperty("_chDictionary_NLevels");
+        chMaxAnisotropy = FindProperty("_chMaxAnisotropy");
+        chMicrofacetRelativeArea = FindProperty("_chMicrofacetRelativeArea");
+        chDictionary_Alpha = FindProperty("_chDictionary_Alpha");
+        chDictionary_N = FindProperty("_chDictionary_N");
         chSDFDictBlock = FindProperty("_chSDFDict");
+
+
         //Deliot23
         dbMaxNDFBlock = FindProperty("_dbMaxNDF");
         dbTargetNDFBlock = FindProperty("_dbTargetNDF");
@@ -75,7 +96,14 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowChermainParams()
     {
-        materialEditor.ShaderProperty(chSDFDictBlock, "SDF Dictionary");
+        materialEditor.ShaderProperty(chMaterial_Alpha, "Material Alpha");
+        materialEditor.ShaderProperty(chLogMicrofacetDensity, "Log Microfacet Density");
+        materialEditor.ShaderProperty(chDictionary_NLevels, "Dictionary N Levels");
+        materialEditor.ShaderProperty(chMaxAnisotropy, "Max Anisotropy");
+        materialEditor.ShaderProperty(chMicrofacetRelativeArea, "Microfacet Relative Area");
+        materialEditor.ShaderProperty(chDictionary_Alpha, "Dictionary Alpha");
+        materialEditor.ShaderProperty(chDictionary_N, "Dictionary_ N");
+        materialEditor.ShaderProperty(chSDFDictBlock, "SDF Dict Texture Array");
     }
 
     public void ShowDeliotParams()

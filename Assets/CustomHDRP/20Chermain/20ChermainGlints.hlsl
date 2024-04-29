@@ -1,14 +1,14 @@
-﻿#ifndef __GLINTS20__
+﻿#include <HLSLSupport.cginc>
+#ifndef __GLINTS20__
 #define __GLINTS20__
 
 #ifndef LAYERED_LIT_SHADER
 #define "LitProperties.hlsl"
 #endif
 
-int1 pyramidSize(int1 level)
+
+int1 pyramidSize(int1 level, int1 Dictionary_NLevels)
 {
-    //Dictionary.NLevels
-    int1 Dictionary_NLevels = 16;
     return int1(pow(2.0, float1(Dictionary_NLevels - 1 - level)));
 }
 
@@ -86,15 +86,8 @@ float1 ndf_beckmann_anisotropic(float3 omega_h, float1 alpha_x, float1 alpha_y)
     return beckmann_p22 / cos_4_theta;
 }
 
-float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
+float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0, ChermainStruct chs)
 {
-    float1 MicrofacetRelativeArea = 1.0;
-    float1 LogMicrofacetDensity = 27.0;
-    int1 Dictionary_NLevels = 16;
-    float1 Dictionary_Alpha = 0.5;
-    int1 Dictionary_N = 192;
-    float1 Material_Alpha_x = 0.5f;
-    float1 Material_Alpha_y = 0.5f;
     // Coherent index
     // Eq. 8, Alg. 3, line 1
     int1 twoToTheL = int1(pow(2.0, float1(l)));
@@ -109,13 +102,13 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     float1 uMicrofacetRelativeArea = hashIQ(rngSeed * 13U);
     // Discard cells by using microfacet relative area
     // Alg.3, line 4
-    if (uMicrofacetRelativeArea > MicrofacetRelativeArea)
+    if (uMicrofacetRelativeArea > chs.MicrofacetRelativeArea)
         return 0.0f;
 
     // Number of microfacets in a cell
     // Alg. 3, line 5
-    float1 n = pow(2.0, float1(2 * l - (2 * (Dictionary_NLevels - 1))));
-    n *= exp(LogMicrofacetDensity); //Material.LogMicrofacetDensity
+    float1 n = pow(2.0, float1(2 * l - (2 * (chs.Dictionary_NLevels - 1))));
+    n *= exp(chs.LogMicrofacetDensity);
 
     // Corresponding continuous distribution LOD
     // Alg. 3, line 6
@@ -133,11 +126,11 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     l_dist = sampleNormalDistribution(uDensityRandomisation, l_dist, densityRandomisation);
 
     // Alg. 3, line 9
-    l_dist = clamp(uint(round(l_dist)), 0, Dictionary_NLevels);
+    l_dist = clamp(uint(round(l_dist)), 0, chs.Dictionary_NLevels);
 
     // Alg. 3, line 10
-    if (l_dist == Dictionary_NLevels)
-        return p22_beckmann_anisotropic(slope_h.x, slope_h.y, Material_Alpha_x, Material_Alpha_y);
+    if (l_dist == chs.Dictionary_NLevels)
+        return p22_beckmann_anisotropic(slope_h.x, slope_h.y, chs.Material_Alpha.x, chs.Material_Alpha.y);
 
     // Alg. 3, line 13
     float1 uTheta = hashIQ(rngSeed);
@@ -150,8 +143,8 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     float1 cosTheta = cos(theta);
     float1 sinTheta = sin(theta);
 
-    float2 scaleFactor = float2(Material_Alpha_x / Dictionary_Alpha,
-                                Material_Alpha_y / Dictionary_Alpha);
+    float2 scaleFactor = float2(chs.Material_Alpha.x / chs.Dictionary_Alpha,
+                                chs.Material_Alpha.y / chs.Dictionary_Alpha);
 
     // Rotate and scale slope
     // Alg. 3, line 16
@@ -160,8 +153,8 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
 
     float2 abs_slope_h = float2(abs(slope_h.x), abs(slope_h.y));
 
-    int distPerChannel = Dictionary_N / 3;
-    float1 alpha_dist_isqrt2_4 = Dictionary_Alpha * 0.707106 * 4.0f; //m_i_sqrt_2  0.707106
+    int distPerChannel = chs.Dictionary_N / 3;
+    float1 alpha_dist_isqrt2_4 = chs.Dictionary_Alpha * 0.707106 * 4.0f; //m_i_sqrt_2  0.707106
 
     if (abs_slope_h.x > alpha_dist_isqrt2_4 || abs_slope_h.y > alpha_dist_isqrt2_4)
         return 0.0f;
@@ -171,8 +164,8 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     float1 u2 = hashIQ(rngSeed * 48271U);
 
     // Alg. 3, line 18
-    int i = int1(u1 * float1(Dictionary_N));
-    int j = int1(u2 * float1(Dictionary_N));
+    int i = int1(u1 * float1(chs.Dictionary_N));
+    int j = int1(u2 * float1(chs.Dictionary_N));
 
     // 3 distributions values in one texel
     int distIdxXOver3 = i / 3;
@@ -182,10 +175,10 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     float1 texCoordY = abs_slope_h.y / alpha_dist_isqrt2_4;
 
     //RCC
-    float3 P_i = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordX,0),
-                                            l_dist * Dictionary_N / 3 + distIdxYOver3, 0).rgb; //RCC frag riadok 258
-    float3 P_j = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordY,0),
-                                            l_dist * Dictionary_N / 3 + distIdxYOver3, 0).rgb; //RCC frag riadok 258
+    float3 P_i = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordX, 0),
+                                            l_dist * chs.Dictionary_N / 3 + distIdxYOver3, 0).rgb; //RCC frag riadok 258
+    float3 P_j = SAMPLE_TEXTURE2D_ARRAY_LOD(_chSDFDict, sampler_chSDFDict, float2(texCoordY, 0),
+                                            l_dist * chs.Dictionary_N / 3 + distIdxYOver3, 0).rgb; //RCC frag riadok 258
 
 
     // Alg. 3, line 19
@@ -194,10 +187,10 @@ float1 P22_theta_alpha(float2 slope_h, int1 l, int1 s0, int1 t0)
     //https://stackoverflow.com/questions/7610631/glsl-mod-vs-hlsl-fmod 
 }
 
-float1 P22__P_(int1 l, float2 slope_h, float2 st, float2 dst0, float2 dst1)
+float1 P22__P_(int1 l, float2 slope_h, float2 st, float2 dst0, float2 dst1, ChermainStruct chs)
 {
     // Convert surface coordinates to appropriate scale for level
-    float1 pyrSize = pyramidSize(l);
+    float1 pyrSize = pyramidSize(l, chs.Dictionary_NLevels);
     st[0] = st[0] * pyrSize - 0.5f;
     st[1] = st[1] * pyrSize - 0.5f;
     dst0[0] *= pyrSize;
@@ -242,7 +235,7 @@ float1 P22__P_(int1 l, float2 slope_h, float2 st, float2 dst0, float2 dst1)
                 float1 alpha = 2;
                 float1 W_P = exp(-alpha * r2) - exp(-alpha);
                 // Alg. 2, line 3
-                sum += P22_theta_alpha(slope_h, l, is, it) * W_P;
+                sum += P22_theta_alpha(slope_h, l, is, it, chs) * W_P;
                 sumWts += W_P;
             }
             nbrOfIter++;
@@ -257,12 +250,8 @@ float1 P22__P_(int1 l, float2 slope_h, float2 st, float2 dst0, float2 dst1)
     return sum / sumWts;
 }
 
-float1 f_D(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos, FragInputs input)
+float1 f_D(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos, FragInputs input, ChermainStruct chs)
 {
-    //later user defined
-    float1 Material_Alpha_x = 0.5f;
-    float1 Material_Alpha_y = 0.5f;
-
     if (wo.z <= 0.0)
         return float3(0, 0, 0); //to je na zatienenej strane 
     //return float3(1,0,0); //test
@@ -283,21 +272,18 @@ float1 f_D(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos,
     // Eq. 1, Alg. 1, line 2
     float2 slope_h = float2(-wh.x / wh.z, -wh.y / wh.z);
 
-    //float2 texCoord = float2(0.5,0.5);//RCC TexCoord nevyrieseny, temp
-    //float2 texCoord = float2(0.5*slope_h.x,0.5*slope_h.y);//RCC TexCoord nevyrieseny, temp
-    float2 texCoord = float2(input.texCoord0.x, input.texCoord0.y);
-    //rozne params
-    float1 Dictionary_NLevels = 16;
-    float1 MaxAnisotropy = 8;
 
-    // Uncomment for anisotropic glints
+    float2 texCoord = float2(input.texCoord0.x, input.texCoord0.y);
+
+
+    // anisotropic glints
     //texCoord *= float2(1000.0, 1.0);
 
     float1 D_P = 0.0;
     float1 P22_P = 0.0;
 
     // Alg. 1, line 3
-    float2 dst0 = ddx(texCoord); //zistit toto ako pocitat -ddx hlsl a glsl dFdx
+    float2 dst0 = ddx(texCoord);
     float2 dst1 = ddy(texCoord); //ddy  hlsl a glsl dFdy
     // Compute ellipse minor and major axes 
     float1 dst0LengthSquared = dst0.x * dst0.x + dst0.y * dst0.y;
@@ -320,9 +306,9 @@ float1 f_D(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos,
     float1 minorLength = sqrt(dst1LengthSquared);
     // Clamp ellipse eccentricity if too large
     // Alg. 1, line 4
-    if ((minorLength * MaxAnisotropy < majorLength) && (minorLength > 0.0))
+    if ((minorLength * chs.MaxAnisotropy < majorLength) && (minorLength > 0.0))
     {
-        float1 scale = majorLength / (minorLength * MaxAnisotropy);
+        float1 scale = majorLength / (minorLength * chs.MaxAnisotropy);
         dst1 *= scale;
         minorLength *= scale;
     }
@@ -331,21 +317,21 @@ float1 f_D(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos,
     // Without footprint, we evaluate the Cook Torrance BRDF
     if (minorLength == 0)
     {
-        D_P = ndf_beckmann_anisotropic(wh, Material_Alpha_x, Material_Alpha_y); //Material.Alpha_x, Material.Alpha_y
+        D_P = ndf_beckmann_anisotropic(wh, chs.Material_Alpha.x, chs.Material_Alpha.y);
     }
     else
     {
         // Choose LOD
         // Alg. 1, line 6
-        float1 l = max(0.0, Dictionary_NLevels - 1.0 + log2(minorLength)); //Dictionary.NLevels
+        float1 l = max(0.0, chs.Dictionary_NLevels - 1.0 + log2(minorLength)); //Dictionary.NLevels
         int1 il = int1(floor(l));
 
         // Alg. 1, line 7
         float1 w = l - float1(il);
 
         // Alg. 1, line 8, lerp namiesto mix
-        P22_P = lerp(P22__P_(il, slope_h, texCoord, dst0, dst1),
-                     P22__P_(il + 1, slope_h, texCoord, dst0, dst1),
+        P22_P = lerp(P22__P_(il, slope_h, texCoord, dst0, dst1, chs),
+                     P22__P_(il + 1, slope_h, texCoord, dst0, dst1, chs),
                      w);
 
         // Eq. 6, Alg. 1, line 10
@@ -370,34 +356,16 @@ float3 FresnelSchlick(float3 SpecularColor, float3 ViewDir, float3 LightDir, flo
     return SpecularColor + (1 - SpecularColor) * pow((1 - HdotV), 5);
 }
 
-float3 f_P(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos, float3 norm, FragInputs input)
+float3 f_P(float3 wo, float3 wi, float3 camPos, float3 vertPos, float3 lightPos, float3 norm, FragInputs input,
+           ChermainStruct gs)
 {
-    float D_P = f_D(wo, wi, camPos, vertPos, lightPos, input);
+    float D_P = f_D(wo, wi, camPos, vertPos, lightPos, input, gs);
 
     float3 wh = normalize(wo + wi);
 
-    // V-cavity masking shadowing
-    float1 G1wowh = min(1.0, 2.0 * wh.z * wo.z / dot(wo, wh));
-    float1 G1wiwh = min(1.0, 2.0 * wh.z * wi.z / dot(wi, wh));
-    float1 G = G1wowh * G1wiwh;
-
-    //TODO Fresnel is just 1...
-    // Fresnel is set to one for simplicity here
-    // but feel free to use "real" Fresnel term
-    float3 F = float3(1.0, 1.0, 1.0);
 
     //angle is nDotH
     float3 halfV = normalize((vertPos - lightPos) + (vertPos - camPos));
-    //my own impl. based on CG2
-    //zatial pockaj F = float3(FresnelSchlick(dot(VertexNorm,halfV),0.2));
-    //float ff = FresnelSchlick(dot(norm,halfV),0.2);
-
-    //F = float3(ff,ff,ff);
-    //F = FresnelSchlick(  float3(1,1,1),vertPos-camPos , vertPos-lightPos, halfV);
-    // Eq. 14, Alg. 1, line 14
-    // (wi dot wg) is cancelled by
-    // the cosine weight in the rendering equation
-    //return (F * G * D_P) / (4.0 * wo.z);
 
     return (float3(D_P, D_P, D_P));
 

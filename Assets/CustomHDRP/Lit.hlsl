@@ -1436,9 +1436,9 @@ CBSDF EvaluateBSDFRest(CBSDF cbsdf, float3 V, float3 L, PreLightData preLightDat
                        float invLenLV, float NdotH, float clampedNdotV, float NdotL, float LdotV, float LdotH,
                        float clampedNdotL, float flippedNdotL, float specTerm)
 {
-    #ifdef USE_DIFFUSE_LAMBERT_BRDF
+#ifdef USE_DIFFUSE_LAMBERT_BRDF
     float diffTerm = Lambert();
-    #else
+#else
     // A note on subsurface scattering: [SSS-NOTE-TRSM]
     // The correct way to handle SSS is to transmit light inside the surface, perform SSS,
     // and then transmit it outside towards the viewer.
@@ -1459,7 +1459,7 @@ CBSDF EvaluateBSDFRest(CBSDF cbsdf, float3 V, float3 L, PreLightData preLightDat
     // TODO: See with Evgenii about the clampedNdotV here. This is what we use before the refactor
     // but now maybe we want to revisit it for transmission
     float diffTerm = DisneyDiffuse(clampedNdotV, abs(NdotL), LdotV, bsdfData.perceptualRoughness);
-    #endif
+#endif
 
     if (HasFlag(bsdfData.materialFeatures, MATERIALFEATUREFLAGS_LIT_CLEAR_COAT))
     {
@@ -1618,10 +1618,10 @@ DirectLighting EvaluateBSDF_Line(LightLoopContext lightLoopContext,
 
     float3 positionWS = posInput.positionWS;
 
-    #ifdef LIT_DISPLAY_REFERENCE_AREA
+#ifdef LIT_DISPLAY_REFERENCE_AREA
     IntegrateBSDF_LineRef(V, positionWS, preLightData, lightData, bsdfData,
                           lighting.diffuse, lighting.specular);
-    #else
+#else
     float len = lightData.size.x;
     float3 T = lightData.right;
 
@@ -1710,7 +1710,7 @@ DirectLighting EvaluateBSDF_Line(LightLoopContext lightLoopContext,
         lighting.diffuse *= lightData.color;
         lighting.specular *= lightData.color;
 
-        #ifdef DEBUG_DISPLAY
+#ifdef DEBUG_DISPLAY
         if (_DebugLightingMode == DEBUGLIGHTINGMODE_LUX_METER)
         {
             // Only lighting, not BSDF
@@ -1718,10 +1718,10 @@ DirectLighting EvaluateBSDF_Line(LightLoopContext lightLoopContext,
             lighting.diffuse = LTCEvaluate(P1, P2, B, k_identity3x3);
             lighting.diffuse *= PI * lightData.diffuseDimmer;
         }
-        #endif
+#endif
     }
 
-    #endif // LIT_DISPLAY_REFERENCE_AREA
+#endif // LIT_DISPLAY_REFERENCE_AREA
 
     return lighting;
 }
@@ -1742,15 +1742,15 @@ DirectLighting EvaluateBSDF_Rect(LightLoopContext lightLoopContext,
 
     float3 positionWS = posInput.positionWS;
 
-    #if SHADEROPTIONS_BARN_DOOR
+#if SHADEROPTIONS_BARN_DOOR
     // Apply the barn door modification to the light data
     RectangularLightApplyBarnDoor(lightData, positionWS);
-    #endif
+#endif
 
-    #ifdef LIT_DISPLAY_REFERENCE_AREA
+#ifdef LIT_DISPLAY_REFERENCE_AREA
     IntegrateBSDF_AreaRef(V, positionWS, preLightData, lightData, bsdfData,
                           lighting.diffuse, lighting.specular);
-    #else
+#else
     float3 unL = lightData.positionRWS - positionWS;
 
     if (dot(lightData.forward, unL) < FLT_EPS)
@@ -1771,19 +1771,19 @@ DirectLighting EvaluateBSDF_Rect(LightLoopContext lightLoopContext,
                                        range));
 
         // Compute the light attenuation.
-        #ifdef ELLIPSOIDAL_ATTENUATION
+#ifdef ELLIPSOIDAL_ATTENUATION
         // The attenuation volume is an axis-aligned ellipsoid s.t.
         // r1 = (r + w / 2), r2 = (r + h / 2), r3 = r.
         float intensity = EllipsoidalDistanceAttenuation(unL, invHalfDim,
                                                         lightData.rangeAttenuationScale,
                                                         lightData.rangeAttenuationBias);
-        #else
+#else
         // The attenuation volume is an axis-aligned box s.t.
         // hX = (r + w / 2), hY = (r + h / 2), hZ = r.
         float intensity = BoxDistanceAttenuation(unL, invHalfDim,
                                                  lightData.rangeAttenuationScale,
                                                  lightData.rangeAttenuationBias);
-        #endif
+#endif
 
         // Terminate if the shaded point is too far away.
         if (intensity != 0.0)
@@ -1811,20 +1811,20 @@ DirectLighting EvaluateBSDF_Rect(LightLoopContext lightLoopContext,
             // Polygon irradiance in the transformed configuration.
             float4x3 LD = mul(lightVerts, preLightData.ltcTransformDiffuse);
             float3 formFactorD;
-            #ifdef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
+#ifdef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
             formFactorD = PolygonFormFactor(LD);
             ltcValue = PolygonIrradianceFromVectorFormFactor(formFactorD);
-            #else
+#else
             ltcValue = PolygonIrradiance(LD, formFactorD);
-            #endif
+#endif
             ltcValue *= lightData.diffuseDimmer;
 
             // Only apply cookie if there is one
             if (lightData.cookieMode != COOKIEMODE_NONE)
             {
-                #ifndef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
+#ifndef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
                 formFactorD = PolygonFormFactor(LD);
-                #endif
+#endif
                 ltcValue *= SampleAreaLightCookie(lightData.cookieScaleOffset, LD, formFactorD);
             }
 
@@ -1866,21 +1866,21 @@ DirectLighting EvaluateBSDF_Rect(LightLoopContext lightLoopContext,
             // Polygon irradiance in the transformed configuration.
             float4x3 LS = mul(lightVerts, preLightData.ltcTransformSpecular);
             float3 formFactorS;
-            #ifdef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
+#ifdef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
             formFactorS = PolygonFormFactor(LS);
             ltcValue = PolygonIrradianceFromVectorFormFactor(formFactorS);
-            #else
+#else
             ltcValue = PolygonIrradiance(LS);
-            #endif
+#endif
             ltcValue *= lightData.specularDimmer;
 
             // Only apply cookie if there is one
             if (lightData.cookieMode != COOKIEMODE_NONE)
             {
                 // Compute the cookie data for the specular term
-                #ifndef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
+#ifndef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
                 formFactorS =  PolygonFormFactor(LS);
-                #endif
+#endif
                 ltcValue *= SampleAreaLightCookie(lightData.cookieScaleOffset, LS, formFactorS,
                                                   bsdfData.perceptualRoughness);
             }
@@ -1911,18 +1911,18 @@ DirectLighting EvaluateBSDF_Rect(LightLoopContext lightLoopContext,
 
             // Raytracing shadow algorithm require to evaluate lighting without shadow, so it defined SKIP_RASTERIZED_AREA_SHADOWS
             // This is only present in Lit Material as it is the only one using the improved shadow algorithm.
-            #ifndef SKIP_RASTERIZED_AREA_SHADOWS
+#ifndef SKIP_RASTERIZED_AREA_SHADOWS
             SHADOW_TYPE shadow = EvaluateShadow_RectArea(lightLoopContext, posInput, lightData, builtinData,
                                                          bsdfData.normalWS, normalize(lightData.positionRWS),
                                                          length(lightData.positionRWS));
             lightData.color.rgb *= ComputeShadowColor(shadow, lightData.shadowTint, lightData.penumbraTint);
-            #endif
+#endif
 
             // Save ALU by applying 'lightData.color' only once.
             lighting.diffuse *= lightData.color;
             lighting.specular *= lightData.color;
 
-            #ifdef DEBUG_DISPLAY
+#ifdef DEBUG_DISPLAY
             if (_DebugLightingMode == DEBUGLIGHTINGMODE_LUX_METER)
             {
                 // Only lighting, not BSDF
@@ -1930,11 +1930,11 @@ DirectLighting EvaluateBSDF_Rect(LightLoopContext lightLoopContext,
                 lighting.diffuse = PolygonIrradiance(mul(lightVerts, k_identity3x3));
                 lighting.diffuse *= PI * lightData.diffuseDimmer;
             }
-            #endif
+#endif
         }
     }
 
-    #endif // LIT_DISPLAY_REFERENCE_AREA
+#endif // LIT_DISPLAY_REFERENCE_AREA
 
     return lighting;
 }
@@ -2030,7 +2030,7 @@ IndirectLighting EvaluateBSDF_ScreenspaceRefraction(LightLoopContext lightLoopCo
     IndirectLighting lighting;
     ZERO_INITIALIZE(IndirectLighting, lighting);
 
-    #if HAS_REFRACTION
+#if HAS_REFRACTION
     // Refraction process:
     //  1. Depending on the shape model, we calculate the refracted point in world space and the optical depth
     //  2. We calculate the screen space position of the refracted point
@@ -2090,10 +2090,10 @@ IndirectLighting EvaluateBSDF_ScreenspaceRefraction(LightLoopContext lightLoopCo
 
     UpdateLightingHierarchyWeights(hierarchyWeight, weight); // Shouldn't be needed, but safer in case we decide to change hierarchy priority
 
-    #else // HAS_REFRACTION
+#else // HAS_REFRACTION
     // No refraction, no need to go further
     hierarchyWeight = 1.0;
-    #endif
+#endif
 
     return lighting;
 }
@@ -2111,16 +2111,16 @@ IndirectLighting EvaluateBSDF_Env(LightLoopContext lightLoopContext,
 {
     IndirectLighting lighting;
     ZERO_INITIALIZE(IndirectLighting, lighting);
-    #if !HAS_REFRACTION
+#if !HAS_REFRACTION
     if (GPUImageBasedLightingType == GPUIMAGEBASEDLIGHTINGTYPE_REFRACTION)
         return lighting;
-    #endif
+#endif
 
     float3 envLighting;
     float3 positionWS = posInput.positionWS;
     float weight = 1.0;
 
-    #ifdef LIT_DISPLAY_REFERENCE_IBL
+#ifdef LIT_DISPLAY_REFERENCE_IBL
 
     envLighting = IntegrateSpecularGGXIBLRef(lightLoopContext, V, preLightData, lightData, bsdfData);
 
@@ -2134,18 +2134,18 @@ IndirectLighting EvaluateBSDF_Env(LightLoopContext lightLoopContext,
 //    envLighting += IntegrateDisneyDiffuseIBLRef(lightLoopContext, V, preLightData, lightData, bsdfData);
 //    #endif
 
-    #else
+#else
 
     float3 R = preLightData.iblR;
 
-    #if HAS_REFRACTION
+#if HAS_REFRACTION
     if (GPUImageBasedLightingType == GPUIMAGEBASEDLIGHTINGTYPE_REFRACTION)
     {
         positionWS = preLightData.transparentPositionWS;
         R = preLightData.transparentRefractV;
     }
     else
-    #endif
+#endif
     {
         if (!IsEnvIndexTexture2D(lightData.envIndex)) // ENVCACHETYPE_CUBEMAP
         {
@@ -2214,7 +2214,7 @@ IndirectLighting EvaluateBSDF_Env(LightLoopContext lightLoopContext,
             // Can't attenuate diffuse lighting here, may try to apply something on bakeLighting in PostEvaluateBSDF
         }
     }
-    #if HAS_REFRACTION
+#if HAS_REFRACTION
     else
     {
         // No clear coat support with refraction
@@ -2227,18 +2227,18 @@ IndirectLighting EvaluateBSDF_Env(LightLoopContext lightLoopContext,
         UpdateLightingHierarchyWeights(hierarchyWeight, weight);
         envLighting *= weight;
     }
-    #endif
+#endif
 
-    #endif // LIT_DISPLAY_REFERENCE_IBL
+#endif // LIT_DISPLAY_REFERENCE_IBL
 
     envLighting *= lightData.multiplier;
 
     if (GPUImageBasedLightingType == GPUIMAGEBASEDLIGHTINGTYPE_REFLECTION)
         lighting.specularReflected = envLighting;
-    #if HAS_REFRACTION
+#if HAS_REFRACTION
     else
         lighting.specularTransmitted = envLighting;
-    #endif
+#endif
 
     return lighting;
 }
@@ -2254,13 +2254,13 @@ void PostEvaluateBSDF(LightLoopContext lightLoopContext,
 {
     AmbientOcclusionFactor aoFactor;
     // Use GTAOMultiBounce approximation for ambient occlusion (allow to get a tint from the baseColor)
-    #if 0
+#if 0
     GetScreenSpaceAmbientOcclusion(posInput.positionSS, preLightData.NdotV, bsdfData.perceptualRoughness, bsdfData.ambientOcclusion, bsdfData.specularOcclusion, aoFactor);
-    #else
+#else
     GetScreenSpaceAmbientOcclusionMultibounce(posInput.positionSS, preLightData.NdotV, bsdfData.perceptualRoughness,
                                               bsdfData.ambientOcclusion, bsdfData.specularOcclusion,
                                               bsdfData.diffuseColor, bsdfData.fresnel0, aoFactor);
-    #endif
+#endif
 
     ApplyAmbientOcclusionFactor(aoFactor, builtinData, lighting);
 
@@ -2282,18 +2282,18 @@ void PostEvaluateBSDF(LightLoopContext lightLoopContext,
     // Note we also transfer the refracted light (lighting.indirect.specularTransmitted) into diffuseLighting
     // since we know it won't be further processed: it is called at the end of the LightLoop(), but doing this
     // enables opacity to affect it (in ApplyBlendMode()) while the rest of specularLighting escapes it.
-    #if HAS_REFRACTION
+#if HAS_REFRACTION
     lightLoopOutput.diffuseLighting = lerp(lightLoopOutput.diffuseLighting, lighting.indirect.specularTransmitted, bsdfData.transmittanceMask * _EnableSSRefraction);
-    #endif
+#endif
 
     //nepridavajme zatial tieto 2 veci
     lightLoopOutput.specularLighting = lighting.direct.specular + lighting.indirect.specularReflected;
     // Rescale the GGX to account for the multiple scattering.
     lightLoopOutput.specularLighting *= 1.0 + bsdfData.fresnel0 * preLightData.energyCompensation;
 
-    #ifdef DEBUG_DISPLAY
+#ifdef DEBUG_DISPLAY
     PostEvaluateBSDFDebugDisplay(aoFactor, builtinData, lighting, bsdfData.diffuseColor, lightLoopOutput);
-    #endif
+#endif
 }
 
 #endif // #ifdef HAS_LIGHTLOOP

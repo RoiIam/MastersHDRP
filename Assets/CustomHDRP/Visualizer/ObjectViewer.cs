@@ -5,6 +5,7 @@ using Cinemachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ObjectViewer : MonoBehaviour
@@ -88,22 +89,69 @@ public class ObjectViewer : MonoBehaviour
     private GameObject objectToBeRenderedClone;
     private Material rightMat;
     private MeshFilter rightObjMeshFilter;
+    
+    
+    [SerializeField] private Button changeScene;
+    [SerializeField] private GameObject timelineUI;
+    [SerializeField] private GameObject splitterUI;
+
+    [SerializeField]  private int scenesCount = 2;//should be accesed from buildIndex
+    private int sceneIndex = 0;
+    
+    [SerializeField] private string leftObjName = "LeftObj";
+    [SerializeField] private string rightObjName = "RightObj";
 
     // Start is called before the first frame update
     private void Start()
     {
-        CreateRightCopies();
+        SetupScene();
+        DontDestroyOnLoad(this);
+    }
 
-        leftMat = leftObj.GetComponent<Renderer>().material;
-        rightMat = rightObj.GetComponent<Renderer>().material;
-        leftObjMeshFilter = leftObj.GetComponent<MeshFilter>();
-        rightObjMeshFilter = rightObj.GetComponent<MeshFilter>();
+    public void SetupScene()
+    {
+        switch (sceneIndex)
+        {
+            
+            case 0:
+                timelineUI = GameObject.Find("TimelineUI");
+                splitterUI.SetActive(false);
+                timelineUI.SetActive(true);
+                break;
+            case 1:
+                //splitterUI = GameObject.Find("TimelineUI");
+                splitterUI.SetActive(true);
+                SetupSecondScene();
+                break;
+            default:
+                break;
+                
+        }
+    }
+    
+    public void SetupSecondScene()
+    {
+        if (sceneIndex == 1)
+        {
+            
+            leftObj = GameObject.Find(leftObjName);
+            rightObj = GameObject.Find(rightObjName);
+            leftCam = GameObject.Find("LeftCam").GetComponent<Camera>();
+            rightCam = GameObject.Find("RightCam").GetComponent<Camera>();
+            
 
-        cinemachineFreeLookLeft = leftCam.gameObject.GetComponent<CinemachineFreeLook>();
-        cinemachineFreeLookRight = rightCam.gameObject.GetComponent<CinemachineFreeLook>();
+            leftMat = leftObj.GetComponent<Renderer>().material;
+            rightMat = rightObj.GetComponent<Renderer>().material;
+            leftObjMeshFilter = leftObj.GetComponent<MeshFilter>();
+            rightObjMeshFilter = rightObj.GetComponent<MeshFilter>();
+
+            cinemachineFreeLookLeft = leftCam.gameObject.GetComponent<CinemachineFreeLook>();
+            cinemachineFreeLookRight = rightCam.gameObject.GetComponent<CinemachineFreeLook>();
+            CreateRightCopies();
 
 
-        StartCoroutine(WaitForFrame());
+            StartCoroutine(WaitForFrame());
+        }
     }
 
     // Update is called once per frame
@@ -249,6 +297,28 @@ public class ObjectViewer : MonoBehaviour
         var nextIndex = (currentIndex + 1) % Enum.GetValues(typeof(ViewType)).Length;
         viewType = (ViewType)nextIndex;
     }
+    
+    public void CycleScene()
+    { 
+        sceneIndex = ++sceneIndex % (scenesCount);
+        StartCoroutine(LoadSceneAsync());
+
+    }
+
+    public IEnumerator LoadSceneAsync()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+
+        }
+        SetupScene();
+
+        
+    }
+
 
     private void SetViewParams(ViewType viewType)
     {

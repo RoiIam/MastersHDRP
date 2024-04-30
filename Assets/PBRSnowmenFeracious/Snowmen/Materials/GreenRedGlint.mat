@@ -166,6 +166,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _chSDFDict:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _testDict:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -244,7 +248,7 @@ Material:
     - _IridescenceMask: 1
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
-    - _MaterialID: 6
+    - _MaterialID: 1
     - _Metallic: 0
     - _MetallicRemapMax: 0
     - _MetallicRemapMin: 0
@@ -299,14 +303,34 @@ Material:
     - _UVEmissive: 0
     - _UVSec: 0
     - _UseEmissiveIntensity: 0
+    - _UseGlints: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
+    - _chDictionary_Alpha: 0.5
+    - _chDictionary_N: 192
+    - _chDictionary_NLevels: 16
+    - _chLogMicrofacetDensity: 27
+    - _chMaxAnisotropy: 8
+    - _chMicrofacetRelativeArea: 1
+    - _dbMaxNDF: 0.00003
+    - _dbTargetNDF: 0.003
     - _glintsMethod: 2
     - _maxNDF: 0.0003
     - _targetNDF: 0.02
+    - _wbGlitterStrength: 1000
+    - _wbNoiseAmmount: 0
+    - _wbNoiseDensity: 0
+    - _wbSparkleDensity: 5
+    - _wbSparkleSize: 0.015
+    - _wbUseAnisotropy: 1
+    - _wbViewAmmount: 8
+    - _zkDenisty: 100000
+    - _zkDynamicRange: 35000
+    - _zkSearchConeAngle: 0.5
+    - _zkVariation: 35000
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
@@ -325,4 +349,8 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+    - _chMaterial_Alpha: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _zkMicroRoughness: {r: 0.05, g: 0.005, b: 0, a: 0}
+    - _zkRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []

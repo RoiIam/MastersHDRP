@@ -103,7 +103,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   cloudType:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   skyAmbientMode:
     m_OverrideState: 1
@@ -230,7 +230,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   adaptationMode:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   adaptationSpeedDarkToLight:
     m_OverrideState: 0
@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   rotation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 190
   skyIntensityMode:
     m_OverrideState: 1
@@ -316,13 +316,13 @@ MonoBehaviour:
     m_Value: 7
   upperHemisphereLuxValue:
     m_OverrideState: 0
-    m_Value: 0.5406042
+    m_Value: 0.74612606
   upperHemisphereLuxColor:
     m_OverrideState: 0
-    m_Value: {x: 0.16490328, y: 0.2690279, z: 0.5}
+    m_Value: {x: 0.24344099, y: 0.28848252, z: 0.5}
   desiredLuxValue:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.05
   updateMode:
     m_OverrideState: 0
     m_Value: 0
@@ -334,7 +334,7 @@ MonoBehaviour:
     m_Value: 0
   hdriSky:
     m_OverrideState: 1
-    m_Value: {fileID: 8900000, guid: 2b65d105357267a458e93cf360b30704, type: 3}
+    m_Value: {fileID: 8900000, guid: 590c96e6d90e8f94f89cf9f137ad44d7, type: 2}
   distortionMode:
     m_OverrideState: 0
     m_Value: 0

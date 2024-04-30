@@ -39,6 +39,9 @@ public class ObjectViewer : MonoBehaviour
 
     [SerializeField] private GameObject splitterLine;
 
+    [SerializeField] private Toggle splitLineToggle;
+
+
     [SerializeField] private GameObject leftObj;
 
     [SerializeField] private GameObject rightObj;
@@ -68,6 +71,16 @@ public class ObjectViewer : MonoBehaviour
 
     [SerializeField] private TMP_InputField ScaleZField;
 
+
+    [SerializeField] private Button changeScene;
+    [SerializeField] private GameObject timelineUI;
+    [SerializeField] private GameObject OptionsPanelUI;
+
+    [SerializeField] private int scenesCount = 2; //should be accesed from buildIndex
+
+    [SerializeField] private string leftObjName = "LeftObj";
+    [SerializeField] private string rightObjName = "RightObj";
+
     private bool animateCam;
     private bool animateLight;
 
@@ -89,69 +102,13 @@ public class ObjectViewer : MonoBehaviour
     private GameObject objectToBeRenderedClone;
     private Material rightMat;
     private MeshFilter rightObjMeshFilter;
-    
-    
-    [SerializeField] private Button changeScene;
-    [SerializeField] private GameObject timelineUI;
-    [SerializeField] private GameObject splitterUI;
-
-    [SerializeField]  private int scenesCount = 2;//should be accesed from buildIndex
-    private int sceneIndex = 0;
-    
-    [SerializeField] private string leftObjName = "LeftObj";
-    [SerializeField] private string rightObjName = "RightObj";
+    private int sceneIndex;
 
     // Start is called before the first frame update
     private void Start()
     {
         SetupScene();
         DontDestroyOnLoad(this);
-    }
-
-    public void SetupScene()
-    {
-        switch (sceneIndex)
-        {
-            
-            case 0:
-                timelineUI = GameObject.Find("TimelineUI");
-                splitterUI.SetActive(false);
-                timelineUI.SetActive(true);
-                break;
-            case 1:
-                //splitterUI = GameObject.Find("TimelineUI");
-                splitterUI.SetActive(true);
-                SetupSecondScene();
-                break;
-            default:
-                break;
-                
-        }
-    }
-    
-    public void SetupSecondScene()
-    {
-        if (sceneIndex == 1)
-        {
-            
-            leftObj = GameObject.Find(leftObjName);
-            rightObj = GameObject.Find(rightObjName);
-            leftCam = GameObject.Find("LeftCam").GetComponent<Camera>();
-            rightCam = GameObject.Find("RightCam").GetComponent<Camera>();
-            
-
-            leftMat = leftObj.GetComponent<Renderer>().material;
-            rightMat = rightObj.GetComponent<Renderer>().material;
-            leftObjMeshFilter = leftObj.GetComponent<MeshFilter>();
-            rightObjMeshFilter = rightObj.GetComponent<MeshFilter>();
-
-            cinemachineFreeLookLeft = leftCam.gameObject.GetComponent<CinemachineFreeLook>();
-            cinemachineFreeLookRight = rightCam.gameObject.GetComponent<CinemachineFreeLook>();
-            CreateRightCopies();
-
-
-            StartCoroutine(WaitForFrame());
-        }
     }
 
     // Update is called once per frame
@@ -173,6 +130,46 @@ public class ObjectViewer : MonoBehaviour
         }
 
         if (Input.GetKeyUp(KeyCode.F1)) OptionsPanel.SetActive(!OptionsPanel.activeSelf);
+    }
+
+    public void SetupScene()
+    {
+        switch (sceneIndex)
+        {
+            case 0:
+                timelineUI = GameObject.Find("TimelineUI");
+                OptionsPanelUI.SetActive(false);
+                timelineUI.SetActive(true);
+                break;
+            case 1:
+                OptionsPanelUI.SetActive(true);
+                SetupSecondScene();
+                break;
+        }
+    }
+
+    public void SetupSecondScene()
+    {
+        if (sceneIndex == 1)
+        {
+            leftObj = GameObject.Find(leftObjName);
+            rightObj = GameObject.Find(rightObjName);
+            leftCam = GameObject.Find("LeftCam").GetComponent<Camera>();
+            rightCam = GameObject.Find("RightCam").GetComponent<Camera>();
+
+
+            leftMat = leftObj.GetComponent<Renderer>().material;
+            rightMat = rightObj.GetComponent<Renderer>().material;
+            leftObjMeshFilter = leftObj.GetComponent<MeshFilter>();
+            rightObjMeshFilter = rightObj.GetComponent<MeshFilter>();
+
+            cinemachineFreeLookLeft = leftCam.gameObject.GetComponent<CinemachineFreeLook>();
+            cinemachineFreeLookRight = rightCam.gameObject.GetComponent<CinemachineFreeLook>();
+            CreateRightCopies();
+
+
+            StartCoroutine(WaitForFrame());
+        }
     }
 
     public void ChangeLeft(int glintGlintMethod)
@@ -236,7 +233,7 @@ public class ObjectViewer : MonoBehaviour
 
     public void OnSplitLineChange()
     {
-        splitterLine.SetActive(!splitterLine.activeSelf);
+        splitterLine.SetActive(splitLineToggle.isOn);
     }
 
     public void OnRotateCam()
@@ -297,26 +294,19 @@ public class ObjectViewer : MonoBehaviour
         var nextIndex = (currentIndex + 1) % Enum.GetValues(typeof(ViewType)).Length;
         viewType = (ViewType)nextIndex;
     }
-    
-    public void CycleScene()
-    { 
-        sceneIndex = ++sceneIndex % (scenesCount);
-        StartCoroutine(LoadSceneAsync());
 
+    public void CycleScene()
+    {
+        sceneIndex = ++sceneIndex % scenesCount;
+        StartCoroutine(LoadSceneAsync());
     }
 
     public IEnumerator LoadSceneAsync()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
+        var asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
 
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-
-        }
+        while (!asyncLoad.isDone) yield return null;
         SetupScene();
-
-        
     }
 
 
@@ -326,7 +316,10 @@ public class ObjectViewer : MonoBehaviour
         {
             case ViewType.Single:
                 rightCam.enabled = false;
+                splitLineToggle.gameObject.SetActive(false);
+                splitLineToggle.isOn = false;
                 splitterLine.SetActive(false);
+
                 var l = leftCam.rect;
                 leftCam.rect = new Rect(0, l.y, 1.0f, l.height);
                 break;
@@ -334,6 +327,8 @@ public class ObjectViewer : MonoBehaviour
                 var r = leftCam.rect;
                 leftCam.rect = new Rect(0, r.y, 0.5f, r.height);
                 rightCam.enabled = true;
+                splitLineToggle.gameObject.SetActive(true);
+                splitLineToggle.isOn = true;
                 splitterLine.SetActive(true);
                 break;
         }

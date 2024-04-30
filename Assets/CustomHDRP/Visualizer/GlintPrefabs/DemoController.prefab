@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 1864853345}
   - component: {fileID: 1864853346}
   m_Layer: 5
-  m_Name: ChangeScene (1)
+  m_Name: vSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -673,7 +673,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 1, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 211, y: 12}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1561613582295795265
 CanvasRenderer:
@@ -1164,7 +1164,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: ChangeLeft
         m_Mode: 3
@@ -2215,9 +2215,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
-        m_MethodName: OnChangeView
+        m_MethodName: OnRotateLight
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2341,7 +2341,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: OnRotateCam
         m_Mode: 1
@@ -2673,7 +2673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2707,7 +2707,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: OnChangeView
         m_Mode: 1
@@ -2718,7 +2718,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
   m_IsOn: 1
 --- !u!114 &1561613582855198874
 MonoBehaviour:
@@ -2944,7 +2944,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: ChangeLeft
         m_Mode: 3
@@ -3143,7 +3143,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: ChangeLeft
         m_Mode: 3
@@ -5116,7 +5116,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1561613583433251173
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6997,7 +6997,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: ChangeLeft
         m_Mode: 3
@@ -7267,7 +7267,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: CycleMeshes
         m_Mode: 1
@@ -7421,7 +7421,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: ChangeLeft
         m_Mode: 3
@@ -7657,13 +7657,13 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 1561613583155841398}
-  toggleTransition: 1
+  toggleTransition: 0
   graphic: {fileID: 1561613582938671388}
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 507826317}
         m_TargetAssemblyTypeName: ObjectViewer, Assembly-CSharp
         m_MethodName: OnSplitLineChange
         m_Mode: 1
@@ -7674,7 +7674,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
   m_IsOn: 1
 --- !u!114 &1561613584198694527
 MonoBehaviour:
@@ -8151,6 +8151,7 @@ MonoBehaviour:
   rightCam: {fileID: 0}
   splitToggle: {fileID: 1561613582855198873}
   splitterLine: {fileID: 1561613583433251174}
+  splitLineToggle: {fileID: 1561613584198694526}
   leftObj: {fileID: 0}
   rightObj: {fileID: 0}
   objectToBeRendered: {fileID: 0}
@@ -8167,7 +8168,7 @@ MonoBehaviour:
   ScaleZField: {fileID: 5721390914339436233}
   changeScene: {fileID: 0}
   timelineUI: {fileID: 0}
-  splitterUI: {fileID: 1561613582725249674}
+  OptionsPanelUI: {fileID: 1561613582725249674}
   scenesCount: 2
   leftObjName: LeftObj
   rightObjName: LeftObj
@@ -8245,6 +8246,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1561613582725249673}
     m_Modifications:
+    - target: {fileID: 6543028763823317058, guid: 92cdeba12d79a3d448c01425cafa6f01,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 507826317}
     - target: {fileID: 6543028763823317058, guid: 92cdeba12d79a3d448c01425cafa6f01,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -8340,6 +8346,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -25
       objectReference: {fileID: 0}
+    - target: {fileID: 6543028764401182479, guid: 92cdeba12d79a3d448c01425cafa6f01,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 507826317}
     - target: {fileID: 6543028764401182479, guid: 92cdeba12d79a3d448c01425cafa6f01,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -8487,6 +8498,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6543028764524232859, guid: 92cdeba12d79a3d448c01425cafa6f01,
         type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 507826317}
+    - target: {fileID: 6543028764524232859, guid: 92cdeba12d79a3d448c01425cafa6f01,
+        type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnScaleChange
       objectReference: {fileID: 0}
@@ -8558,6 +8574,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1561613582725249673}
     m_Modifications:
+    - target: {fileID: 6543028763823317058, guid: 92cdeba12d79a3d448c01425cafa6f01,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 507826317}
     - target: {fileID: 6543028763823317059, guid: 92cdeba12d79a3d448c01425cafa6f01,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -8633,6 +8654,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -25
       objectReference: {fileID: 0}
+    - target: {fileID: 6543028764401182479, guid: 92cdeba12d79a3d448c01425cafa6f01,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 507826317}
     - target: {fileID: 6543028764491543826, guid: 92cdeba12d79a3d448c01425cafa6f01,
         type: 3}
       propertyPath: m_Pivot.x
@@ -8773,6 +8799,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -25
       objectReference: {fileID: 0}
+    - target: {fileID: 6543028764524232859, guid: 92cdeba12d79a3d448c01425cafa6f01,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 507826317}
     - target: {fileID: 6543028764764597792, guid: 92cdeba12d79a3d448c01425cafa6f01,
         type: 3}
       propertyPath: m_text

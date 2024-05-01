@@ -28,7 +28,10 @@ public class Glints2023 : MonoBehaviour
         //Debug.Log("update glint");
 
         if (resetButton) ResetEverything();
+#if UNITY_EDITOR
+
         if (generateCustomFile) GenerateCustomFile();
+#endif
 
 #if UNITY_EDITOR
         Shader.SetGlobalTexture("_Glint2023NoiseMap", glintNoiseTex);
@@ -105,13 +108,49 @@ public class Glints2023 : MonoBehaviour
         return p * x;
     }
 
+    private void GenerateGlintNoiseTex()
+    {
+        // Generate noise
+        var renderTex = new RenderTexture(noiseTexSize, noiseTexSize, 0, RenderTextureFormat.ARGBFloat,
+            RenderTextureReadWrite.Linear);
+        renderTex.enableRandomWrite = true;
+        renderTex.useMipMap = false;
+        renderTex.autoGenerateMips = false;
+        renderTex.Create();
+        glintNoiseInitMaterial.SetVector("_FrameSize", new Vector4(noiseTexSize, noiseTexSize, 0, 0));
+        glintNoiseInitMaterial.SetInt("_Seed", (int)(Random.value * 100));
+        Graphics.Blit(null, renderTex, glintNoiseInitMaterial);
+
+        // Apply to texture
+        glintNoiseTex = new Texture2D(noiseTexSize, noiseTexSize, TextureFormat.RGBAFloat, false, true);
+        glintNoiseTex.name = "NoiseMap";
+        glintNoiseTex.filterMode = FilterMode.Point;
+        glintNoiseTex.anisoLevel = 1;
+        glintNoiseTex.wrapMode = TextureWrapMode.Repeat;
+        glintNoiseTex.ReadPixels(new Rect(0, 0, noiseTexSize, noiseTexSize), 0, 0);
+        glintNoiseTex.Apply(false);
+
+        //if we ever want to export this, uncomment or use the bool
+        //GenerateCustomFile();
+
+#if UNITY_EDITOR
+        AssetDatabase.CreateAsset(glintNoiseTex, "Assets/glint2023Noise.asset");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+#endif
+
+        RenderTexture.active = null;
+        renderTex.Release();
+    }
+#if UNITY_EDITOR
     private void SaveToCustomFormat()
     {
         var bytesR = glintNoiseTex.GetRawTextureData();
         //tieto 2  riadky robia to iste len daju iny suffix
         File.WriteAllBytes("Assets/g1.raw", bytesR); //toto je asi tiez ok
         SaveTextureToFile(glintNoiseTex, "Assets/g1.bin"); //toto je ok to pouzivam
-
+        //Debug.Log("Disabled Saving");
         Debug.Log(glintNoiseTex.format);
         Debug.Log(glintNoiseTex.graphicsFormat);
     }
@@ -159,40 +198,5 @@ public class Glints2023 : MonoBehaviour
 
         Debug.Log("Texture saved to: " + filePath);
     }
-
-    private void GenerateGlintNoiseTex()
-    {
-        // Generate noise
-        var renderTex = new RenderTexture(noiseTexSize, noiseTexSize, 0, RenderTextureFormat.ARGBFloat,
-            RenderTextureReadWrite.Linear);
-        renderTex.enableRandomWrite = true;
-        renderTex.useMipMap = false;
-        renderTex.autoGenerateMips = false;
-        renderTex.Create();
-        glintNoiseInitMaterial.SetVector("_FrameSize", new Vector4(noiseTexSize, noiseTexSize, 0, 0));
-        glintNoiseInitMaterial.SetInt("_Seed", (int)(Random.value * 100));
-        Graphics.Blit(null, renderTex, glintNoiseInitMaterial);
-
-        // Apply to texture
-        glintNoiseTex = new Texture2D(noiseTexSize, noiseTexSize, TextureFormat.RGBAFloat, false, true);
-        glintNoiseTex.name = "NoiseMap";
-        glintNoiseTex.filterMode = FilterMode.Point;
-        glintNoiseTex.anisoLevel = 1;
-        glintNoiseTex.wrapMode = TextureWrapMode.Repeat;
-        glintNoiseTex.ReadPixels(new Rect(0, 0, noiseTexSize, noiseTexSize), 0, 0);
-        glintNoiseTex.Apply(false);
-
-        //if we ever want to export this, uncomment or use the bool
-        //GenerateCustomFile();
-
-#if UNITY_EDITOR
-        AssetDatabase.CreateAsset(glintNoiseTex, "Assets/glint2023Noise.asset");
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-
 #endif
-
-        RenderTexture.active = null;
-        renderTex.Release();
-    }
 }

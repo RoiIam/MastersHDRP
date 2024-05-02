@@ -23,6 +23,7 @@ namespace CustomHDRP.Visualizer
 
         public List<GameObject> ItemsToChange;
 
+        public MatChanger matChanger;
 
         public bool isPlaying = true;
 
@@ -37,6 +38,10 @@ namespace CustomHDRP.Visualizer
             len = currentClipInfo[0].clip.length;
         }
 
+        public void ChangeMat(int i)
+        {
+            matChanger.ChangeMethod(i);
+        }
         private void Update()
         {
             if (Input.GetKeyUp(KeyCode.Space)) OnPlayPause();

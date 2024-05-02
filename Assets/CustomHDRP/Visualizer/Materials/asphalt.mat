@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2727386207894666702
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 12
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,8 +23,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: concrete-floor
-  m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
+  m_Name: asphalt
+  m_Shader: {fileID: 4800000, guid: f5ac8a4c593e9e74e8a751488d4df3f0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -17,11 +33,12 @@ Material:
   - _NORMALMAP
   - _NORMALMAP_TANGENT_SPACE
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2225
-  stringTagMap: {}
+  stringTagMap:
+    MotionVector: User
   disabledShaderPasses:
   - TransparentDepthPrepass
   - TransparentDepthPostpass
@@ -37,8 +54,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: cba613854bc056d449283438e6aac194, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: f7979df2bafb34e4183e489fa54e356c, type: 3}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
         m_Texture: {fileID: 0}
@@ -49,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 9791b7330ac10ab4292cb083a2ffa84e, type: 3}
+        m_Texture: {fileID: 2800000, guid: e959a1d3421a24b4cae7d78257293c95, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -73,12 +90,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: bcccfb9679016a04a9bcec10a2d88fb8, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 9a0bea0f0c651eb4c821c7c9c2d8cc7d, type: 3}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - _EmissiveColorMap:
-        m_Texture: {fileID: 2800000, guid: bcccfb9679016a04a9bcec10a2d88fb8, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 9a0bea0f0c651eb4c821c7c9c2d8cc7d, type: 3}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
@@ -93,8 +110,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: cba613854bc056d449283438e6aac194, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: f7979df2bafb34e4183e489fa54e356c, type: 3}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
         m_Texture: {fileID: 0}
@@ -105,7 +122,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 9791b7330ac10ab4292cb083a2ffa84e, type: 3}
+        m_Texture: {fileID: 2800000, guid: e959a1d3421a24b4cae7d78257293c95, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -145,7 +162,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _chSDFDict:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 18700000, guid: 54f8809523205c94b9a5fb9745e0fe6e, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -205,7 +222,7 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.779
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -221,8 +238,8 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 0
     - _MaterialID: 1
-    - _Metallic: 0.21763763
-    - _MetallicRemapMax: 0.21763763
+    - _Metallic: 0.301
+    - _MetallicRemapMax: 0.1989439
     - _MetallicRemapMin: 0
     - _Mode: 0
     - _NormalMapSpace: 0
@@ -234,13 +251,13 @@ Material:
     - _PPDMinSamples: 5
     - _PPDPrimitiveLength: 1
     - _PPDPrimitiveWidth: 1
-    - _Parallax: 0.02
+    - _Parallax: 0.0373
     - _RayTracing: 0
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
-    - _Smoothness: 0.5
-    - _SmoothnessRemapMax: 0.5
+    - _Smoothness: 0.588
+    - _SmoothnessRemapMax: 0.779
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
@@ -279,34 +296,34 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
-    - _chDictionary_Alpha: 0.5
+    - _chDictionary_Alpha: 0.53
     - _chDictionary_N: 192
     - _chDictionary_NLevels: 16
-    - _chLogMicrofacetDensity: 27
+    - _chLogMicrofacetDensity: 11
     - _chMaxAnisotropy: 8
-    - _chMicrofacetRelativeArea: 1
-    - _dbMaxNDF: 0.5
-    - _dbTargetNDF: 0.5
-    - _glintsMethod: 1
-    - _wbGlitterStrength: 1000
-    - _wbNoiseAmmount: 0
-    - _wbNoiseDensity: 0
-    - _wbSparkleDensity: 5
-    - _wbSparkleSize: 0.015
+    - _chMicrofacetRelativeArea: 0.01
+    - _dbMaxNDF: 0.00005
+    - _dbTargetNDF: 0.0005
+    - _glintsMethod: 4
+    - _wbGlitterStrength: 11
+    - _wbNoiseAmmount: 0.185
+    - _wbNoiseDensity: 0.145
+    - _wbSparkleDensity: 0.42
+    - _wbSparkleSize: 0.2
     - _wbUseAnisotropy: 1
-    - _wbViewAmmount: 8
-    - _zkDenisty: 100000
-    - _zkDynamicRange: 35000
-    - _zkSearchConeAngle: 0.5
-    - _zkVariation: 35000
+    - _wbViewAmmount: 2.3
+    - _zkDenisty: 42160
+    - _zkDynamicRange: 51339
+    - _zkSearchConeAngle: 0.0362
+    - _zkVariation: 20000
     m_Colors:
-    - _BaseColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    - _BaseColor: {r: 0.4188473, g: 0.4399318, b: 0.44852936, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    - _Color: {r: 0.41884726, g: 0.43993178, b: 0.4485293, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissiveColor: {r: 0.19117644, g: 0.19117644, b: 0.19117644, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
@@ -317,24 +334,8 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _chMaterial_Alpha: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _chMaterial_Alpha: {r: 1, g: 1, b: 0, a: 0}
     - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _zkMicroRoughness: {r: 0.05, g: 0.005, b: 0, a: 0}
-    - _zkRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _zkMicroRoughness: {r: 0.008, g: 0.008, b: 0, a: 0}
+    - _zkRoughness: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &7670947346475159746
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 12
-  hdPluginSubTargetMaterialVersions:
-    m_Keys: []
-    m_Values: 

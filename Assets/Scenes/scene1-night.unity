@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0074570607, g: 0.008500896, b: 0.01465708, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -176,7 +176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &9454267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1585,6 +1585,7 @@ MonoBehaviour:
   - {fileID: 1003858948}
   - {fileID: 236271828}
   - {fileID: 1998139980}
+  matChanger: {fileID: 453006579}
   isPlaying: 1
 --- !u!1 &28255135
 GameObject:
@@ -4086,6 +4087,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1998139983}
   - {fileID: 1422332807}
   - {fileID: 896323313}
   - {fileID: 2130305167}
@@ -17016,7 +17018,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 2
-    m_TransformParent: {fileID: 1628624562}
+    m_TransformParent: {fileID: 130402798}
     m_Modifications:
     - target: {fileID: 100000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_IsActive
@@ -17024,7 +17026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalScale.x
@@ -17032,35 +17034,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 100
+      value: 100.00003
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 100
+      value: 100.00003
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 33.95664
+      value: 49.03309
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.017525
+      value: 15.935608
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -32.551056
+      value: 222.69989
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.66186094
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.74962664
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b28cfe79ba1485488934c086342faf8, type: 3}
       propertyPath: m_LocalRotation.z
@@ -23415,6 +23417,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 453006578}
+  - component: {fileID: 453006579}
   m_Layer: 0
   m_Name: MySmallPlayground
   m_TagString: Untagged
@@ -23441,6 +23444,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &453006579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453006577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64644738e718d94ba4d37fa6b96687b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repopulate: 0
+  assignCustom: 0
+  reset: 0
+  moveMats: 0
+  autoAddedMaterials:
+  - {fileID: 2100000, guid: 146aabcd4b08d714b9084d3db6f8a31c, type: 2}
+  - {fileID: 2100000, guid: 780c05fd766bcb742953eb8354c0a8b1, type: 2}
+  - {fileID: 2100000, guid: d685de567cf8c7a459a4166d9b1d3408, type: 2}
+  - {fileID: 2100000, guid: cda2377c044674946a9f19ff4c3d9aa5, type: 2}
+  - {fileID: 2100000, guid: 4cac6c2aa1a2e7e42adc553f43c3ea63, type: 2}
+  - {fileID: 2100000, guid: 41e24ad854067984e849bad21857c866, type: 2}
+  - {fileID: 2100000, guid: 7be09146f5b4d9d45ba6cbf9d0c8a256, type: 2}
+  - {fileID: 2100000, guid: 03837c618fb9e664997c00579fc7c5ed, type: 2}
+  - {fileID: 2100000, guid: d93869cd1606b3d4f8225f72779f32aa, type: 2}
+  - {fileID: 2100000, guid: 642380235ef33c143ac42604e9bdd651, type: 2}
+  - {fileID: 2100000, guid: ca05457e74ec66c48a86e5d96a0afb8c, type: 2}
+  - {fileID: 2100000, guid: 79a46649f9e00174bbb352500608ab71, type: 2}
+  - {fileID: 2100000, guid: 2cce5d61baf22614cb41d2662100fb85, type: 2}
+  - {fileID: 2100000, guid: 2e19441ecfdc5214cb9b88e4e9883c77, type: 2}
+  - {fileID: 2100000, guid: 03760c6e412e98742b535b1becb01c64, type: 2}
+  - {fileID: 2100000, guid: ba49b5d750dc55b4e9a6e9adf8675969, type: 2}
+  - {fileID: 2100000, guid: 9d2b54cdf91c6ad449e1095bed1c9b0d, type: 2}
+  - {fileID: 2100000, guid: 929c035f9ddf0492ebe204b136324fca, type: 2}
+  - {fileID: 2100000, guid: fb784659e21e4436cb7298bdc0d8dcdd, type: 2}
+  - {fileID: 2100000, guid: 020c62858398d4013b5e447d6bea82e0, type: 2}
+  - {fileID: 2100000, guid: 834b340bfe0f1415f8e173a62c13e952, type: 2}
+  - {fileID: 2100000, guid: 7ddfd40d1496845b3984f41a2091882c, type: 2}
+  - {fileID: 2100000, guid: 119bf09e4c8a68d47b403b9f09cc7ae7, type: 2}
+  - {fileID: 2100000, guid: 049451a4b2aa484448a2f6171a107816, type: 2}
+  - {fileID: 2100000, guid: 214799faa51b4d44dac5603914100b26, type: 2}
+  - {fileID: 2100000, guid: 5977eaf1f57156e4d9f55bb81f341ee1, type: 2}
+  - {fileID: 2100000, guid: d5b0020869170d14c9b2ca0c7248f0ef, type: 2}
+  - {fileID: 2100000, guid: 5d8b3b3d1a945654d810029ba33da3a2, type: 2}
+  - {fileID: 2100000, guid: 23df5f06fb1a1ad46b72715883e1b29c, type: 2}
+  - {fileID: 2100000, guid: d69c13f61dc88464da1d51464bb210e1, type: 2}
+  - {fileID: 2100000, guid: a724cc1975c29b1429182fab75d438d3, type: 2}
+  manuallyAddedMaterials: []
+  targetFolderPath: Assets/CustomHDRP/Visualizer/Materials
+  custom: {fileID: 4800000, guid: f5ac8a4c593e9e74e8a751488d4df3f0, type: 3}
+  def: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
 --- !u!1 &454653839
 GameObject:
   m_ObjectHideFlags: 0
@@ -60562,7 +60617,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 268215595}
-  - {fileID: 1998139983}
   - {fileID: 815585767}
   - {fileID: 1694738337}
   - {fileID: 1397703949}

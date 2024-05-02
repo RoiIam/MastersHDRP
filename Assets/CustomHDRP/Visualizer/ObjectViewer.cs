@@ -342,17 +342,7 @@ namespace CustomHDRP.Visualizer
 
         public void OnMatChange(int m)
         {
-            foreach (var i in timelineUI.GetComponent<DemoAnim>().ItemsToChange)
-            {
-                var a = i.GetComponentsInChildren<Renderer>();
-
-                foreach (var mat in a)
-                {
-                    mat.material.SetFloat(GlintsMethod, (float)m + 1);
-                    if (m == 0)
-                        mat.material.SetTexture("_chSDFDict", dict);
-                }
-            }
+            timelineUI.GetComponent<DemoAnim>().ChangeMat(m+1);
         }
 
         private void SetViewParams(ViewType viewType)

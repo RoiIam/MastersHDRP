@@ -108,8 +108,13 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
         if ((int)_glintsMethod == 3 || (int)_glintsMethod == 1) //ZK +CHE
             lighting.specular = (glintsColor + cbsdf.specT * transmittance) * lightColor * specularDimmer;
         else if ((int)_glintsMethod == 4)
-            lighting.specular = (_wbGlitterStrength * glintsColor * cbsdf.specR + cbsdf.specT * transmittance) *
-                lightColor * specularDimmer;
+        {
+            //if(debug)
+            //lighting.specular = (_wbGlitterStrength * glintsColor * cbsdf.specR + cbsdf.specT * transmittance) *
+             //      lightColor * specularDimmer;
+            lighting.specular = (_wbGlitterStrength * glintsColor);
+            lighting.diffuse = (_wbGlitterStrength * glintsColor);
+        }
         else
             lighting.specular = (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
     }

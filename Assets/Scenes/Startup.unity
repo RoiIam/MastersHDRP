@@ -123,12 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &126456653 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2139173488, guid: 0e19ea946334c4a4c97568eb07607c39,
-    type: 3}
-  m_PrefabInstance: {fileID: 607564137}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &607564137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -161,31 +155,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 417188184, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 607564138}
-    - target: {fileID: 417188184, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMatChange
-      objectReference: {fileID: 0}
-    - target: {fileID: 417188184, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 507826317, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: dict
-      value: 
-      objectReference: {fileID: 18700000, guid: 54f8809523205c94b9a5fb9745e0fe6e,
-        type: 2}
-    - target: {fileID: 507826317, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: timelineUI
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 507826317, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: changeAllButtonsHolder
-      value: 
-      objectReference: {fileID: 126456653}
     - target: {fileID: 701646606, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -209,18 +178,6 @@ PrefabInstance:
     - target: {fileID: 701646606, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 701646607, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 607564138}
-    - target: {fileID: 701646607, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMatChange
-      objectReference: {fileID: 0}
-    - target: {fileID: 701646607, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 718874637, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -262,18 +219,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1007106814, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 607564138}
-    - target: {fileID: 1007106814, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMatChange
-      objectReference: {fileID: 0}
-    - target: {fileID: 1007106814, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 1092572871, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -293,22 +238,6 @@ PrefabInstance:
     - target: {fileID: 1092572871, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1392697827, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: clearColorMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1392697827, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: backgroundColorHDR.b
-      value: 0.028301895
-      objectReference: {fileID: 0}
-    - target: {fileID: 1392697827, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: backgroundColorHDR.g
-      value: 0.028301895
-      objectReference: {fileID: 0}
-    - target: {fileID: 1392697827, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: backgroundColorHDR.r
-      value: 0.028301895
       objectReference: {fileID: 0}
     - target: {fileID: 1683563839, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -334,18 +263,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1683563840, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 607564138}
-    - target: {fileID: 1683563840, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMatChange
-      objectReference: {fileID: 0}
-    - target: {fileID: 1683563840, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 1718334097, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -369,18 +286,6 @@ PrefabInstance:
     - target: {fileID: 1718334097, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1718334098, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 607564138}
-    - target: {fileID: 1718334098, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMatChange
-      objectReference: {fileID: 0}
-    - target: {fileID: 1718334098, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1775631842, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -406,18 +311,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1775631843, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 607564138}
-    - target: {fileID: 1775631843, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMatChange
-      objectReference: {fileID: 0}
-    - target: {fileID: 1775631843, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 1864853345, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -449,10 +342,6 @@ PrefabInstance:
     - target: {fileID: 1889676502, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2139173488, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2139173489, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -473,11 +362,6 @@ PrefabInstance:
     - target: {fileID: 2139173489, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1561613582295795267, guid: 0e19ea946334c4a4c97568eb07607c39,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1561613582299634294, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
@@ -1374,26 +1258,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5973961228950108680, guid: 0e19ea946334c4a4c97568eb07607c39,
-        type: 3}
-      propertyPath: clearColorMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5973961228950108680, guid: 0e19ea946334c4a4c97568eb07607c39,
-        type: 3}
-      propertyPath: backgroundColorHDR.b
-      value: 0.028301895
-      objectReference: {fileID: 0}
-    - target: {fileID: 5973961228950108680, guid: 0e19ea946334c4a4c97568eb07607c39,
-        type: 3}
-      propertyPath: backgroundColorHDR.g
-      value: 0.028301895
-      objectReference: {fileID: 0}
-    - target: {fileID: 5973961228950108680, guid: 0e19ea946334c4a4c97568eb07607c39,
-        type: 3}
-      propertyPath: backgroundColorHDR.r
-      value: 0.028301895
-      objectReference: {fileID: 0}
     - target: {fileID: 7853459335034227283, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_Name
@@ -1402,15 +1266,3 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
---- !u!114 &607564138 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 507826317, guid: 0e19ea946334c4a4c97568eb07607c39,
-    type: 3}
-  m_PrefabInstance: {fileID: 607564137}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c404554b539062c4eb395f24908d0fb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

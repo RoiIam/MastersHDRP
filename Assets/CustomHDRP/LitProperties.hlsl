@@ -181,12 +181,17 @@ CBUFFER_START(UnityPerMaterial)
 
     //wang15
     float _wbGlitterStrength;
+    float _wbTestNoise;
     float _wbUseAnisotropy;
     float _wbSparkleSize;
     float _wbSparkleDensity;
     float _wbNoiseDensity;
     float _wbNoiseAmmount;
     float _wbViewAmmount;
+    float _wbUsePerlinTexture;
+
+    TEXTURE3D(_wbPerlinTexture);
+    SAMPLER(sampler_wbPerlinTexture);
 
 
     float4 _BaseColorMap_ST;
@@ -272,12 +277,14 @@ PROP_DECL(float, _zkDenisty);
 
 //wang15
 PROP_DECL(float, _wbGlitterStrength);
+PROP_DECL(float, _wbTestNoise);
 PROP_DECL(float, _wbUseAnisotropy);
 PROP_DECL(float, _wbSparkleDensity);
 PROP_DECL(float, _wbNoiseAmmount);
 PROP_DECL(float, _wbNoiseDensity);
 PROP_DECL(float, _wbNoiseAmmount);
 PROP_DECL(float, _wbViewAmmount);
+PROP_DECL(float, _wbUsePerlinTexture);
 
 float4 _BaseColorMap0_ST;
 float4 _BaseColorMap1_ST;

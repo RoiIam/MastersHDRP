@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 [ExecuteInEditMode]
 public class MatChanger : MonoBehaviour
@@ -64,9 +65,18 @@ public class MatChanger : MonoBehaviour
 
     public void ChangeShaderForAllMaterials(Shader s)
     {
-        foreach (var mat in autoAddedMaterials) ChangeShader(mat, s);
+        foreach (var mat in autoAddedMaterials)
+        {
+            ChangeShader(mat, s);
+            HDMaterial.ValidateMaterial(mat);
+        }
 
-        foreach (var mat in manuallyAddedMaterials) ChangeShader(mat, s);
+        foreach (var mat in manuallyAddedMaterials)
+        {
+            ChangeShader(mat, s);
+            HDMaterial.ValidateMaterial(mat);
+            
+        }
     }
 
 

@@ -37,6 +37,9 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     private MaterialProperty wbSparkleSize;
     private MaterialProperty wbUseAnisotropy;
     private MaterialProperty wbViewAmmount;
+    private MaterialProperty wbPerlinTexture;
+    private MaterialProperty wbUsePerlinTexture;
+    private MaterialProperty wbTestNoise;
 
     private MaterialProperty zkDenisty;
     private MaterialProperty zkDynamicRange;
@@ -89,6 +92,9 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         wbNoiseDensity = FindProperty("_wbNoiseDensity");
         wbNoiseAmmount = FindProperty("_wbNoiseAmmount");
         wbViewAmmount = FindProperty("_wbViewAmmount");
+        wbPerlinTexture = FindProperty("_wbPerlinTexture");
+        wbUsePerlinTexture = FindProperty("_wbUsePerlinTexture");
+        wbTestNoise = FindProperty("_wbTestNoise");
 
 
         //Debug.Log(matID);
@@ -147,6 +153,10 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         materialEditor.ShaderProperty(wbNoiseDensity, "NoiseDensity");
         materialEditor.ShaderProperty(wbNoiseAmmount, "NoiseAmmount");
         materialEditor.ShaderProperty(wbViewAmmount, "ViewAmmount");
+        materialEditor.ShaderProperty(wbPerlinTexture, "3d Perlin Texture");
+        materialEditor.ShaderProperty(wbUsePerlinTexture, "Use Perlin Texture");
+        materialEditor.ShaderProperty(wbTestNoise, "Test noise");
+
     }
 
 

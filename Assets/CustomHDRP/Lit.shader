@@ -49,12 +49,16 @@ Shader "HDRP/CustomLit"
 
         //RCC properties of wang15
         _wbGlitterStrength("Glitter Strength", Range(1, 1000)) = 1000
+        _wbTestNoise("Test Noise", Range(0, 500)) = 500
         [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 1.0
         _wbSparkleSize("Sparkle Size", Range(0.01, 1.0)) = 0.015
         _wbSparkleDensity("Sparkle Density", Range(0.1, 10)) = 5
         _wbNoiseDensity("Noise Density", Range(0.1, 1)) = 0
         _wbNoiseAmmount("Noise Ammount", Range(0.1, 1)) = 0
         _wbViewAmmount("View Ammount", Range(0.1, 10)) = 8
+        [ToggleUI] _wbUsePerlinTexture("Use PerlinTexture", Float) = 1.0
+
+        _wbPerlinTexture("My 3D Texture", 3D) = "" {}
         
         [MainTexture] _BaseColorMap("BaseColorMap", 2D) = "white" {}
         [HideInInspector] _BaseColorMap_MipInfo("_BaseColorMap_MipInfo", Vector) = (0, 0, 0, 0)

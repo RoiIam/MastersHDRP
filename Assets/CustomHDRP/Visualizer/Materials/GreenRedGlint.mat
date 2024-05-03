@@ -174,6 +174,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _wbPerlinTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -315,9 +319,9 @@ Material:
     - _chLogMicrofacetDensity: 25.9
     - _chMaxAnisotropy: 8
     - _chMicrofacetRelativeArea: 0.347
-    - _dbMaxNDF: 0.0004
-    - _dbTargetNDF: 0.05
-    - _glintsMethod: 4
+    - _dbMaxNDF: 0.5
+    - _dbTargetNDF: 0.5
+    - _glintsMethod: 0
     - _maxNDF: 0.0003
     - _targetNDF: 0.02
     - _wbGlitterStrength: 35
@@ -325,7 +329,9 @@ Material:
     - _wbNoiseDensity: 0.121
     - _wbSparkleDensity: 0.1
     - _wbSparkleSize: 0.693
+    - _wbTestNoise: 500
     - _wbUseAnisotropy: 1
+    - _wbUsePerlinTexture: 1
     - _wbViewAmmount: 2.14
     - _zkDenisty: 181288
     - _zkDynamicRange: 52867

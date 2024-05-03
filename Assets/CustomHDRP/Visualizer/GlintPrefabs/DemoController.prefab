@@ -257,8 +257,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.DemoAnim, Assembly-CSharp
+      - m_Target: {fileID: 507826317}
+        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
         m_MethodName: OnMatChange
         m_Mode: 3
         m_Arguments:
@@ -526,8 +526,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.DemoAnim, Assembly-CSharp
+      - m_Target: {fileID: 507826317}
+        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
         m_MethodName: OnMatChange
         m_Mode: 3
         m_Arguments:
@@ -1334,8 +1334,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.DemoAnim, Assembly-CSharp
+      - m_Target: {fileID: 507826317}
+        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
         m_MethodName: OnMatChange
         m_Mode: 3
         m_Arguments:
@@ -1533,8 +1533,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.DemoAnim, Assembly-CSharp
+      - m_Target: {fileID: 507826317}
+        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
         m_MethodName: OnMatChange
         m_Mode: 3
         m_Arguments:
@@ -1802,8 +1802,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.DemoAnim, Assembly-CSharp
+      - m_Target: {fileID: 507826317}
+        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
         m_MethodName: OnMatChange
         m_Mode: 3
         m_Arguments:
@@ -1936,8 +1936,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.DemoAnim, Assembly-CSharp
+      - m_Target: {fileID: 507826317}
+        m_TargetAssemblyTypeName: CustomHDRP.Visualizer.ObjectViewer, Assembly-CSharp
         m_MethodName: OnMatChange
         m_Mode: 3
         m_Arguments:
@@ -2355,7 +2355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 1, y: 2}
   m_SizeDelta: {x: 211, y: 12}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1561613582295795265
@@ -10100,7 +10100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c404554b539062c4eb395f24908d0fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OptionsPanel: {fileID: 1561613582725249674}
+  OptionsPanel: {fileID: 8134337442845640280}
   viewType: 0
   leftCam: {fileID: 1392697826}
   rightCam: {fileID: 5973961228950108681}
@@ -10128,8 +10128,8 @@ MonoBehaviour:
   leftObjName: LeftObj
   rightObjName: LeftObj
   playerInput: {fileID: 0}
-  dict: {fileID: 0}
-  changeAllButtonsHolder: {fileID: 0}
+  dict: {fileID: 18700000, guid: 54f8809523205c94b9a5fb9745e0fe6e, type: 2}
+  changeAllButtonsHolder: {fileID: 2139173488}
 --- !u!1 &8134337442845640280
 GameObject:
   m_ObjectHideFlags: 0
@@ -10205,6 +10205,26 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 3252637653492192237}
     m_Modifications:
+    - target: {fileID: 4646124535719881538, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: -0.5115641
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646124535719881538, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3.49021
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704013364711420806, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: -0.5115641
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704013364711420806, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3.49021
+      objectReference: {fileID: 0}
     - target: {fileID: 5973961229249665027, guid: 6fdcc41067cdf404a9597c7aa5595522,
         type: 3}
       propertyPath: m_Layer
@@ -10349,6 +10369,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NormalizedViewPortRect.x
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: clearColorMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: backgroundColorHDR.b
+      value: 0.028301895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: backgroundColorHDR.g
+      value: 0.028301895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: backgroundColorHDR.r
+      value: 0.028301895
+      objectReference: {fileID: 0}
+    - target: {fileID: 8153428414935186401, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: -0.5115641
+      objectReference: {fileID: 0}
+    - target: {fileID: 8153428414935186401, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3.49021
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -11011,6 +11061,26 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 3252637653492192237}
     m_Modifications:
+    - target: {fileID: 4646124535719881538, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: -0.5115641
+      objectReference: {fileID: 0}
+    - target: {fileID: 4646124535719881538, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3.49021
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704013364711420806, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: -0.5115641
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704013364711420806, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3.49021
+      objectReference: {fileID: 0}
     - target: {fileID: 5973961230462126248, guid: 6fdcc41067cdf404a9597c7aa5595522,
         type: 3}
       propertyPath: m_Follow
@@ -11140,6 +11210,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NormalizedViewPortRect.width
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: clearColorMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: backgroundColorHDR.b
+      value: 0.028301895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: backgroundColorHDR.g
+      value: 0.028301895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973961230462126255, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: backgroundColorHDR.r
+      value: 0.028301895
+      objectReference: {fileID: 0}
+    - target: {fileID: 8153428414935186401, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.y
+      value: -0.5115641
+      objectReference: {fileID: 0}
+    - target: {fileID: 8153428414935186401, guid: 6fdcc41067cdf404a9597c7aa5595522,
+        type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -3.49021
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

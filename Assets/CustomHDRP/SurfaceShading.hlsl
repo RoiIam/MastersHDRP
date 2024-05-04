@@ -109,11 +109,8 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
             lighting.specular = (glintsColor + cbsdf.specT * transmittance) * lightColor * specularDimmer;
         else if ((int)_glintsMethod == 4)
         {
-            //if(debug)
-            //lighting.specular = (_wbGlitterStrength * glintsColor * cbsdf.specR + cbsdf.specT * transmittance) *
-             //      lightColor * specularDimmer;
-            lighting.specular = (_wbGlitterStrength * glintsColor);
-            lighting.diffuse = (_wbGlitterStrength * glintsColor);
+            lighting.specular = (_wbGlitterStrength * glintsColor * cbsdf.specR + cbsdf.specT * transmittance) *
+                lightColor * specularDimmer;
         }
         else
             lighting.specular = (cbsdf.specR + cbsdf.specT * transmittance) * lightColor * specularDimmer;
@@ -235,7 +232,7 @@ float3 EvaluateTransmittance_Punctual(LightLoopContext lightLoopContext,
 
 #include "20Chermain/20ChermainGlints.hlsl"
 #include "15WangBowles/15WangGlints.hlsl"
- 
+
 DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                      FragInputs input, SurfaceData surfaceData,
                                      PositionInputs posInput, BuiltinData builtinData,
@@ -388,7 +385,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                 float4 vlarge_dir = float4(vViewVec - dotvn * -normalWS, dotvn);
 
                 glintsColor = float3(1, 1, 1);
-                glintsColor = wangGlints(vertPos, normalWS, lightPos, vViewVec, vlarge_dir,
+                glintsColor = wangGlints(vertPos, normalWS, lightPos, vViewVec,tangentWS, vlarge_dir,
                                          _wbUseAnisotropy,
                                          _wbSparkleSize,
                                          _wbSparkleDensity,

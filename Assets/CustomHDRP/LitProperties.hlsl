@@ -180,6 +180,7 @@ CBUFFER_START(UnityPerMaterial)
 
 
     //wang15
+    float2 _wbRoughness;
     float _wbGlitterStrength;
     float _wbTestNoise;
     float _wbUseAnisotropy;
@@ -189,6 +190,8 @@ CBUFFER_START(UnityPerMaterial)
     float _wbNoiseAmmount;
     float _wbViewAmmount;
     float _wbUsePerlinTexture;
+    float _wbGridAmmount;
+    float _wbJitterScale;
 
     TEXTURE3D(_wbPerlinTexture);
     SAMPLER(sampler_wbPerlinTexture);
@@ -276,6 +279,7 @@ PROP_DECL(float, _zkDynamicRange);
 PROP_DECL(float, _zkDenisty);
 
 //wang15
+PROP_DECL(float2, _wbRoughness);
 PROP_DECL(float, _wbGlitterStrength);
 PROP_DECL(float, _wbTestNoise);
 PROP_DECL(float, _wbUseAnisotropy);
@@ -285,6 +289,9 @@ PROP_DECL(float, _wbNoiseDensity);
 PROP_DECL(float, _wbNoiseAmmount);
 PROP_DECL(float, _wbViewAmmount);
 PROP_DECL(float, _wbUsePerlinTexture);
+PROP_DECL(float, _wbGridAmmount);
+PROP_DECL(float, _wbJitterScale);
+
 
 float4 _BaseColorMap0_ST;
 float4 _BaseColorMap1_ST;

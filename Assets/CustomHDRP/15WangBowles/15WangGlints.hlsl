@@ -96,21 +96,76 @@ float cnoise(float3 inp)
     if(_wbUsePerlinTexture)
         return    UNITY_SAMPLE_TEX3D_SAMPLER(_wbPerlinTexture,_wbPerlinTexture, inp);
     return    cnoise2(inp);
+   }
 
-    //Shader error in 'HDRP/CustomLit': 'tex3D': no matching 2 parameter intrinsic function;
-    //Possible intrinsic functions are: tex3D(sampler3D, float3|half3|min10float3|min16float3) tex3D(sampler3D, float3|half3|min10float3|min16float3, float3|half3|min10float3|min16float3, float3|half3|min10float3|min16float3) at Assets/CustomHDRP/15WangBowles/15WangGlints.hlsl(16) (on d3d11)
+float rand(float2 co)
+{
+    co.x = co.x - frac(co.x);
+    co.y = co.y - frac(co.y);
+    return frac(sin(dot(co.xy, float2(12.9898, 78.233))) * 43758.5453);
 }
-//neopoznam cnoise
-//nepoznam vViewVec, vObjPos, vNormal, lightPos, color, glitterStrength
-/*
-uniform bool with_anisotropy;//with the anisotropy or not
-uniform float i_sparkle_size; //sparkle size
-uniform float i_sparkle_density;//sparkle density
-uniform float i_noise_density;//the noise density
 
-uniform float i_noise_amount;
-uniform float i_view_amount;
-*/
+float3 randomVec3(float2 seed, float seed1)
+{
+    float rand1 = rand(seed + seed1);
+    float rand2 = rand(seed + seed1 + float2(1, 1));
+    float rand3 = rand(seed + seed1 + float2(2, 2));
+
+    return float3(rand1, rand2, rand3);
+}
+
+float Ward2(float3 L, float3 N, float3 V,float3 tangentVS)
+{
+    float alphaX = _wbRoughness.x;
+    float alphaY =  _wbRoughness.y;
+    float ro = 0.045;
+
+    float NdotV = dot(N, V);
+    float NdotL = dot(N , L);
+    float3 halfV = normalize(L + V);
+
+    // vectors T, B same as X, Y in the equation
+    float3 tangent = float3(0, 0, 0);
+    float3 binormal = float3(0, 0, 0);
+
+    // we can calc tangent vector in many ways(or store in texture), it just has to be perpendicular to the normal
+    // tangent = cross(N, float3(0.5, 0.0, 1.0));
+    // tangent = normalize(tangent);
+    // binormal = cross(N, tangent);
+    // binormal = normalize(binormal);
+    tangent = tangentVS;
+    binormal = cross(N, tangent);
+
+    float HdotT = dot(halfV , tangent);
+    float HdotB = dot(halfV , binormal);
+    float HdotN = dot(halfV, N);
+
+    if (NdotL <= 0.0 || NdotV <= 0.0)
+    {
+        return 0;
+    }
+
+    float specularFactor = 0;
+    float lightIntensity = 1;
+    float3 diffuseFactor = lightIntensity * (N * L);
+
+    float a = sqrt(max(0.0, ro * NdotL / NdotV));
+    float b = 1 / (4 * 3.14159 * alphaX * alphaY);
+    b = max(0.0, b * NdotL);
+
+    float t1 = HdotT / alphaX;
+    float t2 = HdotB / alphaY;
+
+    float term = -2.0 *
+    ((t1 * t1 + t2 * t2)
+    / (1 + HdotN));
+    float e = 2.71828;
+    float c = pow(e, term);
+
+    // combine to get the final spec factor
+    return lightIntensity * a * b * c;
+}
+ 
 
 float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense, float adjust_sparkle_size,
                  float inoise, float floorLogPlus,
@@ -121,9 +176,9 @@ float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense,
 {
     // Expanding the distance range, Logarithm Distribution
     float zBuf = length(vViewVec);
-    float z_exp = log2(0.3 * zBuf + 2.0f) / 0.37851162325f;
+    float z_exp = log2(0.3 * zBuf + 3.0f) / 0.37851162325f;
     float floorlog = floor(z_exp);
-    float level_zBuf = 0.1f * pow(1.3f, floorlog + floorLogPlus) - 0.2f;
+    float level_zBuf = 0.1f * pow(1.3f, floorlog) - 0.2f;
     float level = 0.12f / level_zBuf;
     grid_sparkle_dense *= level;
     noise_dense *= level;
@@ -132,20 +187,23 @@ float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense,
     float3 w_view_dir = n_view_dir * level_zBuf;
     w_view_dir = sign(w_view_dir) * frac(abs(w_view_dir));
 
-    float3 a = frac(vObjPos * inoise);
-    float3 vObjPos2 = float3(vObjPos.x + a.x, vObjPos.y + a.y, vObjPos.z + a.z);
+
+    float3 randomPosition = randomVec3(vObjPos.xy, inoise);
 
     // Consider the view direction
-    float3 pos_with_view = grid_sparkle_dense * vObjPos2 + i_view_amount * normalize(w_view_dir);
+    float3 pos_with_view = grid_sparkle_dense * vObjPos + i_view_amount * normalize(w_view_dir+randomPosition);
 
     // Generate the grid
     float3 grid_index = floor(pos_with_view);
     float3 grid_offset = pos_with_view - grid_index;
     float grid_length = 1.0f / grid_sparkle_dense;
     float3 grid_center = grid_index * grid_length;
+    //add random position too
+    grid_center += randomPosition;
 
+    //TODO add to cnoise also scale-better way
     // Jitter the grid center
-    float jitter_noisy = i_noise_amount * cnoise(noise_dense * grid_center);
+    float jitter_noisy = i_noise_amount * cnoise(noise_dense * grid_center*_wbJitterScale);
 
     float3 jitter_grid = float3(jitter_noisy, jitter_noisy, jitter_noisy);
     jitter_grid = 0.5f * frac(jitter_grid + 0.5f) - float3(0.75f, 0.75f, 0.75f);
@@ -210,7 +268,7 @@ float3 calcGrid(float newSparkle_size, float newSparkle_density, float inoise,
 }
 
 
-float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewVec, float4 vlarge_dir,
+float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewVec,float3 tangentVS, float4 vlarge_dir,
                   bool with_anisotropy,
                   float i_sparkle_size,
                   float i_sparkle_density,
@@ -222,12 +280,14 @@ float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewV
     // Flip the z for OpenGL
     float3 ldir = normalize(lightPos.xyz - vObjPos);
     float3 n_view_dir = normalize(vViewVec);
-    float test = cnoise(vObjPos);
-    return float3(test,test,test);
+    // test the noise pattern
+    //float test = cnoise(vObjPos);
+    //return float3(test,test,test);
 
     float3 glittering = float3(0.0f, 0.0f, 0.0f);
 
-    for (int i = 1; i < 3; i++)
+    //TODO loops
+    UNITY_LOOP for (int i = 1; i < _wbGridAmmount; i++)
     {
         glittering += calcGrid(i_sparkle_size, i_sparkle_density, i + i / 4.0f,
                                vViewVec, i_noise_density,
@@ -236,10 +296,12 @@ float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewV
 
     //float3 reflectDir = reflect(ldir, vNormal);
     //float spec = pow(max(dot(n_view_dir, reflectDir), 0.0f), 1.0f);
+    //TODO is it minus?
+    float spec2 = Ward2(ldir,  vNormal, -n_view_dir,tangentVS);
 
     //float3 FragColor = base.rgb * diffuse + 0.5f * specular + glitterStrength * glittering.rrr * specular;
 
-    return glittering;
+    return glittering*spec2;
 }
 
 

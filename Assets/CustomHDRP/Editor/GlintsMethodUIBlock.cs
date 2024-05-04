@@ -30,6 +30,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     private MaterialProperty useGlints;
 
 
+    private MaterialProperty wbRoughness;
     private MaterialProperty wbGlitterStrength;
     private MaterialProperty wbNoiseAmmount;
     private MaterialProperty wbNoiseDensity;
@@ -40,6 +41,8 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     private MaterialProperty wbPerlinTexture;
     private MaterialProperty wbUsePerlinTexture;
     private MaterialProperty wbTestNoise;
+    private MaterialProperty wbGridAmmount;
+    private MaterialProperty wbJitterScale;
 
     private MaterialProperty zkDenisty;
     private MaterialProperty zkDynamicRange;
@@ -85,6 +88,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         zkDenisty = FindProperty("_zkDenisty");
 
         //Wang15
+        wbRoughness = FindProperty("_wbRoughness");
         wbGlitterStrength = FindProperty("_wbGlitterStrength");
         wbUseAnisotropy = FindProperty("_wbUseAnisotropy");
         wbSparkleSize = FindProperty("_wbSparkleSize");
@@ -95,6 +99,8 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         wbPerlinTexture = FindProperty("_wbPerlinTexture");
         wbUsePerlinTexture = FindProperty("_wbUsePerlinTexture");
         wbTestNoise = FindProperty("_wbTestNoise");
+        wbGridAmmount = FindProperty("_wbGridAmmount");
+        wbJitterScale = FindProperty("_wbJitterScale");
 
 
         //Debug.Log(matID);
@@ -146,6 +152,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowWangModParams()
     {
+        materialEditor.ShaderProperty(wbRoughness, "Global roughness");
         materialEditor.ShaderProperty(wbGlitterStrength, "Glitter Strength");
         materialEditor.ShaderProperty(wbUseAnisotropy, "UseAnisotropy");
         materialEditor.ShaderProperty(wbSparkleSize, "SparkleSize");
@@ -156,7 +163,8 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         materialEditor.ShaderProperty(wbPerlinTexture, "3d Perlin Texture");
         materialEditor.ShaderProperty(wbUsePerlinTexture, "Use Perlin Texture");
         materialEditor.ShaderProperty(wbTestNoise, "Test noise");
-
+        materialEditor.ShaderProperty(wbGridAmmount, "Grid loops ammount");
+        materialEditor.ShaderProperty(wbJitterScale, "Jitter grid scale");
     }
 
 

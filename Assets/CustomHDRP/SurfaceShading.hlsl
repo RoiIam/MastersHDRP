@@ -107,7 +107,7 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
         //else
         if ((int)_glintsMethod == 3 || (int)_glintsMethod == 1) //ZK +CHE
             lighting.specular = (glintsColor + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-        else if ((int)_glintsMethod == 4)
+        else if ((int)_glintsMethod == 4  || (int)_glintsMethod == 5)
         {
             lighting.specular = (_wbGlitterStrength * glintsColor * cbsdf.specR + cbsdf.specT * transmittance) *
                 lightColor * specularDimmer;
@@ -232,6 +232,7 @@ float3 EvaluateTransmittance_Punctual(LightLoopContext lightLoopContext,
 
 #include "20Chermain/20ChermainGlints.hlsl"
 #include "15WangBowles/15WangGlints.hlsl"
+#include "WBEnhanced//WBEnhanced.hlsl"
 
 DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                      FragInputs input, SurfaceData surfaceData,
@@ -378,7 +379,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                      _zkRoughness, _zkMicroRoughness,
                                      _zkSearchConeAngle, _zkVariation, _zkDynamicRange, _zkDenisty);
             }
-            else if ((int)_glintsMethod == 4) //we chose WB
+            else if ((int)_glintsMethod == 4) //we chose WB 
             {
                 float3 vViewVec = vertPos - cameraPos; // vo world space
                 float dotvn = dot(vViewVec, -normalWS);
@@ -394,6 +395,23 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                          _wbViewAmmount
                 );
             }
+            else if ((int)_glintsMethod == 5) //we chose WBEnhanced
+            {
+                float3 vViewVec = vertPos - cameraPos; // vo world space
+                float dotvn = dot(vViewVec, -normalWS);
+                float4 vlarge_dir = float4(vViewVec - dotvn * -normalWS, dotvn);
+
+                glintsColor = float3(1, 1, 1);
+                glintsColor = WBEnhancedGlints(vertPos, normalWS, lightPos, vViewVec,tangentWS, vlarge_dir,
+                                         _wbUseAnisotropy,
+                                         _wbSparkleSize,
+                                         _wbSparkleDensity,
+                                         _wbNoiseDensity,
+                                         _wbNoiseAmmount,
+                                         _wbViewAmmount
+                );
+            }
+
 
             //apply final lighting
             lighting = ShadeSurface_Infinitesimal_Glints(preLightData, bsdfData, input, V, L, lightColor.rgb,

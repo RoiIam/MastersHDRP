@@ -304,16 +304,16 @@ Material:
     - _maxNDF: 0.5
     - _targetNDF: 0.5
     - _wbGlitterStrength: 555
-    - _wbGridAmmount: 4.08
-    - _wbJitterScale: 100
-    - _wbNoiseAmmount: 95.5
-    - _wbNoiseDensity: 0.564
-    - _wbSparkleDensity: 2.83
+    - _wbGridAmmount: 5.63
+    - _wbJitterScale: 66.4
+    - _wbNoiseAmmount: 100
+    - _wbNoiseDensity: 1
+    - _wbSparkleDensity: 2.61
     - _wbSparkleSize: 0.02
-    - _wbTestNoise: 104
+    - _wbTestNoise: 179
     - _wbUseAnisotropy: 0
     - _wbUsePerlinTexture: 0
-    - _wbViewAmmount: 3.8
+    - _wbViewAmmount: 3.5
     - _zkDenisty: 181288
     - _zkDynamicRange: 52867
     - _zkSearchConeAngle: 0.0782
@@ -338,7 +338,7 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
     - _chMaterial_Alpha: {r: 0.34, g: 0.34, b: 0, a: 0}
     - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _wbRoughness: {r: 0.12, g: 0.5, b: 0, a: 0}
+    - _wbRoughness: {r: 0.38, g: 0.38, b: 0, a: 0}
     - _zkMicroRoughness: {r: 0.0012, g: 0.0012, b: 0, a: 0}
     - _zkRoughness: {r: 0.3, g: 0.3, b: 0, a: 0}
   m_BuildTextureStacks: []

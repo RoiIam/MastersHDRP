@@ -8,7 +8,7 @@ Shader "HDRP/CustomLit"
         // Reminder. Color here are in linear but the UI (color picker) do the conversion sRGB to linear
         [MainColor] _BaseColor("BaseColor", Color) = (1,1,1,1)
         _MyColor("MyColor", Color) = (1,0,0,1)//RCC
-        [Enum(None, 0, Chermain20, 1, DeliotBelcour23, 2, ZirrKaplanyan16, 3, WangBowles, 4)] _glintsMethod("_glintsMethod", float) = 1//RCC glintsMethod Sets glints rendering method mode
+        [Enum(None, 0, Chermain20, 1, DeliotBelcour23, 2, ZirrKaplanyan16, 3, WangBowles, 4, WBEnhanced, 5)] _glintsMethod("_glintsMethod", float) = 1//RCC glintsMethod Sets glints rendering method mode
         //RCC must be the same name...
         
         //RCC add glints material ch[ToggleUI] 
@@ -50,7 +50,6 @@ Shader "HDRP/CustomLit"
         //RCC properties of wang15
         [ShowAsVector2] _wbRoughness("wbRoughness", Vector) = (0.5,0.5,0,0)
         _wbGlitterStrength("Glitter Strength", Range(1, 1000)) = 1000
-        _wbTestNoise("Test Noise", Range(0, 500)) = 500
         [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 0.0
         _wbSparkleSize("Sparkle Size", Range(0.01, 1.0)) = 0.015
         _wbSparkleDensity("Sparkle Density", Range(0.1, 10)) = 5

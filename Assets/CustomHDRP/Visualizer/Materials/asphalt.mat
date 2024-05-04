@@ -308,8 +308,10 @@ Material:
     - _chMicrofacetRelativeArea: 0.01
     - _dbMaxNDF: 0.5
     - _dbTargetNDF: 0.5
-    - _glintsMethod: 0
+    - _glintsMethod: 4
     - _wbGlitterStrength: 11
+    - _wbGridAmmount: 3
+    - _wbJitterScale: 75
     - _wbNoiseAmmount: 0.185
     - _wbNoiseDensity: 0.145
     - _wbSparkleDensity: 0.42
@@ -342,6 +344,7 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
     - _chMaterial_Alpha: {r: 1, g: 1, b: 0, a: 0}
     - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _wbRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _zkMicroRoughness: {r: 0.008, g: 0.008, b: 0, a: 0}
     - _zkRoughness: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []

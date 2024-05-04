@@ -40,7 +40,6 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     private MaterialProperty wbViewAmmount;
     private MaterialProperty wbPerlinTexture;
     private MaterialProperty wbUsePerlinTexture;
-    private MaterialProperty wbTestNoise;
     private MaterialProperty wbGridAmmount;
     private MaterialProperty wbJitterScale;
 
@@ -61,7 +60,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public override void LoadMaterialProperties()
     {
-        matID = FindProperty("_MaterialID"); //big D...
+        matID = FindProperty("_MaterialID");
         glintsMethod = FindProperty("_glintsMethod");
         useGlints = FindProperty("_UseGlints");
 
@@ -87,8 +86,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         zkDynamicRange = FindProperty("_zkDynamicRange");
         zkDenisty = FindProperty("_zkDenisty");
 
-        //Wang15
-        wbRoughness = FindProperty("_wbRoughness");
+        //Wang15 and Enhanced
         wbGlitterStrength = FindProperty("_wbGlitterStrength");
         wbUseAnisotropy = FindProperty("_wbUseAnisotropy");
         wbSparkleSize = FindProperty("_wbSparkleSize");
@@ -96,14 +94,12 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         wbNoiseDensity = FindProperty("_wbNoiseDensity");
         wbNoiseAmmount = FindProperty("_wbNoiseAmmount");
         wbViewAmmount = FindProperty("_wbViewAmmount");
+        
+        wbRoughness = FindProperty("_wbRoughness");
         wbPerlinTexture = FindProperty("_wbPerlinTexture");
         wbUsePerlinTexture = FindProperty("_wbUsePerlinTexture");
-        wbTestNoise = FindProperty("_wbTestNoise");
         wbGridAmmount = FindProperty("_wbGridAmmount");
         wbJitterScale = FindProperty("_wbJitterScale");
-
-
-        //Debug.Log(matID);
     }
 
     public void ShowChermainParams()
@@ -126,19 +122,8 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowZirrParams()
     {
-        //changezkRoughnessSimultaneously = EditorGUILayout.Toggle("Isometric Roughness based on X ", changezkRoughnessSimultaneously);
         materialEditor.ShaderProperty(zkRoughness, "Global Roughness");
-        /*if (changezkRoughnessSimultaneously)
-        {
-            zkRoughness.vectorValue = new Vector4(zkRoughness.vectorValue.x,zkRoughness.vectorValue.x,0,0);//there is a better way, check in ShowAsVector2Drawer
-        }*/
-
-        //changezkMicroRoughnessSimultaneously = EditorGUILayout.Toggle("Isometric Micro Roughness based on X", changezkMicroRoughnessSimultaneously);//there is a better way, check in ShowAsVector2Drawer
         materialEditor.ShaderProperty(zkMicroRoughness, "Micro Roughness");
-        /*if (changezkMicroRoughnessSimultaneously)
-        {
-            zkMicroRoughness.vectorValue = new Vector4(zkMicroRoughness.vectorValue.x,zkMicroRoughness.vectorValue.x,0,0);
-        }*/
         materialEditor.ShaderProperty(zkSearchConeAngle, "Search Cone Angle");
         materialEditor.ShaderProperty(zkVariation, "Variation");
         materialEditor.ShaderProperty(zkDynamicRange, "Dynamic Range");
@@ -147,12 +132,16 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     public void ShowWangParams()
     {
-        ShowWangModParams();
+        materialEditor.ShaderProperty(wbRoughness, "Global roughness");
+        materialEditor.ShaderProperty(wbPerlinTexture, "3d Perlin Texture");
+        materialEditor.ShaderProperty(wbUsePerlinTexture, "Use Perlin Texture");
+        materialEditor.ShaderProperty(wbGridAmmount, "Grid loops ammount");
+        materialEditor.ShaderProperty(wbJitterScale, "Jitter grid scale");
     }
 
-    public void ShowWangModParams()
+    public void ShowWBEnhancedParams()
     {
-        materialEditor.ShaderProperty(wbRoughness, "Global roughness");
+        ShowWangParams();
         materialEditor.ShaderProperty(wbGlitterStrength, "Glitter Strength");
         materialEditor.ShaderProperty(wbUseAnisotropy, "UseAnisotropy");
         materialEditor.ShaderProperty(wbSparkleSize, "SparkleSize");
@@ -160,11 +149,6 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         materialEditor.ShaderProperty(wbNoiseDensity, "NoiseDensity");
         materialEditor.ShaderProperty(wbNoiseAmmount, "NoiseAmmount");
         materialEditor.ShaderProperty(wbViewAmmount, "ViewAmmount");
-        materialEditor.ShaderProperty(wbPerlinTexture, "3d Perlin Texture");
-        materialEditor.ShaderProperty(wbUsePerlinTexture, "Use Perlin Texture");
-        materialEditor.ShaderProperty(wbTestNoise, "Test noise");
-        materialEditor.ShaderProperty(wbGridAmmount, "Grid loops ammount");
-        materialEditor.ShaderProperty(wbJitterScale, "Jitter grid scale");
     }
 
 
@@ -180,10 +164,6 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
         using (var header = new MaterialHeaderScope("Glints Options", (uint)foldoutBit, materialEditor))
         {
-            //doesnt work for now...
-            //we should check here if its the DB23 method
-            //Debug.Log((int)matID.floatValue);
-
             if (header.expanded)
                 switch ((int)glintsMethod.floatValue)
                 {
@@ -200,7 +180,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
                         ShowWangParams();
                         break;
                     case 5:
-                        ShowWangModParams();
+                        ShowWBEnhancedParams();
                         break;
                 }
         }

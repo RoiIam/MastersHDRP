@@ -8,8 +8,8 @@
 
 float cnoise(float3 inp)
 {
-    if(_wbUsePerlinTexture)
-        return    UNITY_SAMPLE_TEX3D_SAMPLER(_wbPerlinTexture,_wbPerlinTexture, inp);
+    //if(_wbUsePerlinTexture)
+    //    return    UNITY_SAMPLE_TEX3D_SAMPLER(_wbPerlinTexture,_wbPerlinTexture, inp);
     return    cnoise2(inp);
 }
 float rand(float2 co)

@@ -11,6 +11,12 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     private MaterialProperty dbMaxNDFBlock;
     private MaterialProperty dbTargetNDFBlock;
+    private MaterialProperty dbDensityRandomization;
+    private MaterialProperty dbLogMicrofacetDensity;
+    private MaterialProperty dbMicrofacetRoughness;
+    private MaterialProperty dbScreenSpaceScale;
+    private MaterialProperty Glint2023NoiseMap;
+    private MaterialProperty Glint2023NoiseMapSize;
 
 
     private MaterialProperty glintsMethod;
@@ -28,20 +34,20 @@ public class GlintsMethodUIBlock : MaterialUIBlock
 
     private MaterialProperty matID;
     private MaterialProperty useGlints;
+    private MaterialProperty wbGlitterStrength;
+    private MaterialProperty wbGridAmmount;
+    private MaterialProperty wbJitterScale;
+    private MaterialProperty wbNoiseAmmount;
+    private MaterialProperty wbNoiseDensity;
+    private MaterialProperty wbPerlinTexture;
 
 
     private MaterialProperty wbRoughness;
-    private MaterialProperty wbGlitterStrength;
-    private MaterialProperty wbNoiseAmmount;
-    private MaterialProperty wbNoiseDensity;
     private MaterialProperty wbSparkleDensity;
     private MaterialProperty wbSparkleSize;
     private MaterialProperty wbUseAnisotropy;
-    private MaterialProperty wbViewAmmount;
-    private MaterialProperty wbPerlinTexture;
     private MaterialProperty wbUsePerlinTexture;
-    private MaterialProperty wbGridAmmount;
-    private MaterialProperty wbJitterScale;
+    private MaterialProperty wbViewAmmount;
 
     private MaterialProperty zkDenisty;
     private MaterialProperty zkDynamicRange;
@@ -78,6 +84,14 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         //Deliot23
         dbMaxNDFBlock = FindProperty("_dbMaxNDF");
         dbTargetNDFBlock = FindProperty("_dbTargetNDF");
+
+        dbScreenSpaceScale = FindProperty("_dbScreenSpaceScale");
+        dbLogMicrofacetDensity = FindProperty("_dbLogMicrofacetDensity");
+        dbMicrofacetRoughness = FindProperty("_dbMicrofacetRoughness");
+        dbDensityRandomization = FindProperty("_dbDensityRandomization");
+        Glint2023NoiseMap = FindProperty("_Glint2023NoiseMap");
+        Glint2023NoiseMapSize = FindProperty("_Glint2023NoiseMapSize");
+
         //zirr16
         zkRoughness = FindProperty("_zkRoughness");
         zkMicroRoughness = FindProperty("_zkMicroRoughness");
@@ -94,7 +108,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
         wbNoiseDensity = FindProperty("_wbNoiseDensity");
         wbNoiseAmmount = FindProperty("_wbNoiseAmmount");
         wbViewAmmount = FindProperty("_wbViewAmmount");
-        
+
         wbRoughness = FindProperty("_wbRoughness");
         wbPerlinTexture = FindProperty("_wbPerlinTexture");
         wbUsePerlinTexture = FindProperty("_wbUsePerlinTexture");
@@ -118,6 +132,14 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     {
         materialEditor.ShaderProperty(dbMaxNDFBlock, "max NDF");
         materialEditor.ShaderProperty(dbTargetNDFBlock, "target NDF");
+        
+        materialEditor.ShaderProperty(dbDensityRandomization, "Density Randomization");
+        materialEditor.ShaderProperty(dbLogMicrofacetDensity, "Log Microfacet Density");
+        materialEditor.ShaderProperty(dbMicrofacetRoughness, "Microfacet Roughness");
+        materialEditor.ShaderProperty(dbScreenSpaceScale, "Screen Space Scale");
+        materialEditor.ShaderProperty(Glint2023NoiseMap, "Glint2023NoiseMap");
+        materialEditor.ShaderProperty(Glint2023NoiseMapSize, "Glint2023NoiseMapSize");
+
     }
 
     public void ShowZirrParams()
@@ -133,7 +155,7 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     public void ShowWangParams()
     {
         materialEditor.ShaderProperty(wbRoughness, "Global roughness");
-        materialEditor.ShaderProperty(wbPerlinTexture, "3d Perlin Texture");
+        //materialEditor.ShaderProperty(wbPerlinTexture, "3d Perlin Texture");
         materialEditor.ShaderProperty(wbUsePerlinTexture, "Use Perlin Texture");
         materialEditor.ShaderProperty(wbGridAmmount, "Grid loops ammount");
         materialEditor.ShaderProperty(wbJitterScale, "Jitter grid scale");
@@ -143,12 +165,12 @@ public class GlintsMethodUIBlock : MaterialUIBlock
     {
         ShowWangParams();
         materialEditor.ShaderProperty(wbGlitterStrength, "Glitter Strength");
-        materialEditor.ShaderProperty(wbUseAnisotropy, "UseAnisotropy");
-        materialEditor.ShaderProperty(wbSparkleSize, "SparkleSize");
-        materialEditor.ShaderProperty(wbSparkleDensity, "SparkleDensity");
-        materialEditor.ShaderProperty(wbNoiseDensity, "NoiseDensity");
-        materialEditor.ShaderProperty(wbNoiseAmmount, "NoiseAmmount");
-        materialEditor.ShaderProperty(wbViewAmmount, "ViewAmmount");
+        materialEditor.ShaderProperty(wbUseAnisotropy, "Use Anisotropy");
+        materialEditor.ShaderProperty(wbSparkleSize, "Sparkle Size");
+        materialEditor.ShaderProperty(wbSparkleDensity, "Sparkle Density");
+        materialEditor.ShaderProperty(wbNoiseDensity, "Noise Density");
+        materialEditor.ShaderProperty(wbNoiseAmmount, "Noise Ammount");
+        materialEditor.ShaderProperty(wbViewAmmount, "View Ammount jitter");
     }
 
 

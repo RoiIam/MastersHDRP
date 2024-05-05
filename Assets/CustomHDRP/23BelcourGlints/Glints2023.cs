@@ -10,6 +10,7 @@ public class Glints2023 : MonoBehaviour
     [Header("Interface")] public bool resetButton = true;
 
     public bool generateCustomFile;
+    public bool constantRefresh;
 
     [Header("Noise Settings")] public int noiseTexSize = 512;
 
@@ -19,7 +20,8 @@ public class Glints2023 : MonoBehaviour
 
     private void Start()
     {
-        ResetEverything();
+        if (constantRefresh)
+            ResetEverything();
         //Debug.Log("Start glint");
     }
 
@@ -41,7 +43,8 @@ public class Glints2023 : MonoBehaviour
 
     private void OnEnable()
     {
-        ResetEverything();
+        if (constantRefresh)
+            ResetEverything();
         //Debug.Log("onenable glint");
     }
 

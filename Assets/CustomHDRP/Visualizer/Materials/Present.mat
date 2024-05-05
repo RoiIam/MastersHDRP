@@ -81,6 +81,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Glint2023NoiseMap:
+        m_Texture: {fileID: 2800000, guid: 7ac6349aede394645907de4ed97ef32b, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -210,6 +214,7 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
+    - _Glint2023NoiseMapSize: 512
     - _Glossiness: 0.5
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
@@ -290,9 +295,13 @@ Material:
     - _chLogMicrofacetDensity: 25.9
     - _chMaxAnisotropy: 8
     - _chMicrofacetRelativeArea: 0.347
+    - _dbDensityRandomization: 2
+    - _dbLogMicrofacetDensity: 16
     - _dbMaxNDF: 0.5
+    - _dbMicrofacetRoughness: 0.005
+    - _dbScreenSpaceScale: 1.5
     - _dbTargetNDF: 0.5
-    - _glintsMethod: 4
+    - _glintsMethod: 0
     - _wbGlitterStrength: 555
     - _wbGridAmmount: 3
     - _wbJitterScale: 75

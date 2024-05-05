@@ -37,6 +37,12 @@ Shader "HDRP/CustomLit"
         //RCC properties of deliot23
         _dbMaxNDF("dbMaxNDF", Range(0.0, 1.0)) = 0.5
         _dbTargetNDF("dbTargetNDF", Range(0.0, 1.0)) = 0.5
+        _dbScreenSpaceScale("dbScreenSpaceScale", Range(0.00, 4.0)) = 1.5
+        _dbLogMicrofacetDensity("dbLogMicrofacetDensity", Range(0.0, 100)) = 16
+        _dbMicrofacetRoughness("dbMicrofacetRoughness", Range(0.005, 0.250)) = 0.005
+        _dbDensityRandomization("dbDensityRandomization", Range(0.0, 5)) = 2
+        _Glint2023NoiseMap("Glint2023NoiseMap", 2D) = "" {}
+        _Glint2023NoiseMapSize("Glint2023NoiseMapSize", Range(256, 2048)) = 512 //default is 512
         
         
         //RCC properties of zirr16
@@ -51,7 +57,7 @@ Shader "HDRP/CustomLit"
         [ShowAsVector2] _wbRoughness("wbRoughness", Vector) = (0.5,0.5,0,0)
         _wbGlitterStrength("Glitter Strength", Range(1, 1000)) = 1000
         [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 0.0
-        _wbSparkleSize("Sparkle Size", Range(0.01, 1.0)) = 0.015
+        _wbSparkleSize("Sparkle Size", Range(0.001, 1.0)) = 0.015
         _wbSparkleDensity("Sparkle Density", Range(0.1, 10)) = 5
         _wbNoiseDensity("Noise Density", Range(0.1, 1)) = 0
         _wbNoiseAmmount("Noise Ammount", Range(0.1, 100)) = 0

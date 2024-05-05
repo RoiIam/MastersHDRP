@@ -94,7 +94,8 @@ float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense,
     float zBuf = length(vViewVec);
     float z_exp = log2(0.3 * zBuf + 3.0f) / 0.37851162325f;
     float floorlog = floor(z_exp);
-    float level_zBuf = 0.1f * pow(1.3f, floorlog) - 0.2f;
+    //calc floorScales
+    float level_zBuf = 0.1f * pow(1.3f, floorlog+floorLogPlus) - 0.2f;
     float level = 0.12f / level_zBuf;
     grid_sparkle_dense *= level;
     noise_dense *= level;

@@ -167,31 +167,39 @@ CBUFFER_START(UnityPerMaterial)
     //src https://forum.unity.com/threads/how-to-declare-sample-texture-2d-array-in-hdrp.830757/
 
     //deliot23
-    float _dbMaxNDF; //RCC
-    float _dbTargetNDF; //RCC
+    float1 _dbMaxNDF; //RCC
+    float1 _dbTargetNDF; //RCC
+
+    float1 _dbScreenSpaceScale;
+    float1 _dbLogMicrofacetDensity;
+    float1 _dbMicrofacetRoughness;
+    float1 _dbDensityRandomization;
+    TEXTURE2D(_Glint2023NoiseMap);
+    int1 _Glint2023NoiseMapSize;
+
 
     //zirr16
     float2 _zkRoughness;
     float2 _zkMicroRoughness;
-    float _zkSearchConeAngle;
-    float _zkVariation;
-    float _zkDynamicRange;
-    float _zkDenisty;
+    float1 _zkSearchConeAngle;
+    float1 _zkVariation;
+    float1 _zkDynamicRange;
+    float1 _zkDenisty;
 
 
     //wang15
     float2 _wbRoughness;
-    float _wbGlitterStrength;
-    float _wbTestNoise;
-    float _wbUseAnisotropy;
-    float _wbSparkleSize;
-    float _wbSparkleDensity;
-    float _wbNoiseDensity;
-    float _wbNoiseAmmount;
-    float _wbViewAmmount;
-    float _wbUsePerlinTexture;
-    float _wbGridAmmount;
-    float _wbJitterScale;
+    float1 _wbGlitterStrength;
+    float1 _wbTestNoise;
+    float1 _wbUseAnisotropy;
+    float1 _wbSparkleSize;
+    float1 _wbSparkleDensity;
+    float1 _wbNoiseDensity;
+    float1 _wbNoiseAmmount;
+    float1 _wbViewAmmount;
+    float1 _wbUsePerlinTexture;
+    float1 _wbGridAmmount;
+    float1 _wbJitterScale;
 
     TEXTURE3D(_wbPerlinTexture);
     SAMPLER(sampler_wbPerlinTexture);
@@ -268,7 +276,12 @@ PROP_DECL(int1, _chDictionary_N);
 
 //deliot23
 PROP_DECL(float, _dbMaxNDF);//RCC
-PROP_DECL(float, _dbTargetNDF);//RCC
+PROP_DECL(float, _dbTargetNDF);
+PROP_DECL(float1, _dbScreenSpaceScale);
+PROP_DECL(float1, _dbLogMicrofacetDensity);
+PROP_DECL(float1, _dbMicrofacetRoughness);
+PROP_DECL(float1, _dbDensityRandomization);
+PROP_DECL(int1, _Glint2023NoiseMapSize);
 
 //zirr16
 PROP_DECL(float2, _zkRoughness);

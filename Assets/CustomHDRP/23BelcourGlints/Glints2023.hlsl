@@ -8,12 +8,6 @@
 static const float DEG2RAD = 0.01745329251; //redef
 static const float RAD2DEG = 57.2957795131;
 
-Texture2D<float4> _Glint2023NoiseMap;
-static const int1 _Glint2023NoiseMapSize = 512;
-static const float1 _ScreenSpaceScale = 1.5;
-static const float1 _LogMicrofacetDensity = 16;
-static const float1 _MicrofacetRoughness = 0.005; //0.005-0.250
-static const float1 _DensityRandomization = 2;
 //#pragma dynamic_branch 
 //=======================================================================================
 // TOOLS
@@ -248,7 +242,7 @@ void CustomRand4Texture(float2 slope, float2 slopeRandOffset, out float4 outUnif
                         out float2 slopeLerp)
 {
     int2 size = _Glint2023NoiseMapSize.rr;
-    float2 slope2 = abs(slope) / _MicrofacetRoughness;
+    float2 slope2 = abs(slope) / _dbMicrofacetRoughness;
     slope2 = slope2 + (slopeRandOffset * size);
     slopeLerp = frac(slope2);
     int2 slopeCoord = int2(floor(slope2)) % size;
@@ -305,13 +299,13 @@ float SampleGlintGridSimplex(float2 uv, uint gridSeed, float2 slope, float footp
 
     // Compute microfacet count with randomization
     float3 logDensityRand = clamp(
-        sampleNormalDistribution(float3(rand0.x, rand1.x, rand2.x), _LogMicrofacetDensity.rrr, _DensityRandomization),
+        sampleNormalDistribution(float3(rand0.x, rand1.x, rand2.x), _dbLogMicrofacetDensity.rrr, _dbDensityRandomization),
         0.0, 50.0); // TODO : optimize sampleNormalDist
     float3 microfacetCount = max(0.0.rrr, footprintArea.rrr * exp(logDensityRand));
     float3 microfacetCountBlended = microfacetCount * gridWeight;
 
     // Compute binomial properties
-    float hitProba = _MicrofacetRoughness * targetNDF; // probability of hitting desired half vector in NDF distribution
+    float hitProba = _dbMicrofacetRoughness * targetNDF; // probability of hitting desired half vector in NDF distribution
     float3 footprintOneHitProba = (1.0 - pow(1.0 - hitProba.rrr, microfacetCountBlended));
     // probability of hitting at least one microfacet in footprint
     float3 footprintMean = (microfacetCountBlended - 1.0) * hitProba.rrr;
@@ -489,7 +483,7 @@ float1 SampleGlints2023NDF(float3 localHalfVector, float targetNDF, float maxNDF
     float ellipseRatio = length(ellipseMajor) / length(ellipseMinor);
 
     // SHARED GLINT NDF VALUES
-    float halfScreenSpaceScaler = _ScreenSpaceScale * 0.5;
+    float halfScreenSpaceScaler = _dbScreenSpaceScale * 0.5;
     float footprintArea = length(ellipseMajor) * halfScreenSpaceScaler * length(ellipseMinor) * halfScreenSpaceScaler *
         4.0;
     float2 slope = localHalfVector.xy; // Orthogrtaphic slope projected grid
@@ -577,6 +571,6 @@ float1 SampleGlints2023NDF(float3 localHalfVector, float targetNDF, float maxNDF
     float sampleD = SampleGlintGridSimplex(uvRotD / divLods[tetraD.z] / float2(1.0, ratios[tetraD.y]), gridSeedD, slope,
                                            ratios[tetraD.y] * footprintAreas[tetraD.z], rescaledTargetNDF,
                                            tetraBarycentricWeights.w);
-    return (sampleA + sampleB + sampleC + sampleD) * (1.0 / _MicrofacetRoughness) * maxNDF;
+    return (sampleA + sampleB + sampleC + sampleD) * (1.0 / _dbMicrofacetRoughness) * maxNDF;
 }
 #endif

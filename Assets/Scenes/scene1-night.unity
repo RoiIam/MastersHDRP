@@ -23419,7 +23419,6 @@ GameObject:
   m_Component:
   - component: {fileID: 453006578}
   - component: {fileID: 453006579}
-  - component: {fileID: 453006580}
   m_Layer: 0
   m_Name: MySmallPlayground
   m_TagString: Untagged
@@ -23498,28 +23497,6 @@ MonoBehaviour:
   targetFolderPath: Assets/CustomHDRP/Visualizer/Materials
   custom: {fileID: 4800000, guid: f5ac8a4c593e9e74e8a751488d4df3f0, type: 3}
   def: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
---- !u!114 &453006580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 453006577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a3583d77f6df3448dc6a8aa4c6b885, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 256
-  height: 256
-  depth: 256
-  scale: 20
-  offset: 1
-  divOffset: 2
-  genPerlin: 0
-  saveAsset: 0
-  savePath: Assets/CustomHDRP/Visualizer/PerlinNoiseTexture.asset
-  perlinTexture: {fileID: 11700000, guid: 5ebe4bfb231beaa44886fbc0f6e4ccba, type: 2}
 --- !u!1 &454653839
 GameObject:
   m_ObjectHideFlags: 0
@@ -25917,6 +25894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetButton: 0
   generateCustomFile: 0
+  constantRefresh: 0
   noiseTexSize: 512
   glintNoiseTex: {fileID: 0}
 --- !u!1 &514549542
@@ -55237,6 +55215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetButton: 0
   generateCustomFile: 0
+  constantRefresh: 0
   noiseTexSize: 512
   glintNoiseTex: {fileID: 2800000, guid: 4a0beb36be7057b4b914aee662ab88c9, type: 2}
 --- !u!135 &1478647480

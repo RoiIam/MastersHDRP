@@ -1,5 +1,6 @@
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CinemachineFreeLook))]
@@ -62,6 +63,7 @@ public class FreeLookAddon : MonoBehaviour
 
     public void OnLMB(InputAction.CallbackContext context)
     {
-        isLMB = context.ReadValue<float>() > 0.8 ? true : false;
+        if (!EventSystem.current.IsPointerOverGameObject())
+            isLMB = context.ReadValue<float>() > 0.8 ? true : false;
     }
 }

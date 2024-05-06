@@ -187,7 +187,7 @@ CBUFFER_START(UnityPerMaterial)
     float1 _zkDenisty;
 
 
-    //wang15
+    //wang15 +wbe
     float2 _wbRoughness;
     float1 _wbGlitterStrength;
     float1 _wbTestNoise;
@@ -200,6 +200,7 @@ CBUFFER_START(UnityPerMaterial)
     float1 _wbUsePerlinTexture;
     float1 _wbGridAmmount;
     float1 _wbJitterScale;
+    float1 _wbUseScales;
 
     TEXTURE3D(_wbPerlinTexture);
     SAMPLER(sampler_wbPerlinTexture);
@@ -258,12 +259,11 @@ CBUFFER_START(UnityPerMaterial)
 // Set of users variables
 PROP_DECL(float4, _BaseColor);
 PROP_DECL(float4, _MyColor);//RCC
-PROP_DECL(float, _glintsMethod);//RCC
-PROP_DECL(int, _UseGlints);//RCC
+PROP_DECL(float1, _glintsMethod);//RCC
+PROP_DECL(int1, _UseGlints);//RCC
 PROP_DECL(float, _MaterialID);//RCC
 
 //chermain20
-
 PROP_DECL(float2, _chRoughness);
 PROP_DECL(float1, _chLogMicrofacetDensity);
 PROP_DECL(float1, _chMicrofacetRelativeArea);
@@ -273,10 +273,9 @@ PROP_DECL(float1, _chMaxAnisotropy);
 PROP_DECL(float1, _chDictionary_Alpha);
 PROP_DECL(int1, _chDictionary_N);
 
-
 //deliot23
-PROP_DECL(float, _dbMaxNDF);//RCC
-PROP_DECL(float, _dbTargetNDF);
+PROP_DECL(float1, _dbMaxNDF);//RCC
+PROP_DECL(float1, _dbTargetNDF);
 PROP_DECL(float1, _dbScreenSpaceScale);
 PROP_DECL(float1, _dbLogMicrofacetDensity);
 PROP_DECL(float1, _dbMicrofacetRoughness);
@@ -286,25 +285,27 @@ PROP_DECL(int1, _Glint2023NoiseMapSize);
 //zirr16
 PROP_DECL(float2, _zkRoughness);
 PROP_DECL(float2, _zkMicroRoughness);
-PROP_DECL(float, _zkSearchConeAngle);
-PROP_DECL(float, _zkVariation);
-PROP_DECL(float, _zkDynamicRange);
-PROP_DECL(float, _zkDenisty);
+PROP_DECL(float1, _zkSearchConeAngle);
+PROP_DECL(float1, _zkVariation);
+PROP_DECL(float1, _zkDynamicRange);
+PROP_DECL(float1, _zkDenisty);
 
 //wang15
 PROP_DECL(float2, _wbRoughness);
-PROP_DECL(float, _wbGlitterStrength);
-PROP_DECL(float, _wbTestNoise);
-PROP_DECL(float, _wbUseAnisotropy);
-PROP_DECL(float, _wbSparkleDensity);
-PROP_DECL(float, _wbNoiseAmmount);
-PROP_DECL(float, _wbNoiseDensity);
-PROP_DECL(float, _wbNoiseAmmount);
-PROP_DECL(float, _wbViewAmmount);
-PROP_DECL(float, _wbUsePerlinTexture);
-PROP_DECL(float, _wbGridAmmount);
-PROP_DECL(float, _wbJitterScale);
+PROP_DECL(float1, _wbGlitterStrength);
+PROP_DECL(float1, _wbTestNoise);
+PROP_DECL(float1, _wbUseAnisotropy);
+PROP_DECL(float1, _wbSparkleDensity);
+PROP_DECL(float1, _wbNoiseAmmount);
+PROP_DECL(float1, _wbNoiseDensity);
+PROP_DECL(float1, _wbNoiseAmmount);
+PROP_DECL(float1, _wbViewAmmount);
+PROP_DECL(float1, _wbUsePerlinTexture);
+PROP_DECL(float1, _wbGridAmmount);
+PROP_DECL(float1, _wbJitterScale);
+PROP_DECL(float1, _wbUseScales);
 
+//rest of Lit
 
 float4 _BaseColorMap0_ST;
 float4 _BaseColorMap1_ST;

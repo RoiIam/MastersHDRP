@@ -315,7 +315,7 @@ Material:
     - _dbMicrofacetRoughness: 0.005
     - _dbScreenSpaceScale: 1.5
     - _dbTargetNDF: 0.5
-    - _glintsMethod: 0
+    - _glintsMethod: 5
     - _wbGlitterStrength: 555
     - _wbGridAmmount: 3
     - _wbJitterScale: 75
@@ -326,6 +326,7 @@ Material:
     - _wbTestNoise: 500
     - _wbUseAnisotropy: 1
     - _wbUsePerlinTexture: 1
+    - _wbUseScales: 1
     - _wbViewAmmount: 4.94
     - _zkDenisty: 181288
     - _zkDynamicRange: 52867

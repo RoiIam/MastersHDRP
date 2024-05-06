@@ -1,0 +1,247 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f0f72323ce63845a0bd8593b1d986e, type: 3}
+  m_Name: MatPropDataOld
+  m_EditorClassIdentifier: 
+  list:
+  - propertyType: 1
+    glintsType: 0
+    name: _chMaterial_Alpha
+    range: {x: -9999, y: -9999}
+    floatValue: -9999
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: 0.24, y: 0.24, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _chLogMicrofacetDensity
+    range: {x: 1, y: 40}
+    floatValue: 18.2
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _chDictionary_NLevels
+    range: {x: -9999, y: -9999}
+    floatValue: 16
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _chMaxAnisotropy
+    range: {x: -9999, y: -9999}
+    floatValue: 8
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _chMicrofacetRelativeArea
+    range: {x: 0.01, y: 1}
+    floatValue: 0.317
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _chDictionary_Alpha
+    range: {x: -9999, y: -9999}
+    floatValue: 1
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _dbMaxNDF
+    range: {x: 0, y: 1}
+    floatValue: 0.5
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _dbTargetNDF
+    range: {x: 0, y: 1}
+    floatValue: 0.5
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _dbScreenSpaceScale
+    range: {x: 0, y: 4}
+    floatValue: 1.5
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _dbLogMicrofacetDensity
+    range: {x: 0, y: 100}
+    floatValue: 16
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _dbMicrofacetRoughness
+    range: {x: 0.005, y: 0.25}
+    floatValue: 0.005
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _dbDensityRandomization
+    range: {x: 0, y: 5}
+    floatValue: 2
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _zkRoughness
+    range: {x: -9999, y: -9999}
+    floatValue: -9999
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: 0.5, y: 0.5, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _zkMicroRoughness
+    range: {x: -9999, y: -9999}
+    floatValue: -9999
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: 0.05, y: 0.005, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _zkSearchConeAngle
+    range: {x: 0.001, y: 0.1}
+    floatValue: 0.5
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _zkVariation
+    range: {x: 20000, y: 100000}
+    floatValue: 35000
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _zkDynamicRange
+    range: {x: 20000, y: 100000}
+    floatValue: 35000
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _zkDenisty
+    range: {x: 1000, y: 200000}
+    floatValue: 100000
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbGlitterStrength
+    range: {x: 1, y: 1000}
+    floatValue: 1000
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbUseAnisotropy
+    range: {x: -9999, y: -9999}
+    floatValue: 1
+    intValue: -9999
+    isToggle: 1
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbSparkleSize
+    range: {x: 0.001, y: 1}
+    floatValue: 0.015
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbSparkleDensity
+    range: {x: 0.1, y: 10}
+    floatValue: 5
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbNoiseDensity
+    range: {x: 0.1, y: 1}
+    floatValue: 0
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbNoiseAmmount
+    range: {x: 0.1, y: 100}
+    floatValue: 0
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbViewAmmount
+    range: {x: 0.1, y: 10}
+    floatValue: 8
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbRoughness
+    range: {x: -9999, y: -9999}
+    floatValue: -9999
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: 0.5, y: 0.5, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbGridAmmount
+    range: {x: 1, y: 10}
+    floatValue: 3
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbJitterScale
+    range: {x: 0.1, y: 100}
+    floatValue: 75
+    intValue: -9999
+    isToggle: 0
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}
+  - propertyType: 1
+    glintsType: 0
+    name: _wbUseScales
+    range: {x: -9999, y: -9999}
+    floatValue: 1
+    intValue: -9999
+    isToggle: 1
+    vecValue: {x: -9999, y: -9999, z: 0, w: 0}

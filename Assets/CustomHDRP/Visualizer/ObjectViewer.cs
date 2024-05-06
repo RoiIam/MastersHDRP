@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using Cinemachine;
 using TMPro;
@@ -27,7 +28,7 @@ namespace CustomHDRP.Visualizer
             VerticalSplit = 1
         }
 
-        private static readonly int GlintsMethod = Shader.PropertyToID("_glintsMethod");
+        private static readonly int glintsMethodName = Shader.PropertyToID("_glintsMethod");
         private static ObjectViewer objectViewerInstance;
 
         [SerializeField] private GameObject OptionsPanel;
@@ -82,12 +83,31 @@ namespace CustomHDRP.Visualizer
         [SerializeField] private int scenesCount = 2; //should be accesed from buildIndex
 
         [SerializeField] private string leftObjName = "LeftObj";
-        [SerializeField] private string rightObjName = "RightObj";
 
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private Texture2DArray dict;
 
         [SerializeField] private GameObject changeAllButtonsHolder;
+
+        //UI for glints parameters
+        public Material matToChange;
+        public MaterialPropertyData materialPropertyData;
+        public GameObject cher;
+        public GameObject del;
+        public GameObject zirr;
+        public GameObject wang;
+        public GameObject wbe;
+
+        public GameObject uiRange;
+        public GameObject uiFloat;
+        public GameObject uiInt;
+        public GameObject uiVec;
+        public GameObject uiToggle;
+
+        public GameObject leftEditButton;
+        public GameObject rightEditButton;
+
+        public List<VisualizeUI> visualizeUI = new();
 
 
         private bool animateCam;
@@ -117,6 +137,7 @@ namespace CustomHDRP.Visualizer
         {
             DontDestroyOnLoad(this);
             CycleScene();
+            SetAllActive(false);
         }
 
         private void Start()
@@ -176,34 +197,101 @@ namespace CustomHDRP.Visualizer
             if (sceneIndex == 2)
             {
                 leftObj = GameObject.Find(leftObjName);
-                rightObj = GameObject.Find(rightObjName);
-                // leftCam = GameObject.Find("LeftCam").GetComponent<Camera>();
-                // rightCam = GameObject.Find("RightCam").GetComponent<Camera>();
-
 
                 leftMat = leftObj.GetComponent<Renderer>().material;
-                rightMat = rightObj.GetComponent<Renderer>().material;
                 leftObjMeshFilter = leftObj.GetComponent<MeshFilter>();
-                rightObjMeshFilter = rightObj.GetComponent<MeshFilter>();
-
+                
                 cinemachineFreeLookLeft = leftCam.gameObject.GetComponent<CinemachineFreeLook>();
                 cinemachineFreeLookLeft.LookAt = leftObj.transform;
                 cinemachineFreeLookLeft.Follow = leftObj.transform;
-                cinemachineFreeLookRight = rightCam.gameObject.GetComponent<CinemachineFreeLook>();
-                cinemachineFreeLookRight.LookAt = rightObj.transform;
-                cinemachineFreeLookRight.Follow = rightObj.transform;
-
-
+                
                 CreateRightCopies();
-
-
+                EditLeftMat();
+                CreateParamsUI();
                 StartCoroutine(WaitForFrame());
             }
         }
 
+        public void CreateParamsUI()
+        {
+            foreach (var m in materialPropertyData.list)
+                //if(m.glintsType == (MaterialPropertyData.GlintsType)matToChange.GetFloat(glintsMethodName))
+            {
+                GameObject parent;
+                switch (m.glintsType)
+                {
+                    case MaterialPropertyData.GlintsType.Cher:
+                        parent = cher;
+                        break;
+                    case MaterialPropertyData.GlintsType.De:
+                        parent = del;
+                        break;
+                    case MaterialPropertyData.GlintsType.Zirr:
+                        parent = zirr;
+                        break;
+                    case MaterialPropertyData.GlintsType.Wb:
+                        parent = wang;
+                        break;
+                    case MaterialPropertyData.GlintsType.Wbe:
+                        parent = wbe;
+                        break;
+                    default:
+                        parent = cher;
+                        break;
+                }
+
+                AddToGameObject(m, parent);
+            }
+        }
+
+        public void AddToGameObject(MaterialPropertyData.SerializedGlintsMaterialProperty m, GameObject parent)
+        {
+            GameObject g;
+            var t = m.propertyType;
+            switch (t)
+            {
+                case MaterialPropertyData.Type.Range:
+                    g = Instantiate(uiRange, parent.transform);
+                    break;
+                case MaterialPropertyData.Type.Float:
+                    if (m.isToggle)
+                        g = Instantiate(uiToggle, parent.transform);
+                    else
+                        g = Instantiate(uiFloat, parent.transform);
+
+                    break;
+                case MaterialPropertyData.Type.Int:
+                    if (m.isToggle)
+                        g = Instantiate(uiToggle, parent.transform);
+                    else
+                        g = Instantiate(uiInt, parent.transform);
+                    break;
+                case MaterialPropertyData.Type.Vec:
+                    g = Instantiate(uiVec, parent.transform);
+                    break;
+                default:
+                    g = Instantiate(uiRange, parent.transform);
+                    Debug.Log("unknown MaterialPropertyData type");
+                    break;
+            }
+
+            var v = g.GetComponent<VisualizeUI>();
+            v.Init(this, m);
+            visualizeUI.Add(v);
+        }
+
         public void ChangeLeft(int glintGlintMethod)
         {
-            leftMat.SetFloat(GlintsMethod, (float)glintGlintMethod + 1);
+            if (matToChange == leftMat)
+            {
+                leftMat.SetFloat(glintsMethodName, (float)glintGlintMethod + 1);
+                ChangeUI(true);
+            }
+            else
+            {
+                rightMat.SetFloat(glintsMethodName, (float)glintGlintMethod + 1);
+                ChangeUI(false);
+            }
         }
 
         private void EnableControls()
@@ -241,12 +329,35 @@ namespace CustomHDRP.Visualizer
         {
             //create copies of objects and lights in scene
             //set its layer to left View (main Cam)
-            viewType = ViewType.Single;
-            leftCam.enabled = true;
-            rightCam.enabled = true;
-            splitToggle.isOn = false;
-            CycleForward(viewType);
-            SetViewParams(viewType);
+
+            // Duplicate the original object
+            rightObj = Instantiate(leftObj, leftObj.transform.position, leftObj.transform.rotation);
+            rightObj.layer = LayerMask.NameToLayer("RightView");
+            // Get the Renderer component of the duplicate object
+            var renderer = rightObj.GetComponent<Renderer>();
+
+            // Check if the Renderer component exists and if a material is assigned
+            if (renderer != null && renderer.sharedMaterial != null)
+            {
+                // Create a new material instance based on the specified material
+                rightMat = new Material(leftMat);
+
+                // Assign the new material instance to the duplicate object
+                renderer.material = rightMat;
+
+
+                viewType = ViewType.Single;
+                leftCam.enabled = true;
+                rightCam.enabled = true;
+                splitToggle.isOn = false;
+                CycleForward(viewType);
+                SetViewParams(viewType);
+            }
+
+            rightObjMeshFilter = rightObj.GetComponent<MeshFilter>();
+            cinemachineFreeLookRight = rightCam.gameObject.GetComponent<CinemachineFreeLook>();
+            cinemachineFreeLookRight.LookAt = rightObj.transform;
+            cinemachineFreeLookRight.Follow = rightObj.transform;
         }
 
         public void RenderObjectsCopy()
@@ -342,7 +453,7 @@ namespace CustomHDRP.Visualizer
 
         public void OnMatChange(int m)
         {
-            timelineUI.GetComponent<DemoAnim>().ChangeMat(m+1);
+            timelineUI.GetComponent<DemoAnim>().ChangeMat(m + 1);
         }
 
         private void SetViewParams(ViewType viewType)
@@ -354,7 +465,8 @@ namespace CustomHDRP.Visualizer
                     splitLineToggle.gameObject.SetActive(false);
                     splitLineToggle.isOn = false;
                     splitterLine.SetActive(false);
-
+                    EditLeftMat();
+                    rightEditButton.SetActive(false);
                     var l = leftCam.rect;
                     leftCam.rect = new Rect(0, l.y, 1.0f, l.height);
                     break;
@@ -365,8 +477,93 @@ namespace CustomHDRP.Visualizer
                     splitLineToggle.gameObject.SetActive(true);
                     splitLineToggle.isOn = true;
                     splitterLine.SetActive(true);
+                    rightEditButton.SetActive(true);
                     break;
             }
+        }
+
+        public void OnLeftChange()
+        {
+            matToChange = leftMat;
+            ChangeUI(true);
+        }
+
+        public void OnRightChange()
+        {
+            matToChange = rightMat;
+            ChangeUI(false);
+        }
+
+        public void ChangeUI(bool isLeft)
+        {
+            MaterialPropertyData.GlintsType glintsType;
+            if (isLeft)
+                glintsType = (MaterialPropertyData.GlintsType)leftMat.GetFloat(glintsMethodName);
+            else
+                glintsType = (MaterialPropertyData.GlintsType)rightMat.GetFloat(glintsMethodName);
+            SetAllActive(false);
+            switch (glintsType)
+            {
+                case MaterialPropertyData.GlintsType.No:
+                    break;
+                case MaterialPropertyData.GlintsType.Cher:
+                    cher.SetActive(true);
+                    break;
+                case MaterialPropertyData.GlintsType.De:
+                    del.SetActive(true);
+                    break;
+                case MaterialPropertyData.GlintsType.Zirr:
+                    zirr.SetActive(true);
+                    break;
+                case MaterialPropertyData.GlintsType.Wb:
+                    wang.SetActive(true);
+                    break;
+                case MaterialPropertyData.GlintsType.Wbe:
+                    wang.SetActive(true);
+                    wbe.SetActive(true);
+                    break;
+                default:
+                    Debug.Log("unknown type");
+                    break;
+            }
+        }
+
+        public void SetAllActive(bool active)
+        {
+            cher.SetActive(active);
+            del.SetActive(active);
+            zirr.SetActive(active);
+            wang.SetActive(active);
+            wbe.SetActive(active);
+        }
+
+        public void RecalcUI()
+        {
+            foreach (var v in visualizeUI)
+                if (v.isActiveAndEnabled)
+                    v.StartValues();
+        }
+
+        public void EditLeftMat()
+        {
+            matToChange = leftMat;
+            leftEditButton.GetComponent<Button>().image.color = Color.green;
+            rightEditButton.GetComponent<Button>().image.color = Color.white;
+            leftEditButton.GetComponent<Button>().enabled = false;
+            rightEditButton.GetComponent<Button>().enabled = true;
+            ChangeUI(true);
+            RecalcUI();
+        }
+
+        public void EditRightMat()
+        {
+            matToChange = rightMat;
+            rightEditButton.GetComponent<Button>().image.color = Color.green;
+            leftEditButton.GetComponent<Button>().image.color = Color.white;
+            rightEditButton.GetComponent<Button>().enabled = false;
+            leftEditButton.GetComponent<Button>().enabled = true;
+            ChangeUI(false);
+            RecalcUI();
         }
     }
 }

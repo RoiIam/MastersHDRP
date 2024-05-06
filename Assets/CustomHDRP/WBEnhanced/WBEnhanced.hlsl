@@ -30,14 +30,14 @@ float3 randomVec3(float2 seed, float seed1)
     return float3(rand1, rand2, rand3);
 }
 */
-float Ward2(float3 L, float3 N, float3 V,float3 tangentVS)
+float Ward2(float3 L, float3 N, float3 V, float3 tangentVS)
 {
     float alphaX = _wbRoughness.x;
-    float alphaY =  _wbRoughness.y;
+    float alphaY = _wbRoughness.y;
     float ro = 0.045;
 
     float NdotV = dot(N, V);
-    float NdotL = dot(N , L);
+    float NdotL = dot(N, L);
     float3 halfV = normalize(L + V);
 
     // vectors T, B same as X, Y in the equation
@@ -52,8 +52,8 @@ float Ward2(float3 L, float3 N, float3 V,float3 tangentVS)
     tangent = tangentVS;
     binormal = cross(N, tangent);
 
-    float HdotT = dot(halfV , tangent);
-    float HdotB = dot(halfV , binormal);
+    float HdotT = dot(halfV, tangent);
+    float HdotB = dot(halfV, binormal);
     float HdotN = dot(halfV, N);
 
     if (NdotL <= 0.0 || NdotV <= 0.0)
@@ -74,14 +74,14 @@ float Ward2(float3 L, float3 N, float3 V,float3 tangentVS)
 
     float term = -2.0 *
     ((t1 * t1 + t2 * t2)
-    / (1 + HdotN));
+        / (1 + HdotN));
     float e = 2.71828;
     float c = pow(e, term);
 
     // combine to get the final spec factor
     return lightIntensity * a * b * c;
 }
- 
+
 
 float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense, float adjust_sparkle_size,
                  float inoise, float floorLogPlus,
@@ -95,7 +95,7 @@ float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense,
     float z_exp = log2(0.3 * zBuf + 3.0f) / 0.37851162325f;
     float floorlog = floor(z_exp);
     //calc floorScales
-    float level_zBuf = 0.1f * pow(1.3f, floorlog+floorLogPlus) - 0.2f;
+    float level_zBuf = 0.1f * pow(1.3f, floorlog + floorLogPlus) - 0.2f;
     float level = 0.12f / level_zBuf;
     grid_sparkle_dense *= level;
     noise_dense *= level;
@@ -108,7 +108,7 @@ float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense,
     float3 randomPosition = randomVec3(vObjPos.xy, inoise);
 
     // Consider the view direction
-    float3 pos_with_view = grid_sparkle_dense * vObjPos + i_view_amount * normalize(w_view_dir+randomPosition);
+    float3 pos_with_view = grid_sparkle_dense * vObjPos + i_view_amount * normalize(w_view_dir + randomPosition);
 
     // Generate the grid
     float3 grid_index = floor(pos_with_view);
@@ -120,7 +120,7 @@ float3 glintFade(float3 n_view_dir, float noise_dense, float grid_sparkle_dense,
 
     //TODO add to cnoise also scale-better way
     // Jitter the grid center
-    float jitter_noisy = i_noise_amount * cnoise(noise_dense * grid_center*_wbJitterScale);
+    float jitter_noisy = i_noise_amount * cnoise(noise_dense * grid_center * _wbJitterScale);
 
     float3 jitter_grid = float3(jitter_noisy, jitter_noisy, jitter_noisy);
     jitter_grid = 0.5f * frac(jitter_grid + 0.5f) - float3(0.75f, 0.75f, 0.75f);
@@ -175,23 +175,26 @@ float3 calcGrid(float newSparkle_size, float newSparkle_density, float inoise,
     */
 
     float3 resultC = glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level0,
-                               vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount) +
-        glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level1,
-                  vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount) +
-        glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level2,
-                  vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount);
+                               vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount);
+    if (_wbUseScales)
+        resultC +=
+            glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level1,
+                      vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount) +
+            glintFade(n_view_dir, noise_dense, grid_sparkle_dense, adjust_sparkle_size, inoise, level2,
+                      vObjPos, vNormal, vViewVec, with_anisotropy, i_noise_amount, i_view_amount);
 
     return resultC / 3.0f;
 }
 
 
-float3 WBEnhancedGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewVec,float3 tangentVS, float4 vlarge_dir,
-                  bool with_anisotropy,
-                  float i_sparkle_size,
-                  float i_sparkle_density,
-                  float i_noise_density,
-                  float i_noise_amount,
-                  float i_view_amount
+float3 WBEnhancedGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewVec, float3 tangentVS,
+                        float4 vlarge_dir,
+                        bool with_anisotropy,
+                        float i_sparkle_size,
+                        float i_sparkle_density,
+                        float i_noise_density,
+                        float i_noise_amount,
+                        float i_view_amount
 )
 {
     // Flip the z for OpenGL
@@ -214,11 +217,11 @@ float3 WBEnhancedGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 
     //float3 reflectDir = reflect(ldir, vNormal);
     //float spec = pow(max(dot(n_view_dir, reflectDir), 0.0f), 1.0f);
     //TODO is it minus?
-    float spec2 = Ward2(ldir,  vNormal, -n_view_dir,tangentVS);
+    float spec2 = Ward2(ldir, vNormal, -n_view_dir, tangentVS);
 
     //float3 FragColor = base.rgb * diffuse + 0.5f * specular + glitterStrength * glittering.rrr * specular;
 
-    return glittering*spec2;
+    return glittering * spec2;
 }
 
 

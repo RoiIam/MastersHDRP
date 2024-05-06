@@ -115,7 +115,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _chSDFDict:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 18700000, guid: 54f8809523205c94b9a5fb9745e0fe6e, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _wbPerlinTexture:
@@ -247,28 +247,29 @@ Material:
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
-    - _chDictionary_Alpha: 0.5
+    - _chDictionary_Alpha: 1
     - _chDictionary_N: 192
     - _chDictionary_NLevels: 16
-    - _chLogMicrofacetDensity: 27
+    - _chLogMicrofacetDensity: 18.2
     - _chMaxAnisotropy: 8
-    - _chMicrofacetRelativeArea: 1
+    - _chMicrofacetRelativeArea: 0.317
     - _dbDensityRandomization: 2
     - _dbLogMicrofacetDensity: 16
     - _dbMaxNDF: 0.5
     - _dbMicrofacetRoughness: 0.005
     - _dbScreenSpaceScale: 1.5
     - _dbTargetNDF: 0.5
-    - _glintsMethod: 0
+    - _glintsMethod: 5
     - _wbGlitterStrength: 1000
     - _wbGridAmmount: 3
     - _wbJitterScale: 75
-    - _wbNoiseAmmount: 0
-    - _wbNoiseDensity: 0
+    - _wbNoiseAmmount: 28.1
+    - _wbNoiseDensity: 0.345
     - _wbSparkleDensity: 5
     - _wbSparkleSize: 0.015
     - _wbUseAnisotropy: 1
     - _wbUsePerlinTexture: 1
+    - _wbUseScales: 1
     - _wbViewAmmount: 8
     - _zkDenisty: 100000
     - _zkDynamicRange: 35000
@@ -292,7 +293,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _chMaterial_Alpha: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _chMaterial_Alpha: {r: 0.24, g: 0.24, b: 0, a: 0}
     - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _wbRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _zkMicroRoughness: {r: 0.05, g: 0.005, b: 0, a: 0}

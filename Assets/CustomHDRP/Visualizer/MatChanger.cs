@@ -18,11 +18,12 @@ public class MatChanger : MonoBehaviour
     [SerializeField] private Shader custom;
 
     [SerializeField] private Shader def;
-    
+
     public void ChangeMethod(int i)
     {
         foreach (var material in autoAddedMaterials) material.SetFloat(GlintsMethod, i);
-    }
+        
+        }
 #if UNITY_EDITOR
 
     private void OnEnable()
@@ -75,10 +76,8 @@ public class MatChanger : MonoBehaviour
         {
             ChangeShader(mat, s);
             HDMaterial.ValidateMaterial(mat);
-            
         }
     }
-
 
 
     private void ResetEverything()

@@ -67,6 +67,8 @@ Shader "HDRP/CustomLit"
         _wbPerlinTexture("My 3D Texture", 3D) = "" {}
         _wbGridAmmount("Grids ammount", Range(1, 10)) = 3
         _wbJitterScale("Jitter scale", Range(0.1, 100)) = 75
+        [ToggleUI] _wbUseScales("wbUseScales", Float) = 1.0
+
         
         [MainTexture] _BaseColorMap("BaseColorMap", 2D) = "white" {}
         [HideInInspector] _BaseColorMap_MipInfo("_BaseColorMap_MipInfo", Vector) = (0, 0, 0, 0)

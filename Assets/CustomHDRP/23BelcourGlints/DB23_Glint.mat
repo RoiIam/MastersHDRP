@@ -341,6 +341,7 @@ Material:
     - _wbSparkleSize: 0.015
     - _wbUseAnisotropy: 1
     - _wbUsePerlinTexture: 1
+    - _wbUseScales: 1
     - _wbViewAmmount: 8
     - _zkDenisty: 100000
     - _zkDynamicRange: 35000

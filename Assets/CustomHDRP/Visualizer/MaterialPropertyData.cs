@@ -32,7 +32,8 @@ namespace CustomHDRP.Visualizer
         {
             public Type propertyType = Type.Float;
             public GlintsType glintsType = GlintsType.No;
-            public string name = "non";
+            public string name = "noNameProvidedUSingDefaultSomethingIsWrong";
+            public string displayName = "noDisplayNameProvidedUSingDefaultSomethingIsWrong";
             public Vector2 range = new(-9999, -9999);
             public float floatValue = -9999;
             public float intValue = -9999;

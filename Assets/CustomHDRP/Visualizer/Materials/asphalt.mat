@@ -320,17 +320,21 @@ Material:
     - _glintsMethod: 5
     - _wbGlitterStrength: 11
     - _wbGridAmmount: 3
+    - _wbGridAmount: 3
     - _wbJitterScale: 75
     - _wbNoiseAmmount: 0.185
+    - _wbNoiseAmount: 91.8
     - _wbNoiseDensity: 0.145
     - _wbSparkleDensity: 0.42
-    - _wbSparkleSize: 0.2
+    - _wbSparkleSize: 0.166
     - _wbTestNoise: 500
     - _wbUseAnisotropy: 1
     - _wbUsePerlinTexture: 1
     - _wbUseScales: 1
     - _wbViewAmmount: 2.3
+    - _wbViewAmount: 10
     - _zkDenisty: 42160
+    - _zkDensity: 100000
     - _zkDynamicRange: 51339
     - _zkSearchConeAngle: 0.0362
     - _zkVariation: 20000

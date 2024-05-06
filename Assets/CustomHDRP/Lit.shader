@@ -24,23 +24,23 @@ Shader "HDRP/CustomLit"
         
         _chSDFDict("chSDFDict", 2DArray) = "" {} //RCC unity nepodporuje 1D arrays/ 2D by nemal byt problem
         
-        [ShowAsVector2] _chMaterial_Alpha("ch Material Alpha", Vector) = (0.5,0.5,0,0)
-        _chLogMicrofacetDensity("_chLogMicrofacetDensity", Range(1,40)) = 27
-        _chDictionary_NLevels("Dictionary_NLevels", Int) = 16
-        _chMaxAnisotropy("MaxAnisotropy", Int) = 8
-        _chMicrofacetRelativeArea("MicrofacetRelativeArea", Float) = 1
-        _chDictionary_Alpha("Dictionary_Alpha", Float) = 0.5
-        _chDictionary_N("Dictionary_N", Int) = 192
+        [ShowAsVector2] _chMaterial_Alpha("Material Alpha", Vector) = (0.5,0.5,0,0)
+        _chLogMicrofacetDensity("Log Microfacet Density", Range(1,40)) = 27
+        _chDictionary_NLevels("Dict N Levels", Int) = 16
+        _chMaxAnisotropy("Max Anisotropy", Int) = 8
+        _chMicrofacetRelativeArea("Microfacet Rel Area", Float) = 1
+        _chDictionary_Alpha("Dictionary Alpha", Float) = 0.5
+        _chDictionary_N("Dictionary N", Int) = 192
 
 
         
         //RCC properties of deliot23
-        _dbMaxNDF("dbMaxNDF", Range(0.0, 1.0)) = 0.5
-        _dbTargetNDF("dbTargetNDF", Range(0.0, 1.0)) = 0.5
-        _dbScreenSpaceScale("dbScreenSpaceScale", Range(0.00, 4.0)) = 1.5
-        _dbLogMicrofacetDensity("dbLogMicrofacetDensity", Range(0.0, 100)) = 16
-        _dbMicrofacetRoughness("dbMicrofacetRoughness", Range(0.005, 0.250)) = 0.005
-        _dbDensityRandomization("dbDensityRandomization", Range(0.0, 5)) = 2
+        _dbMaxNDF("Max NDF", Range(0.0, 1.0)) = 0.5
+        _dbTargetNDF("Target NDF", Range(0.0, 1.0)) = 0.5
+        _dbScreenSpaceScale("Screen Space Scale", Range(0.00, 4.0)) = 1.5
+        _dbLogMicrofacetDensity("Log Microfacet Density", Range(0.0, 100)) = 16
+        _dbMicrofacetRoughness("Microfacet Roughness", Range(0.005, 0.250)) = 0.005
+        _dbDensityRandomization("Density Randomization", Range(0.0, 5)) = 2
         _Glint2023NoiseMap("Glint2023NoiseMap", 2D) = "" {}
         _Glint2023NoiseMapSize("Glint2023NoiseMapSize", Range(256, 2048)) = 512 //default is 512
         
@@ -50,24 +50,24 @@ Shader "HDRP/CustomLit"
         [ShowAsVector2] _zkMicroRoughness("Micro Roughness", Vector) = (0.05,0.005,0,0) //can we specify range?
         _zkSearchConeAngle("Search Cone Angle", Range(0.001,0.1)) = 0.5
         _zkVariation("Variation", Range(20000,100000)) = 35000
-        _zkDynamicRange("DynamicRange", Range(20000,100000)) = 35000
-        _zkDenisty("Denisty", Range(1000,200000)) = 100000
+        _zkDynamicRange("Dynamic Range", Range(20000,100000)) = 35000
+        _zkDensity("Density", Range(1000,200000)) = 100000
 
         //RCC properties of wang15
-        [ShowAsVector2] _wbRoughness("wbRoughness", Vector) = (0.5,0.5,0,0)
+        [ShowAsVector2] _wbRoughness("Roughness", Vector) = (0.5,0.5,0,0)
         _wbGlitterStrength("Glitter Strength", Range(1, 1000)) = 1000
         [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 0.0
         _wbSparkleSize("Sparkle Size", Range(0.001, 1.0)) = 0.015
         _wbSparkleDensity("Sparkle Density", Range(0.1, 10)) = 5
         _wbNoiseDensity("Noise Density", Range(0.1, 1)) = 0
-        _wbNoiseAmmount("Noise Ammount", Range(0.1, 100)) = 0
-        _wbViewAmmount("View Ammount", Range(0.1, 10)) = 8
+        _wbNoiseAmount("Noise Amount", Range(0.1, 100)) = 100
+        _wbViewAmount("View Amount Jitter", Range(0.1, 10)) = 8
        
-        [ToggleUI] _wbUsePerlinTexture("Use PerlinTexture", Float) = 1.0
-        _wbPerlinTexture("My 3D Texture", 3D) = "" {}
-        _wbGridAmmount("Grids ammount", Range(1, 10)) = 3
-        _wbJitterScale("Jitter scale", Range(0.1, 100)) = 75
-        [ToggleUI] _wbUseScales("wbUseScales", Float) = 1.0
+        [ToggleUI] _wbUsePerlinTexture("Use Perlin 3D Texture", Float) = 1.0
+        _wbPerlinTexture("Perlin 3D Texture", 3D) = "" {}
+        _wbGridAmount("Grid Loops Amount", Range(1, 10)) = 3
+        _wbJitterScale("Jitter Scale", Range(0.1, 100)) = 75
+        [ToggleUI] _wbUseScales("Use Scales", Float) = 1.0
 
         
         [MainTexture] _BaseColorMap("BaseColorMap", 2D) = "white" {}

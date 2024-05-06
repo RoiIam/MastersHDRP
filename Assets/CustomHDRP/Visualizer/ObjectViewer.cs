@@ -402,6 +402,7 @@ namespace CustomHDRP.Visualizer
             }
             catch (Exception e)
             {
+                Debug.Log(e);
                 return 1;
             }
 

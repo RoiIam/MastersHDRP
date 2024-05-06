@@ -6347,7 +6347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1561613583433251173
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8619,7 +8619,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &1561613584198694527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9364,7 +9364,6 @@ MonoBehaviour:
   OptionsPanelUI: {fileID: 1561613582725249674}
   scenesCount: 2
   leftObjName: LeftObj
-  rightObjName: LeftObj
   playerInput: {fileID: 0}
   dict: {fileID: 18700000, guid: 54f8809523205c94b9a5fb9745e0fe6e, type: 2}
   changeAllButtonsHolder: {fileID: 2139173488}

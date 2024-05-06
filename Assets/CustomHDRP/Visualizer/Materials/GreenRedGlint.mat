@@ -333,19 +333,23 @@ Material:
     - _glintsMethod: 5
     - _maxNDF: 0.0003
     - _targetNDF: 0.02
-    - _wbGlitterStrength: 35
+    - _wbGlitterStrength: 1000
     - _wbGridAmmount: 3
-    - _wbJitterScale: 75
+    - _wbGridAmount: 3.04
+    - _wbJitterScale: 85.7
     - _wbNoiseAmmount: 0
-    - _wbNoiseDensity: 0.121
-    - _wbSparkleDensity: 0.1
-    - _wbSparkleSize: 0.693
+    - _wbNoiseAmount: 40.6
+    - _wbNoiseDensity: 0.881
+    - _wbSparkleDensity: 1.42
+    - _wbSparkleSize: 0.052
     - _wbTestNoise: 500
-    - _wbUseAnisotropy: 1
-    - _wbUsePerlinTexture: 1
+    - _wbUseAnisotropy: 0
+    - _wbUsePerlinTexture: 0
     - _wbUseScales: 1
     - _wbViewAmmount: 2.14
+    - _wbViewAmount: 2.33
     - _zkDenisty: 181288
+    - _zkDensity: 100000
     - _zkDynamicRange: 52867
     - _zkSearchConeAngle: 0.0782
     - _zkVariation: 72077

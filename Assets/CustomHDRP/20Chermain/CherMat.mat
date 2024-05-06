@@ -294,8 +294,10 @@ Material:
     - _targetNDF: 0.5
     - _wbGlitterStrength: 1000
     - _wbGridAmmount: 5.24
+    - _wbGridAmount: 3
     - _wbJitterScale: 100
     - _wbNoiseAmmount: 100
+    - _wbNoiseAmount: 0
     - _wbNoiseDensity: 1
     - _wbSparkleDensity: 5.8
     - _wbSparkleSize: 0.004
@@ -303,12 +305,14 @@ Material:
     - _wbUsePerlinTexture: 1
     - _wbUseScales: 0
     - _wbViewAmmount: 1.28
+    - _wbViewAmount: 8
     - _whNoiseAmmount: 0
     - _whNoiseDensity: 0
     - _whSparkleDensity: 5
     - _whSparkleSize: 0.015
     - _whViewAmmount: 8
     - _zkDenisty: 118228
+    - _zkDensity: 100000
     - _zkDynamicRange: 35000
     - _zkSearchConeAngle: 0.1
     - _zkVariation: 35000

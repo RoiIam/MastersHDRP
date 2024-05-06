@@ -184,7 +184,7 @@ CBUFFER_START(UnityPerMaterial)
     float1 _zkSearchConeAngle;
     float1 _zkVariation;
     float1 _zkDynamicRange;
-    float1 _zkDenisty;
+    float1 _zkDensity;
 
 
     //wang15 +wbe
@@ -195,10 +195,10 @@ CBUFFER_START(UnityPerMaterial)
     float1 _wbSparkleSize;
     float1 _wbSparkleDensity;
     float1 _wbNoiseDensity;
-    float1 _wbNoiseAmmount;
-    float1 _wbViewAmmount;
+    float1 _wbNoiseAmount;
+    float1 _wbViewAmount;
     float1 _wbUsePerlinTexture;
-    float1 _wbGridAmmount;
+    float1 _wbGridAmount;
     float1 _wbJitterScale;
     float1 _wbUseScales;
 
@@ -288,7 +288,7 @@ PROP_DECL(float2, _zkMicroRoughness);
 PROP_DECL(float1, _zkSearchConeAngle);
 PROP_DECL(float1, _zkVariation);
 PROP_DECL(float1, _zkDynamicRange);
-PROP_DECL(float1, _zkDenisty);
+PROP_DECL(float1, _zkDensity);
 
 //wang15
 PROP_DECL(float2, _wbRoughness);
@@ -296,12 +296,12 @@ PROP_DECL(float1, _wbGlitterStrength);
 PROP_DECL(float1, _wbTestNoise);
 PROP_DECL(float1, _wbUseAnisotropy);
 PROP_DECL(float1, _wbSparkleDensity);
-PROP_DECL(float1, _wbNoiseAmmount);
+PROP_DECL(float1, _wbNoiseAmount);
 PROP_DECL(float1, _wbNoiseDensity);
-PROP_DECL(float1, _wbNoiseAmmount);
-PROP_DECL(float1, _wbViewAmmount);
+PROP_DECL(float1, _wbNoiseAmount);
+PROP_DECL(float1, _wbViewAmount);
 PROP_DECL(float1, _wbUsePerlinTexture);
-PROP_DECL(float1, _wbGridAmmount);
+PROP_DECL(float1, _wbGridAmount);
 PROP_DECL(float1, _wbJitterScale);
 PROP_DECL(float1, _wbUseScales);
 

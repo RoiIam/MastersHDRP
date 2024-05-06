@@ -157,11 +157,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 95048049, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.443031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 95048049, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.839718
+      value: -3.533903
       objectReference: {fileID: 0}
     - target: {fileID: 251037105, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -203,13 +203,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 507826317, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
+      propertyPath: materialPropertyData
+      value: 
+      objectReference: {fileID: 11400000, guid: e1dc646a5d0fc7c41b991e1f19334673,
+        type: 2}
     - target: {fileID: 607564153, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.443031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 607564153, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.839718
+      value: -3.533903
       objectReference: {fileID: 0}
     - target: {fileID: 623640424, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -357,15 +362,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1392697828, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_Orbits.Array.data[0].m_Radius
-      value: 1.4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1392697828, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_Orbits.Array.data[1].m_Radius
-      value: 2.859511
+      value: 3.533903
       objectReference: {fileID: 0}
     - target: {fileID: 1392697828, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_Orbits.Array.data[2].m_Radius
-      value: 1.1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1683563839, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -453,11 +458,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1882954067, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.443031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1882954067, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.839718
+      value: -3.533903
       objectReference: {fileID: 0}
     - target: {fileID: 1889676502, guid: 0e19ea946334c4a4c97568eb07607c39, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1271,12 +1276,12 @@ PrefabInstance:
     - target: {fileID: 4646124536426600933, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.443031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4646124536426600933, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.839718
+      value: -3.533903
       objectReference: {fileID: 0}
     - target: {fileID: 5068534721339305405, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
@@ -1311,27 +1316,27 @@ PrefabInstance:
     - target: {fileID: 5704013366219243809, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.443031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5704013366219243809, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.839718
+      value: -3.533903
       objectReference: {fileID: 0}
     - target: {fileID: 5973961228950108687, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_Orbits.Array.data[0].m_Radius
-      value: 1.4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5973961228950108687, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_Orbits.Array.data[1].m_Radius
-      value: 2.859511
+      value: 3.533903
       objectReference: {fileID: 0}
     - target: {fileID: 5973961228950108687, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_Orbits.Array.data[2].m_Radius
-      value: 1.1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7853459335034227283, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
@@ -1341,12 +1346,12 @@ PrefabInstance:
     - target: {fileID: 8153428414568188230, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.443031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8153428414568188230, guid: 0e19ea946334c4a4c97568eb07607c39,
         type: 3}
       propertyPath: m_FollowOffset.z
-      value: -2.839718
+      value: -3.533903
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

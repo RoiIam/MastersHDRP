@@ -16,22 +16,25 @@ MonoBehaviour:
   - propertyType: 3
     glintsType: 1
     name: _chMaterial_Alpha
+    displayName: Material Alpha
     range: {x: -9999, y: -9999}
     floatValue: -9999
     intValue: -9999
     isToggle: 0
-    vecValue: {x: 0.24, y: 0.24, z: 0, w: 0}
+    vecValue: {x: 0.34, y: 0.34, z: 0, w: 0}
   - propertyType: 0
     glintsType: 1
     name: _chLogMicrofacetDensity
+    displayName: Log Microfacet Density
     range: {x: 1, y: 40}
-    floatValue: 18.2
+    floatValue: 25.9
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 1
     glintsType: 1
     name: _chDictionary_NLevels
+    displayName: Dict N Levels
     range: {x: -9999, y: -9999}
     floatValue: 16
     intValue: -9999
@@ -40,6 +43,7 @@ MonoBehaviour:
   - propertyType: 1
     glintsType: 1
     name: _chMaxAnisotropy
+    displayName: Max Anisotropy
     range: {x: -9999, y: -9999}
     floatValue: 8
     intValue: -9999
@@ -48,22 +52,25 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 1
     name: _chMicrofacetRelativeArea
+    displayName: Microfacet Rel Area
     range: {x: 0.01, y: 1}
-    floatValue: 0.317
+    floatValue: 0.347
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 1
     glintsType: 1
     name: _chDictionary_Alpha
+    displayName: Dictionary Alpha
     range: {x: -9999, y: -9999}
-    floatValue: 1
+    floatValue: 0.4
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 2
     name: _dbMaxNDF
+    displayName: Max NDF
     range: {x: 0, y: 1}
     floatValue: 0.5
     intValue: -9999
@@ -72,6 +79,7 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 2
     name: _dbTargetNDF
+    displayName: Target NDF
     range: {x: 0, y: 1}
     floatValue: 0.5
     intValue: -9999
@@ -80,6 +88,7 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 2
     name: _dbDensityRandomization
+    displayName: Density Randomization
     range: {x: 0, y: 5}
     floatValue: 2
     intValue: -9999
@@ -88,6 +97,7 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 2
     name: _dbLogMicrofacetDensity
+    displayName: Log Microfacet Density
     range: {x: 0, y: 100}
     floatValue: 16
     intValue: -9999
@@ -96,6 +106,7 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 2
     name: _dbMicrofacetRoughness
+    displayName: Microfacet Roughness
     range: {x: 0.005, y: 0.25}
     floatValue: 0.005
     intValue: -9999
@@ -104,6 +115,7 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 2
     name: _dbScreenSpaceScale
+    displayName: Screen Space Scale
     range: {x: 0, y: 4}
     floatValue: 1.5
     intValue: -9999
@@ -112,62 +124,70 @@ MonoBehaviour:
   - propertyType: 3
     glintsType: 3
     name: _zkRoughness
+    displayName: Global Roughness
     range: {x: -9999, y: -9999}
     floatValue: -9999
     intValue: -9999
     isToggle: 0
-    vecValue: {x: 0.5, y: 0.5, z: 0, w: 0}
+    vecValue: {x: 0.3, y: 0.3, z: 0, w: 0}
   - propertyType: 3
     glintsType: 3
     name: _zkMicroRoughness
+    displayName: Micro Roughness
     range: {x: -9999, y: -9999}
     floatValue: -9999
     intValue: -9999
     isToggle: 0
-    vecValue: {x: 0.05, y: 0.005, z: 0, w: 0}
+    vecValue: {x: 0.0012, y: 0.0012, z: 0, w: 0}
   - propertyType: 0
     glintsType: 3
     name: _zkSearchConeAngle
+    displayName: Search Cone Angle
     range: {x: 0.001, y: 0.1}
-    floatValue: 0.5
+    floatValue: 0.0782
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 3
     name: _zkVariation
+    displayName: Variation
     range: {x: 20000, y: 100000}
-    floatValue: 35000
+    floatValue: 72077
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 3
     name: _zkDynamicRange
+    displayName: Dynamic Range
     range: {x: 20000, y: 100000}
-    floatValue: 35000
+    floatValue: 52867
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 3
-    name: _zkDenisty
+    name: _zkDensity
+    displayName: Density
     range: {x: 1000, y: 200000}
-    floatValue: 100000
+    floatValue: 181288
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 4
     name: _wbGlitterStrength
+    displayName: Glitter Strength
     range: {x: 1, y: 1000}
-    floatValue: 1000
+    floatValue: 555
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 1
     glintsType: 4
     name: _wbUseAnisotropy
+    displayName: Use Anisotropy
     range: {x: -9999, y: -9999}
     floatValue: 1
     intValue: -9999
@@ -176,46 +196,52 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 4
     name: _wbSparkleSize
+    displayName: Sparkle Size
     range: {x: 0.001, y: 1}
-    floatValue: 0.015
+    floatValue: 0.148
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 4
     name: _wbSparkleDensity
+    displayName: Sparkle Density
     range: {x: 0.1, y: 10}
-    floatValue: 5
+    floatValue: 0.5
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 4
     name: _wbNoiseDensity
+    displayName: Noise Density
     range: {x: 0.1, y: 1}
-    floatValue: 0.345
+    floatValue: 0.121
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 4
-    name: _wbNoiseAmmount
+    name: _wbNoiseAmount
+    displayName: Noise Amount
     range: {x: 0.1, y: 100}
-    floatValue: 28.1
+    floatValue: 0
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 0
     glintsType: 4
-    name: _wbViewAmmount
+    name: _wbViewAmount
+    displayName: View Amount Jitter
     range: {x: 0.1, y: 10}
-    floatValue: 8
+    floatValue: 4.94
     intValue: -9999
     isToggle: 0
     vecValue: {x: -9999, y: -9999, z: 0, w: 0}
   - propertyType: 3
     glintsType: 5
     name: _wbRoughness
+    displayName: Roughness
     range: {x: -9999, y: -9999}
     floatValue: -9999
     intValue: -9999
@@ -223,7 +249,8 @@ MonoBehaviour:
     vecValue: {x: 0.5, y: 0.5, z: 0, w: 0}
   - propertyType: 0
     glintsType: 5
-    name: _wbGridAmmount
+    name: _wbGridAmount
+    displayName: Grid Loops Amount
     range: {x: 1, y: 10}
     floatValue: 3
     intValue: -9999
@@ -232,6 +259,7 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 5
     name: _wbJitterScale
+    displayName: Jitter Scale
     range: {x: 0.1, y: 100}
     floatValue: 75
     intValue: -9999
@@ -240,6 +268,7 @@ MonoBehaviour:
   - propertyType: 1
     glintsType: 5
     name: _wbUseScales
+    displayName: Use Scales
     range: {x: -9999, y: -9999}
     floatValue: 1
     intValue: -9999

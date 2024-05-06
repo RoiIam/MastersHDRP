@@ -377,7 +377,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                      toLocal, normalize(vertPos - light.positionRWS), normalWS,
                                      normalize(vertPos - cameraPos),
                                      _zkRoughness, _zkMicroRoughness,
-                                     _zkSearchConeAngle, _zkVariation, _zkDynamicRange, _zkDenisty);
+                                     _zkSearchConeAngle, _zkVariation, _zkDynamicRange, _zkDensity);
             }
             else if ((int)_glintsMethod == 4) //we chose WB 
             {
@@ -391,8 +391,8 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                          _wbSparkleSize,
                                          _wbSparkleDensity,
                                          _wbNoiseDensity,
-                                         _wbNoiseAmmount,
-                                         _wbViewAmmount
+                                         _wbNoiseAmount,
+                                         _wbViewAmount
                 );
             }
             else if ((int)_glintsMethod == 5) //we chose WBEnhanced
@@ -407,8 +407,8 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                                          _wbSparkleSize,
                                          _wbSparkleDensity,
                                          _wbNoiseDensity,
-                                         _wbNoiseAmmount,
-                                         _wbViewAmmount
+                                         _wbNoiseAmount,
+                                         _wbViewAmount
                 );
             }
 

@@ -44,10 +44,10 @@ namespace CustomHDRP.Visualizer
         private MaterialProperty matID;
         private MaterialProperty useGlints;
         private MaterialProperty wbGlitterStrength;
-        private MaterialProperty wbGridAmmount;
+        private MaterialProperty wbGridAmount;
         private MaterialProperty wbJitterScale;
 
-        private MaterialProperty wbNoiseAmmount;
+        private MaterialProperty wbNoiseAmount;
         private MaterialProperty wbNoiseDensity;
         private MaterialProperty wbPerlinTexture;
 
@@ -58,9 +58,9 @@ namespace CustomHDRP.Visualizer
         private MaterialProperty wbUseAnisotropy;
         private MaterialProperty wbUsePerlinTexture;
         private MaterialProperty wbUseScales;
-        private MaterialProperty wbViewAmmount;
+        private MaterialProperty wbViewAmount;
 
-        private MaterialProperty zkDenisty;
+        private MaterialProperty zkDensity;
         private MaterialProperty zkDynamicRange;
         private MaterialProperty zkMicroRoughness;
 
@@ -110,7 +110,7 @@ namespace CustomHDRP.Visualizer
             zkSearchConeAngle = FindProperty("_zkSearchConeAngle");
             zkVariation = FindProperty("_zkVariation");
             zkDynamicRange = FindProperty("_zkDynamicRange");
-            zkDenisty = FindProperty("_zkDenisty");
+            zkDensity = FindProperty("_zkDensity");
 
             //Wang15 and Enhanced
             wbGlitterStrength = FindProperty("_wbGlitterStrength");
@@ -118,13 +118,13 @@ namespace CustomHDRP.Visualizer
             wbSparkleSize = FindProperty("_wbSparkleSize");
             wbSparkleDensity = FindProperty("_wbSparkleDensity");
             wbNoiseDensity = FindProperty("_wbNoiseDensity");
-            wbNoiseAmmount = FindProperty("_wbNoiseAmmount");
-            wbViewAmmount = FindProperty("_wbViewAmmount");
+            wbNoiseAmount = FindProperty("_wbNoiseAmount");
+            wbViewAmount = FindProperty("_wbViewAmount");
 
             wbRoughness = FindProperty("_wbRoughness");
             wbPerlinTexture = FindProperty("_wbPerlinTexture");
             wbUsePerlinTexture = FindProperty("_wbUsePerlinTexture");
-            wbGridAmmount = FindProperty("_wbGridAmmount");
+            wbGridAmount = FindProperty("_wbGridAmount");
             wbJitterScale = FindProperty("_wbJitterScale");
             wbUseScales = FindProperty("_wbUseScales");
         }
@@ -157,8 +157,8 @@ namespace CustomHDRP.Visualizer
             var type = MaterialPropertyData.GlintsType.De;
             var matches = t == type ? true : false;
 
-            ShaderProperty2(dbMaxNDFBlock, "max NDF", type, matches);
-            ShaderProperty2(dbTargetNDFBlock, "target NDF", type, matches);
+            ShaderProperty2(dbMaxNDFBlock, "Max NDF", type, matches);
+            ShaderProperty2(dbTargetNDFBlock, "Target NDF", type, matches);
             ShaderProperty2(dbDensityRandomization, "Density Randomization", type, matches);
             ShaderProperty2(dbLogMicrofacetDensity, "Log Microfacet Density", type, matches);
             ShaderProperty2(dbMicrofacetRoughness, "Microfacet Roughness", type, matches);
@@ -176,7 +176,7 @@ namespace CustomHDRP.Visualizer
             ShaderProperty2(zkSearchConeAngle, "Search Cone Angle", type, matches);
             ShaderProperty2(zkVariation, "Variation", type, matches);
             ShaderProperty2(zkDynamicRange, "Dynamic Range", type, matches);
-            ShaderProperty2(zkDenisty, "Density", type, matches);
+            ShaderProperty2(zkDensity, "Density", type, matches);
         }
 
         public void ShowWangParams(MaterialPropertyData.GlintsType t)
@@ -191,8 +191,8 @@ namespace CustomHDRP.Visualizer
             ShaderProperty2(wbSparkleSize, "Sparkle Size", type, matches, include);
             ShaderProperty2(wbSparkleDensity, "Sparkle Density", type, matches, include);
             ShaderProperty2(wbNoiseDensity, "Noise Density", type, matches, include);
-            ShaderProperty2(wbNoiseAmmount, "Noise Ammount", type, matches, include);
-            ShaderProperty2(wbViewAmmount, "View Ammount jitter", type, matches, include);
+            ShaderProperty2(wbNoiseAmount, "Noise Amount", type, matches, include);
+            ShaderProperty2(wbViewAmount, "View Amount jitter", type, matches, include);
         }
 
         public void ShowWBEnhancedParams(MaterialPropertyData.GlintsType t)
@@ -203,7 +203,7 @@ namespace CustomHDRP.Visualizer
             ShaderProperty2(wbRoughness, "Global roughness", type, matches);
             //ShaderProperty2(wbPerlinTexture, "3d Perlin Texture",type,matches,false);
             ShaderProperty2(wbUsePerlinTexture, "Use Perlin Texture", type, matches, false);
-            ShaderProperty2(wbGridAmmount, "Grid loops ammount", type, matches);
+            ShaderProperty2(wbGridAmount, "Grid loops amount", type, matches);
             ShaderProperty2(wbJitterScale, "Jitter grid scale", type, matches);
             ShaderProperty2(wbUseScales, "Toggle to use scales", type, matches);
         }
@@ -243,6 +243,7 @@ namespace CustomHDRP.Visualizer
                             //newData.list.Add();
                             var dataToAdd = new MaterialPropertyData.SerializedGlintsMaterialProperty();
                             dataToAdd.name = p.name;
+                            dataToAdd.displayName = p.displayName;
                             dataToAdd.glintsType = m.glintsType;
                             switch (p.type)
                             {

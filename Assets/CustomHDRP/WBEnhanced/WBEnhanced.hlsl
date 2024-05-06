@@ -207,7 +207,7 @@ float3 WBEnhancedGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 
     float3 glittering = float3(0.0f, 0.0f, 0.0f);
 
     //TODO loops
-    UNITY_LOOP for (int i = 1; i < _wbGridAmmount; i++)
+    UNITY_LOOP for (int i = 1; i < _wbGridAmount; i++)
     {
         glittering += calcGrid(i_sparkle_size, i_sparkle_density, i + i / 4.0f,
                                vViewVec, i_noise_density,

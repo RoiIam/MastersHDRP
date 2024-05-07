@@ -16,3 +16,12 @@ struct ChermainStruct
 };
 
 //maybe add other structs later
+struct WBEStruct
+{
+    bool with_anisotropy;
+    float1 i_sparkle_size;
+    float1 i_sparkle_density;
+    float1 i_noise_density;
+    float1 i_noise_amount;
+    float1 i_view_amount;
+};

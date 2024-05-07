@@ -29,8 +29,6 @@ namespace CustomHDRP.Visualizer
 
 
         private MaterialProperty glintsMethod;
-        public bool changezkMicroRoughnessSimultaneously = true;
-        public bool changezkRoughnessSimultaneously = true;
         private MaterialProperty chDictionary_Alpha;
         private MaterialProperty chDictionary_N;
         private MaterialProperty chDictionary_NLevels;
@@ -41,7 +39,6 @@ namespace CustomHDRP.Visualizer
         private MaterialProperty chMicrofacetRelativeArea;
         private MaterialProperty chSDFDictBlock;
 
-        private MaterialProperty matID;
         private MaterialProperty useGlints;
         private MaterialProperty wbGlitterStrength;
         private MaterialProperty wbGridAmount;
@@ -78,7 +75,6 @@ namespace CustomHDRP.Visualizer
         {
             activeGlintProperties.Clear();
             //use FindProperty for all that we will show in ui
-            matID = FindProperty("_MaterialID");
             glintsMethod = FindProperty("_glintsMethod");
             useGlints = FindProperty("_UseGlints");
 

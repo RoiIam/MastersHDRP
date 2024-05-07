@@ -107,7 +107,7 @@ DirectLighting ShadeSurface_Infinitesimal_Glints(PreLightData preLightData, BSDF
         //else
         if ((int)_glintsMethod == 3 || (int)_glintsMethod == 1) //ZK +CHE
             lighting.specular = (glintsColor + cbsdf.specT * transmittance) * lightColor * specularDimmer;
-        else if ((int)_glintsMethod == 4  || (int)_glintsMethod == 5)
+        else if ((int)_glintsMethod == 4 || (int)_glintsMethod == 5)
         {
             lighting.specular = (_wbGlitterStrength * glintsColor * cbsdf.specR + cbsdf.specT * transmittance) *
                 lightColor * specularDimmer;
@@ -386,7 +386,7 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                 float4 vlarge_dir = float4(vViewVec - dotvn * -normalWS, dotvn);
 
                 glintsColor = float3(1, 1, 1);
-                glintsColor = wangGlints(vertPos, normalWS, lightPos, vViewVec,tangentWS, vlarge_dir,
+                glintsColor = wangGlints(vertPos, normalWS, lightPos, vViewVec, tangentWS, vlarge_dir,
                                          _wbUseAnisotropy,
                                          _wbSparkleSize,
                                          _wbSparkleDensity,
@@ -402,14 +402,16 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
                 float4 vlarge_dir = float4(vViewVec - dotvn * -normalWS, dotvn);
 
                 glintsColor = float3(1, 1, 1);
-                glintsColor = WBEnhancedGlints(vertPos, normalWS, lightPos, vViewVec,tangentWS, vlarge_dir,
-                                         _wbUseAnisotropy,
-                                         _wbSparkleSize,
-                                         _wbSparkleDensity,
-                                         _wbNoiseDensity,
-                                         _wbNoiseAmount,
-                                         _wbViewAmount
-                );
+                WBEStruct wbeStruct;
+                wbeStruct.with_anisotropy = _wbUseAnisotropy;
+                wbeStruct.i_sparkle_size = _wbSparkleSize;
+                wbeStruct.i_sparkle_density = _wbSparkleDensity;
+                wbeStruct.i_noise_density = _wbNoiseDensity;
+                wbeStruct.i_noise_amount = _wbNoiseAmount;
+                wbeStruct.i_view_amount = _wbViewAmount;
+
+
+                glintsColor = WBEnhancedGlints(vertPos, normalWS, lightPos, vViewVec, tangentWS, wbeStruct);
             }
 
 

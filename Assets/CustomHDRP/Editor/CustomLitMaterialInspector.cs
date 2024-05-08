@@ -1,4 +1,3 @@
-using CustomHDRP.Visualizer;
 using UnityEditor.Rendering.HighDefinition;
 
 //little hack is used, we inherit from LightingShaderGraphGUI even though it should be LitGUI but that

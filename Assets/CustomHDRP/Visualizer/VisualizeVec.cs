@@ -28,7 +28,7 @@ namespace CustomHDRP.Visualizer
 
         public override void StartValues()
         {
-            label.text = property.name;
+            label.text = property.displayName;
             var init = GetMatToChange().GetVector(property.name);
             foreach (var v in valueText) v.onValueChanged.AddListener(ChangeVal);
             valueText[0].text = init.x.ToString();

@@ -259,7 +259,7 @@ MonoBehaviour:
   - propertyType: 0
     glintsType: 5
     name: _wbJitterScale
-    displayName: Jitter Scale
+    displayName: Perlin Scale
     range: {x: 0.1, y: 100}
     floatValue: 75
     intValue: -9999

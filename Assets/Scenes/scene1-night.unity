@@ -1586,6 +1586,7 @@ MonoBehaviour:
   - {fileID: 236271828}
   - {fileID: 1998139980}
   matChanger: {fileID: 453006579}
+  ps: {fileID: 1657909689}
   isPlaying: 1
 --- !u!1 &28255135
 GameObject:
@@ -61895,6 +61896,12 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ca04dc9501451e498e3f029e625ccaf, type: 3}
+--- !u!198 &1657909689 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198930946724180930, guid: 4ca04dc9501451e498e3f029e625ccaf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1657909688}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1658942958
 PrefabInstance:
   m_ObjectHideFlags: 0

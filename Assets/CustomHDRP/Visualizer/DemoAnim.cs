@@ -24,6 +24,8 @@ namespace CustomHDRP.Visualizer
         public List<GameObject> ItemsToChange;
 
         public MatChanger matChanger;
+        public ParticleSystem ps;
+
 
         public bool isPlaying = true;
 
@@ -38,10 +40,6 @@ namespace CustomHDRP.Visualizer
             len = currentClipInfo[0].clip.length;
         }
 
-        public void ChangeMat(int i)
-        {
-            matChanger.ChangeMethod(i);
-        }
         private void Update()
         {
             if (Input.GetKeyUp(KeyCode.Space)) OnPlayPause();
@@ -50,6 +48,18 @@ namespace CustomHDRP.Visualizer
                 timeSlider.value = camAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1;
         }
 
+        public void ChangeMat(int i)
+        {
+            matChanger.ChangeMethod(i);
+        }
+
+        public void OnParticlesAnim()
+        {
+            if (ps.isPlaying)
+                ps.Stop();
+            else
+                ps.Play();
+        }
 
         public void OnHandleGrab()
         {

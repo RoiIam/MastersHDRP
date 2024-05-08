@@ -336,13 +336,13 @@ Material:
     - _dbScreenSpaceScale: 1.5
     - _dbTargetNDF: 0.037
     - _glintsMethod: 5
-    - _wbGlitterStrength: 555
+    - _wbGlitterStrength: 901
     - _wbGridAmmount: 3
     - _wbGridAmount: 3
-    - _wbJitterScale: 75
+    - _wbJitterScale: 72.6
     - _wbNoiseAmmount: 1
-    - _wbNoiseAmount: 0
-    - _wbNoiseDensity: 1
+    - _wbNoiseAmount: 78.6
+    - _wbNoiseDensity: 0.821
     - _wbSparkleDensity: 0.28
     - _wbSparkleSize: 0.562
     - _wbTestNoise: 270
@@ -350,7 +350,7 @@ Material:
     - _wbUsePerlinTexture: 1
     - _wbUseScales: 1
     - _wbViewAmmount: 4.94
-    - _wbViewAmount: 8
+    - _wbViewAmount: 3.83
     - _zkDenisty: 181288
     - _zkDensity: 100000
     - _zkDynamicRange: 52867

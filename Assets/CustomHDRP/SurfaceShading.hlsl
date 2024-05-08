@@ -403,12 +403,12 @@ DirectLighting ShadeSurface_Punctual(LightLoopContext lightLoopContext,
 
                 glintsColor = float3(1, 1, 1);
                 WBEStruct wbeStruct;
-                wbeStruct.with_anisotropy = _wbUseAnisotropy;
-                wbeStruct.i_sparkle_size = _wbSparkleSize;
-                wbeStruct.i_sparkle_density = _wbSparkleDensity;
-                wbeStruct.i_noise_density = _wbNoiseDensity;
-                wbeStruct.i_noise_amount = _wbNoiseAmount;
-                wbeStruct.i_view_amount = _wbViewAmount;
+                wbeStruct.useAnisotropy = _wbUseAnisotropy;
+                wbeStruct.sparkleSize = _wbSparkleSize;
+                wbeStruct.sparkleDensity = _wbSparkleDensity;
+                wbeStruct.noiseDensity = _wbNoiseDensity;
+                wbeStruct.noiseAmount = _wbNoiseAmount;
+                wbeStruct.viewAmount = _wbViewAmount;
 
 
                 glintsColor = WBEnhancedGlints(vertPos, normalWS, lightPos, vViewVec, tangentWS, wbeStruct);

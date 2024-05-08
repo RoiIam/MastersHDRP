@@ -19,7 +19,8 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2225
-  stringTagMap: {}
+  stringTagMap:
+    MotionVector: User
   disabledShaderPasses:
   - TransparentDepthPrepass
   - TransparentDepthPostpass
@@ -197,7 +198,7 @@ Material:
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _NormalMapSpace: 0
-    - _NormalScale: 1
+    - _NormalScale: 2.43
     - _OpaqueCullMode: 2
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
@@ -259,21 +260,21 @@ Material:
     - _dbMicrofacetRoughness: 0.005
     - _dbScreenSpaceScale: 1.5
     - _dbTargetNDF: 0.5
-    - _glintsMethod: 5
-    - _wbGlitterStrength: 1000
+    - _glintsMethod: 3
+    - _wbGlitterStrength: 686
     - _wbGridAmmount: 3
     - _wbGridAmount: 3
-    - _wbJitterScale: 75
+    - _wbJitterScale: 72.6
     - _wbNoiseAmmount: 28.1
-    - _wbNoiseAmount: 0
-    - _wbNoiseDensity: 0.345
+    - _wbNoiseAmount: 78.6
+    - _wbNoiseDensity: 0.821
     - _wbSparkleDensity: 5
     - _wbSparkleSize: 0.015
     - _wbUseAnisotropy: 1
     - _wbUsePerlinTexture: 1
     - _wbUseScales: 1
     - _wbViewAmmount: 8
-    - _wbViewAmount: 8
+    - _wbViewAmount: 3.83
     - _zkDenisty: 100000
     - _zkDensity: 100000
     - _zkDynamicRange: 35000

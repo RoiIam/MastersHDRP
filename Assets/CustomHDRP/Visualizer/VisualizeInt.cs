@@ -29,7 +29,7 @@ namespace CustomHDRP.Visualizer
 
         public override void StartValues()
         {
-            label.text = property.name;
+            label.text = property.displayName;
             value = GetMatToChange().GetInt(property.name);
             valueText.text = value.ToString();
             valueText.onValueChanged.AddListener(ChangeVal);

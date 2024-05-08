@@ -42,20 +42,20 @@ Shader "HDRP/CustomLit"
         _dbMicrofacetRoughness("Microfacet Roughness", Range(0.005, 0.250)) = 0.005
         _dbDensityRandomization("Density Randomization", Range(0.0, 5)) = 2
         _Glint2023NoiseMap("Glint2023NoiseMap", 2D) = "" {}
-        _Glint2023NoiseMapSize("Glint2023NoiseMapSize", Range(256, 2048)) = 512 //default is 512
+        [IntRange]_Glint2023NoiseMapSize("Glint2023NoiseMapSize", Range(256, 2048)) = 512 //default is 512
         
         
         //RCC properties of zirr16
         [ShowAsVector2] _zkRoughness("Roughness", Vector) = (0.5,0.5,0,0) //can we specify range?
         [ShowAsVector2] _zkMicroRoughness("Micro Roughness", Vector) = (0.05,0.005,0,0) //can we specify range?
         _zkSearchConeAngle("Search Cone Angle", Range(0.001,0.1)) = 0.5
-        _zkVariation("Variation", Range(20000,100000)) = 35000
-        _zkDynamicRange("Dynamic Range", Range(20000,100000)) = 35000
-        _zkDensity("Density", Range(1000,200000)) = 100000
+        [IntRange]_zkVariation("Variation", Range(20000,100000)) = 35000
+        [IntRange]_zkDynamicRange("Dynamic Range", Range(20000,100000)) = 35000
+        [IntRange]_zkDensity("Density", Range(1000,200000)) = 100000
 
         //RCC properties of wang15
         [ShowAsVector2] _wbRoughness("Roughness", Vector) = (0.5,0.5,0,0)
-        _wbGlitterStrength("Glitter Strength", Range(1, 1000)) = 1000
+        [IntRange]_wbGlitterStrength("Glitter Strength", Range(1, 1000)) = 1000
         [ToggleUI] _wbUseAnisotropy("Use Anisotropy", Float) = 0.0
         _wbSparkleSize("Sparkle Size", Range(0.001, 1.0)) = 0.015
         _wbSparkleDensity("Sparkle Density", Range(0.1, 10)) = 5
@@ -63,10 +63,10 @@ Shader "HDRP/CustomLit"
         _wbNoiseAmount("Noise Amount", Range(0.1, 100)) = 100
         _wbViewAmount("View Amount Jitter", Range(0.1, 10)) = 8
        
-        [ToggleUI] _wbUsePerlinTexture("Use Perlin 3D Texture", Float) = 1.0
-        _wbPerlinTexture("Perlin 3D Texture", 3D) = "" {}
-        _wbGridAmount("Grid Loops Amount", Range(1, 10)) = 3
-        _wbJitterScale("Jitter Scale", Range(0.1, 100)) = 75
+        [ToggleUI] _wbUsePerlinTexture("Use Perlin 3D Texture", Float) = 0.0
+        //_wbPerlinTexture("Perlin 3D Texture", 3D) = "" {}
+        [IntRange]_wbGridAmount("Grid Loops Amount", Range(1, 10)) = 3
+        _wbJitterScale("Perlin Jitter Scale", Range(0.1, 100)) = 75
         [ToggleUI] _wbUseScales("Use Scales", Float) = 1.0
 
         

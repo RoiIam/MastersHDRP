@@ -79,6 +79,7 @@ namespace CustomHDRP.Visualizer
         [SerializeField] private Button changeScene;
         [SerializeField] private GameObject timelineUI;
         [SerializeField] private GameObject OptionsPanelUI;
+        [SerializeField] private GameObject FPSHolder;
 
         [SerializeField] private int scenesCount = 2; //should be accesed from buildIndex
 
@@ -166,7 +167,18 @@ namespace CustomHDRP.Visualizer
                 cinemachineFreeLookRight.m_XAxis.Value += rotationSpeed * camSpeedSlider.value * Time.deltaTime;
             }
 
-            if (Input.GetKeyUp(KeyCode.F1)) OptionsPanel.SetActive(!OptionsPanel.activeSelf);
+            if (Input.GetKeyUp(KeyCode.F1))
+            {
+                var active = !OptionsPanel.activeSelf;
+                OptionsPanel.SetActive(active);
+                FPSHolder.SetActive(active);
+            }
+        }
+
+        public void DisableParticles()
+        {
+            if (timelineUI)
+                timelineUI.GetComponent<DemoAnim>().OnParticlesAnim();
         }
 
         public void SetupScene()
@@ -200,11 +212,11 @@ namespace CustomHDRP.Visualizer
 
                 leftMat = leftObj.GetComponent<Renderer>().material;
                 leftObjMeshFilter = leftObj.GetComponent<MeshFilter>();
-                
+
                 cinemachineFreeLookLeft = leftCam.gameObject.GetComponent<CinemachineFreeLook>();
                 cinemachineFreeLookLeft.LookAt = leftObj.transform;
                 cinemachineFreeLookLeft.Follow = leftObj.transform;
-                
+
                 CreateRightCopies();
                 EditLeftMat();
                 CreateParamsUI();

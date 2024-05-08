@@ -31,7 +31,7 @@ namespace CustomHDRP.Visualizer
 
         public override void StartValues()
         {
-            label.text = property.name;
+            label.text = property.displayName;
 
             isFloat = (int)property.intValue == -9999;
             if (isFloat)
@@ -67,7 +67,7 @@ namespace CustomHDRP.Visualizer
         public void ChangeVal(float f)
         {
             var val = slider.value;
-            Debug.Log("range state changed: " + val);
+            //Debug.Log("range state changed: " + val);
 
             if (isFloat)
                 GetMatToChange().SetFloat(property.name, val);

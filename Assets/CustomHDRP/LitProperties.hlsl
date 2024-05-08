@@ -198,7 +198,7 @@ CBUFFER_START(UnityPerMaterial)
     float1 _wbNoiseAmount;
     float1 _wbViewAmount;
     float1 _wbUsePerlinTexture;
-    float1 _wbGridAmount;
+    int1 _wbGridAmount;
     float1 _wbJitterScale;
     float1 _wbUseScales;
 
@@ -301,7 +301,7 @@ PROP_DECL(float1, _wbNoiseDensity);
 PROP_DECL(float1, _wbNoiseAmount);
 PROP_DECL(float1, _wbViewAmount);
 PROP_DECL(float1, _wbUsePerlinTexture);
-PROP_DECL(float1, _wbGridAmount);
+PROP_DECL(int1, _wbGridAmount);
 PROP_DECL(float1, _wbJitterScale);
 PROP_DECL(float1, _wbUseScales);
 

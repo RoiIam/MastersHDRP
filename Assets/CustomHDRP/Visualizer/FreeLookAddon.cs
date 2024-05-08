@@ -29,7 +29,7 @@ public class FreeLookAddon : MonoBehaviour
         if (isRMB)
             _freeLookComponent.m_XAxis.Value += lookMovement.x * LookSpeed * Time.deltaTime;
 
-        if (isLMB)
+        if (isLMB && !EventSystem.current.IsPointerOverGameObject())
         {
             var scrollVal = context.ReadValue<Vector2>().normalized;
             scrollVal.y = InvertscrollY ? -scrollVal.y : scrollVal.y;
@@ -63,7 +63,6 @@ public class FreeLookAddon : MonoBehaviour
 
     public void OnLMB(InputAction.CallbackContext context)
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
-            isLMB = context.ReadValue<float>() > 0.8 ? true : false;
+        isLMB = context.ReadValue<float>() > 0.8 ? true : false;
     }
 }

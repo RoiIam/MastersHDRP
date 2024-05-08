@@ -1,4 +1,6 @@
-﻿#ifndef __GLINTS15__
+﻿//Method of Bieibei Wang and Huw Boles from the paper "A Robust and Flexible Real-Time Sparkle Effect"
+//translated to hlsl
+#ifndef __GLINTS15__
 #define __GLINTS15__
 
 #ifndef LAYERED_LIT_SHADER
@@ -6,12 +8,13 @@
 #endif
 #include "../WBEnhanced/PerlinNoiseLite.hlsl"
 
-float cnoise(float3 inp)
+float PerlinNoise(float3 inp)
 {
     //if(_wbUsePerlinTexture)
     //    return    UNITY_SAMPLE_TEX3D_SAMPLER(_wbPerlinTexture,_wbPerlinTexture, inp);
-    return    cnoise2(inp);
+    return PerlinNoiseLite(inp);
 }
+
 float rand(float2 co)
 {
     co.x = co.x - frac(co.x);
@@ -38,7 +41,6 @@ float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewV
                   float i_view_amount
 )
 {
-    float3 ldir = normalize(lightPos.xyz - vObjPos);
     float3 n_view_dir = normalize(vViewVec);
 
     float grid_sparkle_dense = i_sparkle_density * 15.0;
@@ -62,7 +64,7 @@ float3 wangGlints(float3 vObjPos, float3 vNormal, float3 lightPos, float3 vViewV
     float grid_length = 1.0 / grid_sparkle_dense;
     float3 grid_center = grid_index * grid_length;
 
-    float jitter_noisy = i_noise_amount * cnoise(i_noise_density * grid_center);
+    float jitter_noisy = i_noise_amount * PerlinNoise(i_noise_density * grid_center);
     float3 jitter_grid = float3(jitter_noisy, jitter_noisy, jitter_noisy);
     jitter_grid = 0.5 * frac(jitter_grid + 0.5) - float3(0.75, 0.75, 0.75);
     float3 new_offset = grid_offset + jitter_grid;

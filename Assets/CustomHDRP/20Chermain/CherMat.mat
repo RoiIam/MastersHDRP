@@ -292,18 +292,18 @@ Material:
     - _glintsMethod: 1
     - _maxNDF: 0.326
     - _targetNDF: 0.5
-    - _wbGlitterStrength: 1000
+    - _wbGlitterStrength: 610
     - _wbGridAmmount: 5.24
     - _wbGridAmount: 3
     - _wbJitterScale: 100
     - _wbNoiseAmmount: 100
-    - _wbNoiseAmount: 0
+    - _wbNoiseAmount: 100
     - _wbNoiseDensity: 1
-    - _wbSparkleDensity: 5.8
-    - _wbSparkleSize: 0.004
+    - _wbSparkleDensity: 1.05
+    - _wbSparkleSize: 0.05
     - _wbUseAnisotropy: 1
     - _wbUsePerlinTexture: 1
-    - _wbUseScales: 0
+    - _wbUseScales: 1
     - _wbViewAmmount: 1.28
     - _wbViewAmount: 8
     - _whNoiseAmmount: 0
@@ -336,7 +336,7 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
     - _chMaterial_Alpha: {r: 0.43, g: 0.43, b: 0, a: 0}
     - _chRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _wbRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _wbRoughness: {r: 0.51, g: 0.51, b: 0, a: 0}
     - _zkMicroRoughness: {r: 0.005, g: 0.005, b: 0, a: 0}
     - _zkRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _zk_MicroRoughness: {r: 0.5, g: 0.5, b: 0, a: 0}

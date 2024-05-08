@@ -198,9 +198,9 @@ namespace CustomHDRP.Visualizer
 
             ShaderProperty2(wbRoughness, "Global roughness", type, matches);
             //ShaderProperty2(wbPerlinTexture, "3d Perlin Texture",type,matches,false);
-            ShaderProperty2(wbUsePerlinTexture, "Use Perlin Texture", type, matches, false);
+            //ShaderProperty2(wbUsePerlinTexture, "Use Perlin Texture", type, matches, false);
             ShaderProperty2(wbGridAmount, "Grid loops amount", type, matches);
-            ShaderProperty2(wbJitterScale, "Jitter grid scale", type, matches);
+            ShaderProperty2(wbJitterScale, "Perlin Jitter Scale", type, matches);
             ShaderProperty2(wbUseScales, "Toggle to use scales", type, matches);
         }
 

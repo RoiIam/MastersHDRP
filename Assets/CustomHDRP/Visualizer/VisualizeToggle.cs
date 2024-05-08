@@ -38,7 +38,7 @@ namespace CustomHDRP.Visualizer
 
         public override void StartValues()
         {
-            label.text = property.name;
+            label.text = property.displayName;
             if (isFloat)
                 toggle.isOn = Math.Abs(GetMatToChange().GetFloat(property.name) - 1.0) < tolerance;
             else

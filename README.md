@@ -4,7 +4,7 @@
 ### Author: Róbert Kica 
 ### Title: Scalable procedural algorithm for glinty surface rendering in real-time
 ### 2023-2024, Written in Slovak.
-[![Masters Thesis: showcase of various glinty methods](https://img.youtube.com/vi/fyMN19GHBx8/0.jpg)](https://www.youtube.com/watch?v=fyMN19GHBx8))
+[![Masters Thesis: showcase of various glinty methods](https://img.youtube.com/vi/fyMN19GHBx8/0.jpg)](https://www.youtube.com/watch?v=fyMN19GHBx8)(Click to play on youtube)
 #
 ## Results
 ### We have created material with different glinty methods for Unity 2022.1 with HDRP 13.1.x.
